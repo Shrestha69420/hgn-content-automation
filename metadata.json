@@ -1,0 +1,6 @@
+{
+  "name": "Himalayan Guardian Nepal - Content Automation & Social Media System",
+  "description": "Marketing Content Automation and Social Media Management System for Himalayan Guardian Nepal - Adventure safety, emergency support, and tourism protection content pipeline.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
