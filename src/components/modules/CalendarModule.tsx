@@ -59,7 +59,7 @@ export const CalendarModule: React.FC = () => {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-800/60">
         <div>
-          <h1 className="text-xl font-semibold text-white tracking-tight">
+          <h1 className="text-xl font-semibold text-zinc-50 tracking-tight">
             Editorial & Publishing Calendar
           </h1>
           <p className="text-xs text-zinc-400 mt-0.5">
@@ -69,7 +69,7 @@ export const CalendarModule: React.FC = () => {
 
         <div className="flex items-center gap-2">
           {/* View Mode Toggle */}
-          <div className="flex items-center bg-[#16232A] p-0.5 rounded-md border border-zinc-800 text-xs">
+          <div className="flex items-center bg-raised p-0.5 rounded-md border border-zinc-800 text-xs">
             <button
               onClick={() => setViewMode('month')}
               className={`px-2.5 py-1 rounded text-xs transition cursor-pointer ${
@@ -147,9 +147,9 @@ export const CalendarModule: React.FC = () => {
 
       {viewMode === 'month' ? (
         /* Minimalist Month Grid */
-        <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] overflow-hidden">
+        <div className="border border-zinc-800/80 rounded-lg bg-surface overflow-hidden">
           {/* Day Names Header */}
-          <div className="grid grid-cols-7 border-b border-zinc-800 bg-[#16232A] text-center text-[11px] font-mono text-zinc-400 py-2">
+          <div className="grid grid-cols-7 border-b border-zinc-800 bg-raised text-center text-[11px] font-mono text-zinc-400 py-2">
             <span>Sun</span>
             <span>Mon</span>
             <span>Tue</span>
@@ -201,7 +201,7 @@ export const CalendarModule: React.FC = () => {
                       <div
                         key={p.id}
                         onClick={() => setSelectedPost(p)}
-                        className="p-1 rounded bg-[#16232A] hover:bg-zinc-800 border border-zinc-800/80 text-[10px] text-zinc-300 truncate cursor-pointer transition"
+                        className="p-1 rounded bg-raised hover:bg-zinc-800 border border-zinc-800/80 text-[10px] text-zinc-300 truncate cursor-pointer transition"
                         title={p.title}
                       >
                         <span className="text-zinc-500 mr-1">{p.platform.slice(0, 2)}</span>
@@ -221,7 +221,7 @@ export const CalendarModule: React.FC = () => {
         </div>
       ) : (
         /* Agenda View */
-        <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] divide-y divide-zinc-850/80 overflow-hidden">
+        <div className="border border-zinc-800/80 rounded-lg bg-surface divide-y divide-zinc-850/80 overflow-hidden">
           {calendarPosts.length === 0 ? (
             <div className="p-12 text-center text-xs text-zinc-500">
               No scheduled posts for this timeframe.
@@ -244,21 +244,21 @@ export const CalendarModule: React.FC = () => {
                       <span>•</span>
                       <span className="text-zinc-400">{post.status}</span>
                     </div>
-                    <h3 className="text-sm font-medium text-white">{post.title}</h3>
+                    <h3 className="text-sm font-medium text-zinc-50">{post.title}</h3>
                     <p className="text-xs text-zinc-400 line-clamp-1">{post.content}</p>
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">
                     <button
                       onClick={() => setSelectedPost(post)}
-                      className="px-2.5 py-1 rounded border border-zinc-800 hover:border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white transition"
+                      className="px-2.5 py-1 rounded border border-zinc-800 hover:border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-zinc-50 transition"
                     >
                       Reschedule
                     </button>
                     {post.status !== 'Published' && (
                       <button
                         onClick={() => publishPostNow(post.id)}
-                        className="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-750 text-zinc-200 hover:text-white transition"
+                        className="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-750 text-zinc-200 hover:text-zinc-50 transition"
                       >
                         Publish Now
                       </button>
@@ -274,9 +274,9 @@ export const CalendarModule: React.FC = () => {
       {/* Reschedule Modal */}
       {selectedPost && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#16232A] border border-zinc-800 rounded-xl max-w-sm w-full p-5 space-y-4 shadow-2xl">
+          <div className="bg-raised border border-zinc-800 rounded-xl max-w-sm w-full p-5 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-zinc-850">
-              <h3 className="text-sm font-semibold text-white">
+              <h3 className="text-sm font-semibold text-zinc-50">
                 Reschedule Publication
               </h3>
               <button
@@ -289,7 +289,7 @@ export const CalendarModule: React.FC = () => {
 
             <div className="space-y-1">
               <span className="text-[11px] font-mono text-zinc-400">{selectedPost.platform}</span>
-              <p className="text-xs font-medium text-white line-clamp-2">{selectedPost.title}</p>
+              <p className="text-xs font-medium text-zinc-50 line-clamp-2">{selectedPost.title}</p>
             </div>
 
             <div className="space-y-2 text-xs">
@@ -300,7 +300,7 @@ export const CalendarModule: React.FC = () => {
                 type="datetime-local"
                 value={newScheduleTime}
                 onChange={e => setNewScheduleTime(e.target.value)}
-                className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
+                className="w-full bg-surface border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
               />
             </div>
 

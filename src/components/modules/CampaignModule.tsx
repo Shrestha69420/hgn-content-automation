@@ -104,7 +104,7 @@ export const CampaignModule: React.FC = () => {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-800/60">
         <div>
-          <h1 className="text-xl font-semibold text-white tracking-tight">
+          <h1 className="text-xl font-semibold text-zinc-50 tracking-tight">
             Safety Campaigns & Objectives
           </h1>
           <p className="text-xs text-zinc-400 mt-0.5">
@@ -131,7 +131,7 @@ export const CampaignModule: React.FC = () => {
             placeholder="Search campaigns, codes, or safety focus..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full bg-[#16232A] border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40"
+            className="w-full bg-raised border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40"
           />
         </div>
 
@@ -154,7 +154,7 @@ export const CampaignModule: React.FC = () => {
       </div>
 
       {/* Campaigns List (Card-less Unified Table Surface) */}
-      <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] divide-y divide-zinc-850/80 overflow-hidden">
+      <div className="border border-zinc-800/80 rounded-lg bg-surface divide-y divide-zinc-850/80 overflow-hidden">
         {filteredCampaigns.length === 0 ? (
           <div className="p-8 text-center text-xs text-zinc-500">
             No matching campaigns found.
@@ -189,7 +189,7 @@ export const CampaignModule: React.FC = () => {
                       </span>
                     </div>
 
-                    <h2 className="text-base font-medium text-white tracking-tight">
+                    <h2 className="text-base font-medium text-zinc-50 tracking-tight">
                       {camp.name}
                     </h2>
 
@@ -207,7 +207,7 @@ export const CampaignModule: React.FC = () => {
                   <div className="flex flex-col md:items-end gap-2.5 shrink-0">
                     <button
                       onClick={() => handleLaunchGeneratorForCampaign(camp)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-800 hover:bg-zinc-750 text-zinc-200 hover:text-white border border-zinc-700/60 text-xs font-medium transition cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-800 hover:bg-zinc-750 text-zinc-200 hover:text-zinc-50 border border-zinc-700/60 text-xs font-medium transition cursor-pointer"
                     >
                       <Sparkles className="w-3.5 h-3.5 text-zinc-300" />
                       <span>Draft Post</span>
@@ -256,9 +256,9 @@ export const CampaignModule: React.FC = () => {
       {/* Minimal Create Campaign Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#16232A] border border-zinc-800 rounded-xl max-w-xl w-full p-6 space-y-4 shadow-2xl">
+          <div className="bg-raised border border-zinc-800 rounded-xl max-w-xl w-full p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
-              <h3 className="text-sm font-semibold text-white">
+              <h3 className="text-sm font-semibold text-zinc-50">
                 Create Safety Marketing Campaign
               </h3>
               <button
@@ -280,7 +280,7 @@ export const CampaignModule: React.FC = () => {
                   placeholder="e.g. Winter High-Pass Safety & Microspikes Drive"
                   value={newCampaign.name}
                   onChange={e => setNewCampaign({ ...newCampaign, name: e.target.value })}
-                  className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
+                  className="w-full bg-surface border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
                 />
               </div>
 
@@ -293,7 +293,7 @@ export const CampaignModule: React.FC = () => {
                     type="text"
                     value={newCampaign.code}
                     onChange={e => setNewCampaign({ ...newCampaign, code: e.target.value })}
-                    className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-surface border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
                   />
                 </div>
                 <div>
@@ -303,7 +303,7 @@ export const CampaignModule: React.FC = () => {
                   <select
                     value={newCampaign.season}
                     onChange={e => setNewCampaign({ ...newCampaign, season: e.target.value as any })}
-                    className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-surface border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
                   >
                     <option value="Autumn Peak">Autumn Peak</option>
                     <option value="Spring Everest">Spring Everest</option>
@@ -322,7 +322,7 @@ export const CampaignModule: React.FC = () => {
                   value={newCampaign.description}
                   onChange={e => setNewCampaign({ ...newCampaign, description: e.target.value })}
                   placeholder="Operational mandate, safety guidelines, target routes..."
-                  className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
+                  className="w-full bg-surface border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
                 />
               </div>
 
@@ -335,7 +335,7 @@ export const CampaignModule: React.FC = () => {
                   value={newCampaign.safetyFocus}
                   onChange={e => setNewCampaign({ ...newCampaign, safetyFocus: e.target.value })}
                   placeholder="e.g. AMS symptoms, helicopter evacuation coverage, guide permits..."
-                  className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
+                  className="w-full bg-surface border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
                 />
               </div>
 
@@ -348,7 +348,7 @@ export const CampaignModule: React.FC = () => {
                     type="number"
                     value={newCampaign.budgetNPR}
                     onChange={e => setNewCampaign({ ...newCampaign, budgetNPR: Number(e.target.value) })}
-                    className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-surface border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
                   />
                 </div>
                 <div>
@@ -359,7 +359,7 @@ export const CampaignModule: React.FC = () => {
                     type="number"
                     value={newCampaign.targetReach}
                     onChange={e => setNewCampaign({ ...newCampaign, targetReach: Number(e.target.value) })}
-                    className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-surface border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
                   />
                 </div>
               </div>

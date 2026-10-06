@@ -14,6 +14,11 @@ Each flow was exercised against the running app (Express + Vite on :3000, SQLite
 | Clicks the sign-out icon (Header) | Session cleared, toast, landing page. |
 | Clicks **Landing Page** (Header) or **Product Landing** (Sidebar) | `activeModule = 'landing'`. |
 
+## 1b. Theme
+| When the user... | Then... |
+|---|---|
+| Clicks the sun/moon icon (landing header or app header) | The theme switches between dark (default) and light. The choice is saved in `localStorage` (`hgn_theme`) and applied before first paint, so there's no flash on reload. |
+
 ## 2. Navigation
 | Sidebar item / mobile tab | Opens |
 |---|---|
@@ -56,3 +61,29 @@ Platform tabs and the **+ Append CTA / Brand Tag / Keyword / Standard Hashtags**
 ## Known behavior to be aware of
 - Generator and Library use two different scoring engines, so the same draft can show different scores. Observed during testing: 20/100 in the Generator versus 60/100 in the Library.
 - Mutations are optimistic: the UI updates first, and a failed API call is only logged.
+
+## Remaining to be fixed
+
+### Security (highest priority)
+1. **Plaintext passwords.** They are stored and compared as plain text in SQLite (`db.ts`, `server.ts`), and seeded defaults use `password123`. Hash them (argon2 or bcrypt).
+2. **No server-side auth.** Every `/api/*` route is open, including `DELETE` and `POST /api/settings/reset` (wipes the DB). The "session" is a JSON blob in `localStorage`. Add server-issued sessions or JWTs plus middleware.
+3. **`GET /api/users`** is unauthenticated and should never return password fields.
+4. **No input validation** on request bodies, and `/api/generate-content` interpolates raw fields into the prompt. Add schema validation and rate limiting (the endpoint can run up Gemini cost).
+5. **Errors leak.** Handlers return `e.message` with a 500.
+6. **API key in `.env.example`.** The local uncommitted edit contains a real-looking Gemini key. Revert it and rotate the key.
+7. **Offline login fallback** accepts `localStorage` credentials, which bypasses the server entirely.
+
+### Correctness
+8. **Optimistic updates never roll back.** `AppContext.tsx` updates the UI first and only logs failed API calls, so UI and database can silently diverge.
+9. **Gemini model id** `gemini-3.8-flash` is hardcoded in two places in `server.ts`. I have not verified it is a valid model id, and any failure silently falls back to templates. Make the model configurable and surface the failure.
+10. **Fallback drafts score low** (about 20/100 for the Twitter template) under the 7-rule engine. Rewrite the templates to pass the rules.
+11. **"Publish" only changes a status.** Nothing is sent to a social network.
+12. **Ids** use `Date.now()` and can collide. Use `crypto.randomUUID()`.
+13. **`node:sqlite`** needs a recent Node (22.5 or later). Add an `engines` field.
+
+### Maintenance
+14. `package.json` is still named `react-example`, and build tools (`vite`, `tailwindcss`, `@vitejs/plugin-react`) sit in `dependencies`.
+15. No automated tests. `lint` is only `tsc --noEmit`.
+16. Mobile bottom nav in `App.tsx` repeats six near-identical buttons. Drive it from a list.
+17. The Login modal has no theme toggle (it follows the current theme).
+18. Light theme was checked with an automated contrast scan (no text under 3:1 across all modules); it has not had a visual pass in a real browser.

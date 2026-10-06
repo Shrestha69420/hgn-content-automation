@@ -69,7 +69,7 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-56 bg-[#101A1F] border-r border-zinc-800/80 flex flex-col shrink-0 min-h-[calc(100vh-56px)] select-none">
+    <aside className="w-56 bg-surface border-r border-zinc-800/80 flex flex-col shrink-0 min-h-[calc(100vh-56px)] select-none">
       <div className="px-3 pt-4 pb-2">
         <p className="px-2 text-[10px] font-semibold text-zinc-500 uppercase tracking-wider font-mono">
           Workspace

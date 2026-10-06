@@ -34,7 +34,7 @@ export const DashboardModule: React.FC = () => {
       {/* Top Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-800/60">
         <div>
-          <h1 className="text-xl font-semibold text-white tracking-tight">
+          <h1 className="text-xl font-semibold text-zinc-50 tracking-tight">
             Safety Operations & Publishing Hub
           </h1>
           <p className="text-xs text-zinc-400 mt-0.5">
@@ -64,7 +64,7 @@ export const DashboardModule: React.FC = () => {
         <div className="px-4 py-2">
           <p className="text-[11px] font-medium text-zinc-400">Total Published</p>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-2xl font-semibold text-white font-mono tabular-nums">
+            <span className="text-2xl font-semibold text-zinc-50 font-mono tabular-nums">
               {publishedPosts.length}
             </span>
             <span className="text-xs text-zinc-400 font-mono">/ {posts.length} items</span>
@@ -74,7 +74,7 @@ export const DashboardModule: React.FC = () => {
         <div className="px-4 py-2">
           <p className="text-[11px] font-medium text-zinc-400">Active Campaigns</p>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-2xl font-semibold text-white font-mono tabular-nums">
+            <span className="text-2xl font-semibold text-zinc-50 font-mono tabular-nums">
               {activeCampaigns.length}
             </span>
             <span className="text-xs text-zinc-400 font-mono">of {campaigns.length}</span>
@@ -84,7 +84,7 @@ export const DashboardModule: React.FC = () => {
         <div className="px-4 py-2">
           <p className="text-[11px] font-medium text-zinc-400">Avg Quality Score</p>
           <div className="flex items-baseline gap-1 mt-1">
-            <span className="text-2xl font-semibold text-white font-mono tabular-nums">
+            <span className="text-2xl font-semibold text-zinc-50 font-mono tabular-nums">
               {avgQualityScore}
             </span>
             <span className="text-xs text-zinc-400 font-mono">/ 100</span>
@@ -94,7 +94,7 @@ export const DashboardModule: React.FC = () => {
         <div className="px-4 py-2">
           <p className="text-[11px] font-medium text-zinc-400">Scheduled Queue</p>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-2xl font-semibold text-white font-mono tabular-nums">
+            <span className="text-2xl font-semibold text-zinc-50 font-mono tabular-nums">
               {scheduledPosts.length}
             </span>
             <span className="text-xs text-zinc-400 font-mono">awaiting dispatch</span>
@@ -119,7 +119,7 @@ export const DashboardModule: React.FC = () => {
             </button>
           </div>
 
-          <div className="divide-y divide-zinc-800/60 border border-zinc-800/80 rounded-lg bg-[#101A1F] overflow-hidden">
+          <div className="divide-y divide-zinc-800/60 border border-zinc-800/80 rounded-lg bg-surface overflow-hidden">
             {campaigns.slice(0, 3).map(camp => {
               const reachPercent = Math.min(
                 100,
@@ -202,7 +202,7 @@ export const DashboardModule: React.FC = () => {
             </button>
           </div>
 
-          <div className="divide-y divide-zinc-800/60 border border-zinc-800/80 rounded-lg bg-[#101A1F] overflow-hidden">
+          <div className="divide-y divide-zinc-800/60 border border-zinc-800/80 rounded-lg bg-surface overflow-hidden">
             {posts.slice(0, 4).map(post => {
               const score = post.qualityReport?.overallScore ?? post.deterministicScoreResult?.totalScore ?? 85;
 

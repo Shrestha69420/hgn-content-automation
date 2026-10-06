@@ -83,7 +83,7 @@ export const SettingsModule: React.FC = () => {
           <div className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 mb-1">
             System Configuration
           </div>
-          <h1 className="text-xl font-medium tracking-tight text-white">
+          <h1 className="text-xl font-medium tracking-tight text-zinc-50">
             Settings & Platform Profile
           </h1>
           <p className="text-xs text-zinc-400 mt-1 max-w-xl">
@@ -92,11 +92,11 @@ export const SettingsModule: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#101A1F] border border-zinc-800 text-[11px] font-mono text-zinc-300">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface border border-zinc-800 text-[11px] font-mono text-zinc-300">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
             <span>SQLite Active (data/hgn.db)</span>
           </div>
-          <div className="px-2.5 py-1 rounded bg-[#101A1F] border border-zinc-800 text-[11px] font-mono text-zinc-400">
+          <div className="px-2.5 py-1 rounded bg-surface border border-zinc-800 text-[11px] font-mono text-zinc-400">
             Node.js WAL Mode
           </div>
         </div>
@@ -104,7 +104,7 @@ export const SettingsModule: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* Left Column: Organization & Hotline Settings (7 Cols) */}
-        <div className="lg:col-span-7 bg-[#101A1F] border border-zinc-800/80 rounded-xl overflow-hidden flex flex-col justify-between">
+        <div className="lg:col-span-7 bg-surface border border-zinc-800/80 rounded-xl overflow-hidden flex flex-col justify-between">
           <div>
             <div className="p-5 border-b border-zinc-800/80">
               <div className="flex items-center gap-2">
@@ -127,7 +127,7 @@ export const SettingsModule: React.FC = () => {
                   type="text"
                   value={orgSettings.orgName}
                   onChange={e => setOrgSettings({ ...orgSettings, orgName: e.target.value })}
-                  className="w-full bg-[#16232A] border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 transition-colors"
+                  className="w-full bg-raised border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 transition-colors"
                 />
               </div>
 
@@ -139,7 +139,7 @@ export const SettingsModule: React.FC = () => {
                   type="text"
                   value={orgSettings.sector}
                   onChange={e => setOrgSettings({ ...orgSettings, sector: e.target.value })}
-                  className="w-full bg-[#16232A] border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 transition-colors"
+                  className="w-full bg-raised border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 transition-colors"
                 />
               </div>
 
@@ -151,7 +151,7 @@ export const SettingsModule: React.FC = () => {
                   type="text"
                   value={orgSettings.headquarters}
                   onChange={e => setOrgSettings({ ...orgSettings, headquarters: e.target.value })}
-                  className="w-full bg-[#16232A] border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 transition-colors"
+                  className="w-full bg-raised border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 transition-colors"
                 />
               </div>
 
@@ -165,7 +165,7 @@ export const SettingsModule: React.FC = () => {
                     type="text"
                     value={orgSettings.emergencyHotline}
                     onChange={e => setOrgSettings({ ...orgSettings, emergencyHotline: e.target.value })}
-                    className="w-full bg-[#16232A] border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition-colors"
+                    className="w-full bg-raised border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition-colors"
                   />
                 </div>
 
@@ -178,7 +178,7 @@ export const SettingsModule: React.FC = () => {
                     type="text"
                     value={orgSettings.mobileSatelliteDispatch}
                     onChange={e => setOrgSettings({ ...orgSettings, mobileSatelliteDispatch: e.target.value })}
-                    className="w-full bg-[#16232A] border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition-colors"
+                    className="w-full bg-raised border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition-colors"
                   />
                 </div>
               </div>
@@ -192,7 +192,7 @@ export const SettingsModule: React.FC = () => {
                     type="text"
                     value={orgSettings.touristPoliceHotline}
                     onChange={e => setOrgSettings({ ...orgSettings, touristPoliceHotline: e.target.value })}
-                    className="w-full bg-[#16232A] border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition-colors"
+                    className="w-full bg-raised border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition-colors"
                   />
                 </div>
 
@@ -204,7 +204,7 @@ export const SettingsModule: React.FC = () => {
                     type="text"
                     value={orgSettings.licenseReg}
                     onChange={e => setOrgSettings({ ...orgSettings, licenseReg: e.target.value })}
-                    className="w-full bg-[#16232A] border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition-colors"
+                    className="w-full bg-raised border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition-colors"
                   />
                 </div>
               </div>
@@ -217,13 +217,13 @@ export const SettingsModule: React.FC = () => {
                   type="text"
                   value={orgSettings.website}
                   onChange={e => setOrgSettings({ ...orgSettings, website: e.target.value })}
-                  className="w-full bg-[#16232A] border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition-colors"
+                  className="w-full bg-raised border border-zinc-800/90 rounded-lg px-3 py-2 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition-colors"
                 />
               </div>
             </form>
           </div>
 
-          <div className="px-5 py-3.5 border-t border-zinc-800/80 bg-[#0A1114]/40 flex items-center justify-between">
+          <div className="px-5 py-3.5 border-t border-zinc-800/80 bg-page/40 flex items-center justify-between">
             <button
               type="button"
               onClick={handleResetData}
@@ -248,7 +248,7 @@ export const SettingsModule: React.FC = () => {
         {/* Right Column: Platform Specifications & Governance Pipeline (5 Cols) */}
         <div className="lg:col-span-5 space-y-5">
           {/* Platform Architecture */}
-          <div className="bg-[#101A1F] border border-zinc-800/80 rounded-xl overflow-hidden">
+          <div className="bg-surface border border-zinc-800/80 rounded-xl overflow-hidden">
             <div className="p-4 border-b border-zinc-800/80 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Cpu className="w-4 h-4 text-zinc-400" />
@@ -284,7 +284,7 @@ export const SettingsModule: React.FC = () => {
           </div>
 
           {/* Operational Pipeline */}
-          <div className="bg-[#101A1F] border border-zinc-800/80 rounded-xl p-4">
+          <div className="bg-surface border border-zinc-800/80 rounded-xl p-4">
             <div className="flex items-center gap-2 mb-3">
               <ShieldCheck className="w-4 h-4 text-zinc-400" />
               <h3 className="text-xs font-mono uppercase tracking-wider text-zinc-200">
@@ -296,7 +296,7 @@ export const SettingsModule: React.FC = () => {
               {pipelineStages.map((stage) => (
                 <div
                   key={stage.num}
-                  className="flex items-start gap-3 p-2 rounded-lg bg-[#16232A]/70 border border-zinc-800/50"
+                  className="flex items-start gap-3 p-2 rounded-lg bg-raised/70 border border-zinc-800/50"
                 >
                   <span className="text-[10px] font-mono text-zinc-500 pt-0.5 shrink-0">
                     {stage.num}

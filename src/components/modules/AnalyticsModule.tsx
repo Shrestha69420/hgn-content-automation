@@ -126,7 +126,7 @@ export const AnalyticsModule: React.FC = () => {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-800/60">
         <div>
-          <h1 className="text-xl font-semibold text-white tracking-tight">
+          <h1 className="text-xl font-semibold text-zinc-50 tracking-tight">
             Performance & Reach Analytics
           </h1>
           <p className="text-xs text-zinc-400 mt-0.5">
@@ -136,12 +136,12 @@ export const AnalyticsModule: React.FC = () => {
 
         <div className="flex items-center gap-2">
           {/* Timeframe Selector */}
-          <div className="flex items-center bg-[#16232A] p-0.5 rounded-md border border-zinc-800 text-xs">
+          <div className="flex items-center bg-raised p-0.5 rounded-md border border-zinc-800 text-xs">
             <button
               onClick={() => setSelectedTimeframe('all')}
               className={`px-2.5 py-1 rounded text-xs transition ${
                 selectedTimeframe === 'all'
-                  ? 'bg-zinc-800 text-white font-medium'
+                  ? 'bg-zinc-800 text-zinc-50 font-medium'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
@@ -151,7 +151,7 @@ export const AnalyticsModule: React.FC = () => {
               onClick={() => setSelectedTimeframe('30d')}
               className={`px-2.5 py-1 rounded text-xs transition ${
                 selectedTimeframe === '30d'
-                  ? 'bg-zinc-800 text-white font-medium'
+                  ? 'bg-zinc-800 text-zinc-50 font-medium'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
@@ -161,7 +161,7 @@ export const AnalyticsModule: React.FC = () => {
               onClick={() => setSelectedTimeframe('7d')}
               className={`px-2.5 py-1 rounded text-xs transition ${
                 selectedTimeframe === '7d'
-                  ? 'bg-zinc-800 text-white font-medium'
+                  ? 'bg-zinc-800 text-zinc-50 font-medium'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
@@ -184,7 +184,7 @@ export const AnalyticsModule: React.FC = () => {
         <div className="px-4 py-2">
           <p className="text-[11px] font-medium text-zinc-400">Total Items</p>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-2xl font-semibold text-white font-mono tabular-nums">
+            <span className="text-2xl font-semibold text-zinc-50 font-mono tabular-nums">
               {totalContentGenerated}
             </span>
             <span className="text-xs text-zinc-500 font-mono">items</span>
@@ -194,7 +194,7 @@ export const AnalyticsModule: React.FC = () => {
         <div className="px-4 py-2">
           <p className="text-[11px] font-medium text-zinc-400">Published to Channel</p>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-2xl font-semibold text-white font-mono tabular-nums">
+            <span className="text-2xl font-semibold text-zinc-50 font-mono tabular-nums">
               {publishedCount}
             </span>
             <span className="text-xs text-zinc-500 font-mono">live releases</span>
@@ -214,7 +214,7 @@ export const AnalyticsModule: React.FC = () => {
         <div className="px-4 py-2">
           <p className="text-[11px] font-medium text-zinc-400">Scheduled in Pipeline</p>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-2xl font-semibold text-white font-mono tabular-nums">
+            <span className="text-2xl font-semibold text-zinc-50 font-mono tabular-nums">
               {scheduledCount}
             </span>
             <span className="text-xs text-zinc-500 font-mono">in queue</span>
@@ -225,7 +225,7 @@ export const AnalyticsModule: React.FC = () => {
       {/* Breakdowns Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Channel Volume Breakdown */}
-        <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] p-5 space-y-4">
+        <div className="border border-zinc-800/80 rounded-lg bg-surface p-5 space-y-4">
           <div className="pb-3 border-b border-zinc-850">
             <h2 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider font-mono">
               Channel Volume Distribution
@@ -257,7 +257,7 @@ export const AnalyticsModule: React.FC = () => {
         </div>
 
         {/* Publishing Status Lifecycle */}
-        <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] p-5 space-y-4">
+        <div className="border border-zinc-800/80 rounded-lg bg-surface p-5 space-y-4">
           <div className="pb-3 border-b border-zinc-850">
             <h2 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider font-mono">
               Publishing Lifecycle Status
@@ -299,7 +299,7 @@ export const AnalyticsModule: React.FC = () => {
       </div>
 
       {/* Campaign Performance Table */}
-      <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] overflow-hidden">
+      <div className="border border-zinc-800/80 rounded-lg bg-surface overflow-hidden">
         <div className="p-4 border-b border-zinc-850">
           <h2 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider font-mono">
             Campaign Reach & Quality Overview
@@ -320,7 +320,7 @@ export const AnalyticsModule: React.FC = () => {
               >
                 <div className="space-y-0.5">
                   <span className="font-mono text-[10px] text-zinc-500">{camp.code}</span>
-                  <h3 className="text-sm font-medium text-white">{camp.name}</h3>
+                  <h3 className="text-sm font-medium text-zinc-50">{camp.name}</h3>
                   <div className="flex items-center gap-3 text-zinc-400 text-[11px] font-mono">
                     <span>{camp.postsCount} posts created</span>
                     <span>•</span>

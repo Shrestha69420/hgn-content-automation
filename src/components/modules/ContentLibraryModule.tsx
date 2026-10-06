@@ -71,7 +71,7 @@ export const ContentLibraryModule: React.FC = () => {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-800/60">
         <div>
-          <h1 className="text-xl font-semibold text-white tracking-tight">
+          <h1 className="text-xl font-semibold text-zinc-50 tracking-tight">
             Content Library & Repository
           </h1>
           <p className="text-xs text-zinc-400 mt-0.5">
@@ -98,7 +98,7 @@ export const ContentLibraryModule: React.FC = () => {
             placeholder="Search by title, body, campaign, or hashtags..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full bg-[#16232A] border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500"
+            className="w-full bg-raised border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500"
           />
         </div>
 
@@ -121,7 +121,7 @@ export const ContentLibraryModule: React.FC = () => {
       </div>
 
       {/* Table / List Surface (Zero Card Soup) */}
-      <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] divide-y divide-zinc-850/80 overflow-hidden">
+      <div className="border border-zinc-800/80 rounded-lg bg-surface divide-y divide-zinc-850/80 overflow-hidden">
         {filteredPosts.length === 0 ? (
           <div className="p-12 text-center text-xs text-zinc-500">
             No matching posts found in library.
@@ -158,7 +158,7 @@ export const ContentLibraryModule: React.FC = () => {
                     </span>
                   </div>
 
-                  <h3 className="text-sm font-medium text-white truncate">
+                  <h3 className="text-sm font-medium text-zinc-50 truncate">
                     {post.title}
                   </h3>
 
@@ -214,7 +214,7 @@ export const ContentLibraryModule: React.FC = () => {
                   {post.status !== 'Published' && (
                     <button
                       onClick={() => publishPostNow(post.id)}
-                      className="px-2.5 py-1 text-xs rounded bg-zinc-800 hover:bg-zinc-750 text-zinc-200 hover:text-white transition"
+                      className="px-2.5 py-1 text-xs rounded bg-zinc-800 hover:bg-zinc-750 text-zinc-200 hover:text-zinc-50 transition"
                     >
                       Publish
                     </button>
@@ -237,11 +237,11 @@ export const ContentLibraryModule: React.FC = () => {
       {/* Clean Modal for Preview */}
       {previewPost && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#16232A] border border-zinc-800 rounded-xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+          <div className="bg-raised border border-zinc-800 rounded-xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-zinc-850">
               <div>
                 <span className="text-xs font-mono text-zinc-400">{previewPost.platform}</span>
-                <h3 className="text-sm font-semibold text-white mt-0.5">{previewPost.title}</h3>
+                <h3 className="text-sm font-semibold text-zinc-50 mt-0.5">{previewPost.title}</h3>
               </div>
               <button
                 onClick={() => setPreviewPost(null)}

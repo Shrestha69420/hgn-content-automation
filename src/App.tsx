@@ -42,7 +42,7 @@ const AppContent: React.FC = () => {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-[#0A1114] text-zinc-100 flex flex-col font-sans selection:bg-indigo-500/30 selection:text-indigo-200 antialiased">
+      <div className="min-h-screen bg-page text-zinc-100 flex flex-col font-sans selection:bg-indigo-500/30 selection:text-indigo-200 antialiased">
         {/* Top Header */}
         <Header />
 

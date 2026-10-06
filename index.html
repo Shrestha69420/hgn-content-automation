@@ -13,8 +13,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+      <script>
+      try { if (localStorage.getItem('hgn_theme') === 'light') document.documentElement.dataset.theme = 'light'; } catch (e) {}
+    </script>
   </head>
-  <body class="bg-[#0A1114] text-zinc-100 font-sans antialiased selection:bg-zinc-800 selection:text-zinc-100">
+  <body class="bg-page text-zinc-100 font-sans antialiased selection:bg-zinc-800 selection:text-zinc-100">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

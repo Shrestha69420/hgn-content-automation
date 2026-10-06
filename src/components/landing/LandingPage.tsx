@@ -1,3 +1,4 @@
+import { ThemeToggle } from '../common/ThemeToggle';
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
@@ -78,12 +79,12 @@ export const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A1114] text-zinc-100 font-sans selection:bg-indigo-500/30 selection:text-indigo-200 antialiased overflow-x-hidden relative">
+    <div className="min-h-screen bg-page text-zinc-100 font-sans selection:bg-indigo-500/30 selection:text-indigo-200 antialiased overflow-x-hidden relative">
       {/* Ambient Top Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[450px] bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(43,181,166,0.22),rgba(255,255,255,0))] pointer-events-none" />
 
       {/* Frosted Sticky Navigation Bar */}
-      <header className="sticky top-0 z-50 bg-[#0A1114]/85 backdrop-blur-md border-b border-zinc-800/80">
+      <header className="sticky top-0 z-50 bg-page/85 backdrop-blur-md border-b border-zinc-800/80">
         <div className="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
           {/* Brand */}
           <div className="flex items-center gap-3">
@@ -102,7 +103,7 @@ export const LandingPage: React.FC = () => {
               </svg>
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="font-semibold text-base tracking-tight text-white">
+              <span className="font-semibold text-base tracking-tight text-zinc-50">
                 Campaign Flow
               </span>
               <span className="text-[11px] font-mono text-zinc-500 hidden sm:inline">
@@ -132,6 +133,7 @@ export const LandingPage: React.FC = () => {
 
           {/* Right Action */}
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             {isAuthenticated ? (
               <button
                 onClick={() => setActiveModule('dashboard')}
@@ -170,9 +172,9 @@ export const LandingPage: React.FC = () => {
         </div>
 
         {/* Hero Title */}
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-white max-w-4xl mx-auto leading-[1.12]">
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-zinc-50 max-w-4xl mx-auto leading-[1.12]">
           From Strategic Intent to Multi-Channel Distribution.{' '}
-          <span className="bg-gradient-to-r from-indigo-300 via-indigo-200 to-white bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-indigo-300 via-indigo-200 to-zinc-50 bg-clip-text text-transparent">
             In Flow.
           </span>
         </h1>
@@ -194,7 +196,7 @@ export const LandingPage: React.FC = () => {
 
           <a
             href="#pipeline"
-            className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-[#101A1F] hover:bg-[#16232A] border border-zinc-800 text-zinc-300 text-xs sm:text-sm font-medium transition flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-surface hover:bg-raised border border-zinc-800 text-zinc-300 text-xs sm:text-sm font-medium transition flex items-center justify-center gap-2"
           >
             <span>Explore Architecture</span>
           </a>
@@ -217,9 +219,9 @@ export const LandingPage: React.FC = () => {
         </div>
 
         {/* High-Fidelity UI Window Preview Mockup */}
-        <div className="mt-14 relative max-w-5xl mx-auto rounded-xl border border-zinc-800/80 bg-[#101A1F] shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_30px_rgba(43,181,166,0.15)] overflow-hidden text-left">
+        <div className="mt-14 relative max-w-5xl mx-auto rounded-xl border border-zinc-800/80 bg-surface shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_30px_rgba(43,181,166,0.15)] overflow-hidden text-left">
           {/* Window Title Bar */}
-          <div className="px-4 py-3 border-b border-zinc-800/80 bg-[#0A1114]/70 flex items-center justify-between">
+          <div className="px-4 py-3 border-b border-zinc-800/80 bg-page/70 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-zinc-700/80" />
               <span className="w-2.5 h-2.5 rounded-full bg-zinc-700/80" />
@@ -238,7 +240,7 @@ export const LandingPage: React.FC = () => {
           {/* Window Body Grid */}
           <div className="grid grid-cols-1 md:grid-cols-12 divide-y md:divide-y-0 md:divide-x divide-zinc-800/80 text-xs">
             {/* Left Drawer: Strategy & Targeting */}
-            <div className="md:col-span-5 p-5 space-y-4 bg-[#0C161B]/60">
+            <div className="md:col-span-5 p-5 space-y-4 bg-deep/60">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-mono text-indigo-400 uppercase tracking-wider">
                   Campaign Parameters
@@ -247,19 +249,19 @@ export const LandingPage: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <div className="p-2.5 rounded-lg bg-[#16232A] border border-zinc-800/60">
+                <div className="p-2.5 rounded-lg bg-raised border border-zinc-800/60">
                   <span className="text-[10px] text-zinc-500 uppercase block font-mono">
                     Target Channel
                   </span>
                   <span className="text-zinc-200 font-medium">Instagram & Social Grid</span>
                 </div>
-                <div className="p-2.5 rounded-lg bg-[#16232A] border border-zinc-800/60">
+                <div className="p-2.5 rounded-lg bg-raised border border-zinc-800/60">
                   <span className="text-[10px] text-zinc-500 uppercase block font-mono">
                     Mandate Focus
                   </span>
                   <span className="text-zinc-200 font-medium">Acute Mountain Sickness (AMS) Protocol</span>
                 </div>
-                <div className="p-2.5 rounded-lg bg-[#16232A] border border-zinc-800/60">
+                <div className="p-2.5 rounded-lg bg-raised border border-zinc-800/60">
                   <span className="text-[10px] text-zinc-500 uppercase block font-mono">
                     Altitude Threshold
                   </span>
@@ -276,7 +278,7 @@ export const LandingPage: React.FC = () => {
             </div>
 
             {/* Right Document: Live Evaluated Copy */}
-            <div className="md:col-span-7 p-5 space-y-4 bg-[#101A1F]">
+            <div className="md:col-span-7 p-5 space-y-4 bg-surface">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
                   Live Document Output
@@ -287,8 +289,8 @@ export const LandingPage: React.FC = () => {
                 </span>
               </div>
 
-              <div className="p-4 rounded-lg bg-[#16232A] border border-zinc-800/80 font-sans text-zinc-200 leading-relaxed text-xs">
-                <p className="font-semibold text-white mb-2">
+              <div className="p-4 rounded-lg bg-raised border border-zinc-800/80 font-sans text-zinc-200 leading-relaxed text-xs">
+                <p className="font-semibold text-zinc-50 mb-2">
                   Heading above Namche Bazaar (3,440m)?
                 </p>
                 <p className="text-zinc-300 mb-2">
@@ -301,19 +303,19 @@ export const LandingPage: React.FC = () => {
 
               {/* 7-Rule Diagnostic Strip */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] font-mono pt-1">
-                <div className="p-2 rounded bg-[#16232A]/70 border border-zinc-800/60 text-zinc-300">
+                <div className="p-2 rounded bg-raised/70 border border-zinc-800/60 text-zinc-300">
                   <span className="text-zinc-500 block">Safety Hotline</span>
                   <span className="text-emerald-400 font-bold">Passed (100%)</span>
                 </div>
-                <div className="p-2 rounded bg-[#16232A]/70 border border-zinc-800/60 text-zinc-300">
+                <div className="p-2 rounded bg-raised/70 border border-zinc-800/60 text-zinc-300">
                   <span className="text-zinc-500 block">AMS Advisory</span>
                   <span className="text-emerald-400 font-bold">Passed (100%)</span>
                 </div>
-                <div className="p-2 rounded bg-[#16232A]/70 border border-zinc-800/60 text-zinc-300">
+                <div className="p-2 rounded bg-raised/70 border border-zinc-800/60 text-zinc-300">
                   <span className="text-zinc-500 block">Length & Format</span>
                   <span className="text-emerald-400 font-bold">Optimal (92%)</span>
                 </div>
-                <div className="p-2 rounded bg-[#16232A]/70 border border-zinc-800/60 text-zinc-300">
+                <div className="p-2 rounded bg-raised/70 border border-zinc-800/60 text-zinc-300">
                   <span className="text-zinc-500 block">Actionable CTA</span>
                   <span className="text-emerald-400 font-bold">Present (95%)</span>
                 </div>
@@ -329,7 +331,7 @@ export const LandingPage: React.FC = () => {
           <div className="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-2">
             End-To-End Automation
           </div>
-          <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-white">
+          <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-zinc-50">
             The 4-Stage Campaign Pipeline
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 mt-2">
@@ -339,11 +341,11 @@ export const LandingPage: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Step 1 */}
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-zinc-800/80 hover:border-indigo-500/30 transition-colors group">
+          <div className="p-5 rounded-xl bg-surface border border-zinc-800/80 hover:border-indigo-500/30 transition-colors group">
             <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center font-mono text-xs font-bold text-indigo-400 group-hover:border-indigo-500/40 mb-4">
               01
             </div>
-            <h3 className="text-sm font-semibold text-white mb-1.5">
+            <h3 className="text-sm font-semibold text-zinc-50 mb-1.5">
               Strategic Ingestion
             </h3>
             <p className="text-xs text-zinc-400 leading-relaxed">
@@ -352,11 +354,11 @@ export const LandingPage: React.FC = () => {
           </div>
 
           {/* Step 2 */}
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-zinc-800/80 hover:border-indigo-500/30 transition-colors group">
+          <div className="p-5 rounded-xl bg-surface border border-zinc-800/80 hover:border-indigo-500/30 transition-colors group">
             <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center font-mono text-xs font-bold text-indigo-400 group-hover:border-indigo-500/40 mb-4">
               02
             </div>
-            <h3 className="text-sm font-semibold text-white mb-1.5">
+            <h3 className="text-sm font-semibold text-zinc-50 mb-1.5">
               Generative Drafting
             </h3>
             <p className="text-xs text-zinc-400 leading-relaxed">
@@ -365,11 +367,11 @@ export const LandingPage: React.FC = () => {
           </div>
 
           {/* Step 3 */}
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-indigo-500/40 bg-gradient-to-b from-indigo-950/10 to-transparent group">
+          <div className="p-5 rounded-xl bg-surface border border-indigo-500/40 bg-gradient-to-b from-indigo-950/10 to-transparent group">
             <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-mono text-xs font-bold shadow-[0_0_12px_rgba(43,181,166,0.5)] mb-4">
               03
             </div>
-            <h3 className="text-sm font-semibold text-white mb-1.5">
+            <h3 className="text-sm font-semibold text-zinc-50 mb-1.5">
               Deterministic Audit
             </h3>
             <p className="text-xs text-zinc-400 leading-relaxed">
@@ -378,11 +380,11 @@ export const LandingPage: React.FC = () => {
           </div>
 
           {/* Step 4 */}
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-zinc-800/80 hover:border-indigo-500/30 transition-colors group">
+          <div className="p-5 rounded-xl bg-surface border border-zinc-800/80 hover:border-indigo-500/30 transition-colors group">
             <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center font-mono text-xs font-bold text-indigo-400 group-hover:border-indigo-500/40 mb-4">
               04
             </div>
-            <h3 className="text-sm font-semibold text-white mb-1.5">
+            <h3 className="text-sm font-semibold text-zinc-50 mb-1.5">
               Schedule & Dispatch
             </h3>
             <p className="text-xs text-zinc-400 leading-relaxed">
@@ -399,7 +401,7 @@ export const LandingPage: React.FC = () => {
             <div className="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-1">
               Interactive Engine Inspection
             </div>
-            <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-white">
+            <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-zinc-50">
               Try The 7-Rule Deterministic Engine
             </h2>
             <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-xl">
@@ -407,7 +409,7 @@ export const LandingPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 p-1 rounded-lg bg-[#101A1F] border border-zinc-800">
+          <div className="flex items-center gap-2 p-1 rounded-lg bg-surface border border-zinc-800">
             <button
               onClick={() => setActiveSimulation('certified')}
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition cursor-pointer ${
@@ -432,7 +434,7 @@ export const LandingPage: React.FC = () => {
         </div>
 
         {/* Simulator Display Card */}
-        <div className="rounded-xl bg-[#101A1F] border border-zinc-800/80 overflow-hidden">
+        <div className="rounded-xl bg-surface border border-zinc-800/80 overflow-hidden">
           <div className="p-5 border-b border-zinc-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div
@@ -445,7 +447,7 @@ export const LandingPage: React.FC = () => {
                 {activeSimulation === 'certified' ? 'A+' : 'F'}
               </div>
               <div>
-                <h3 className="text-sm font-semibold text-white">
+                <h3 className="text-sm font-semibold text-zinc-50">
                   {activeSimulation === 'certified'
                     ? 'Spring Acclimatization Advisory — Everest Region'
                     : 'Unregulated Mountain Trekking Post'}
@@ -483,14 +485,14 @@ export const LandingPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-12 divide-y md:divide-y-0 md:divide-x divide-zinc-800/80">
             {/* Post Content */}
-            <div className="md:col-span-6 p-5 space-y-3 bg-[#0C161B]/50">
+            <div className="md:col-span-6 p-5 space-y-3 bg-deep/50">
               <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 block">
                 Evaluated Text Body
               </span>
-              <div className="p-4 rounded-lg bg-[#16232A] border border-zinc-800 text-xs text-zinc-300 leading-relaxed font-sans">
+              <div className="p-4 rounded-lg bg-raised border border-zinc-800 text-xs text-zinc-300 leading-relaxed font-sans">
                 {activeSimulation === 'certified' ? (
                   <>
-                    <p className="font-semibold text-white mb-2">
+                    <p className="font-semibold text-zinc-50 mb-2">
                       Acclimatization Warning: Namche to Lobuche Corridor (3,440m - 4,940m)
                     </p>
                     <p className="mb-2">
@@ -502,7 +504,7 @@ export const LandingPage: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    <p className="font-semibold text-white mb-2">
+                    <p className="font-semibold text-zinc-50 mb-2">
                       Come see the Himalayas this spring season!
                     </p>
                     <p className="mb-2">
@@ -517,13 +519,13 @@ export const LandingPage: React.FC = () => {
             </div>
 
             {/* Rule Verification Table */}
-            <div className="md:col-span-6 p-5 space-y-2 bg-[#101A1F]">
+            <div className="md:col-span-6 p-5 space-y-2 bg-surface">
               <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 block mb-2">
                 7-Rule Verification Breakdown
               </span>
 
               <div className="space-y-1.5 text-xs font-mono">
-                <div className="flex items-center justify-between p-2 rounded bg-[#16232A] border border-zinc-800/70">
+                <div className="flex items-center justify-between p-2 rounded bg-raised border border-zinc-800/70">
                   <span className="text-zinc-300">R1: 24/7 Emergency SOS Hotline Included</span>
                   {activeSimulation === 'certified' ? (
                     <span className="text-emerald-400 font-bold">+25 pts</span>
@@ -532,7 +534,7 @@ export const LandingPage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between p-2 rounded bg-[#16232A] border border-zinc-800/70">
+                <div className="flex items-center justify-between p-2 rounded bg-raised border border-zinc-800/70">
                   <span className="text-zinc-300">R2: Altitude Safety & AMS Advisory Verified</span>
                   {activeSimulation === 'certified' ? (
                     <span className="text-emerald-400 font-bold">+20 pts</span>
@@ -541,7 +543,7 @@ export const LandingPage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between p-2 rounded bg-[#16232A] border border-zinc-800/70">
+                <div className="flex items-center justify-between p-2 rounded bg-raised border border-zinc-800/70">
                   <span className="text-zinc-300">R3: Actionable Call To Action Detected</span>
                   {activeSimulation === 'certified' ? (
                     <span className="text-emerald-400 font-bold">+15 pts</span>
@@ -550,7 +552,7 @@ export const LandingPage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between p-2 rounded bg-[#16232A] border border-zinc-800/70">
+                <div className="flex items-center justify-between p-2 rounded bg-raised border border-zinc-800/70">
                   <span className="text-zinc-300">R4: Character Count Within Platform Optimum</span>
                   {activeSimulation === 'certified' ? (
                     <span className="text-emerald-400 font-bold">+15 pts</span>
@@ -559,7 +561,7 @@ export const LandingPage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between p-2 rounded bg-[#16232A] border border-zinc-800/70">
+                <div className="flex items-center justify-between p-2 rounded bg-raised border border-zinc-800/70">
                   <span className="text-zinc-300">R5: Tourist Police Hotline (1144) Present</span>
                   {activeSimulation === 'certified' ? (
                     <span className="text-emerald-400 font-bold">+10 pts</span>
@@ -568,7 +570,7 @@ export const LandingPage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between p-2 rounded bg-[#16232A] border border-zinc-800/70">
+                <div className="flex items-center justify-between p-2 rounded bg-raised border border-zinc-800/70">
                   <span className="text-zinc-300">R6: High-Altitude Hydration Protocol</span>
                   {activeSimulation === 'certified' ? (
                     <span className="text-emerald-400 font-bold">+6 pts</span>
@@ -577,7 +579,7 @@ export const LandingPage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between p-2 rounded bg-[#16232A] border border-zinc-800/70">
+                <div className="flex items-center justify-between p-2 rounded bg-raised border border-zinc-800/70">
                   <span className="text-zinc-300">R7: Hashtags & SEO Indexing Optimization</span>
                   {activeSimulation === 'certified' ? (
                     <span className="text-emerald-400 font-bold">+5 pts</span>
@@ -597,7 +599,7 @@ export const LandingPage: React.FC = () => {
           <div className="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-2">
             Built For Precision
           </div>
-          <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-white">
+          <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-zinc-50">
             Core Architectural Capabilities
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 mt-2">
@@ -606,9 +608,9 @@ export const LandingPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-zinc-800/80 hover:border-indigo-500/30 transition-colors">
+          <div className="p-5 rounded-xl bg-surface border border-zinc-800/80 hover:border-indigo-500/30 transition-colors">
             <Cpu className="w-5 h-5 text-indigo-400 mb-3" />
-            <h3 className="text-sm font-semibold text-white mb-1">
+            <h3 className="text-sm font-semibold text-zinc-50 mb-1">
               Dual-Engine Governance
             </h3>
             <p className="text-xs text-zinc-400 leading-relaxed">
@@ -616,9 +618,9 @@ export const LandingPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-zinc-800/80 hover:border-indigo-500/30 transition-colors">
+          <div className="p-5 rounded-xl bg-surface border border-zinc-800/80 hover:border-indigo-500/30 transition-colors">
             <Database className="w-5 h-5 text-indigo-400 mb-3" />
-            <h3 className="text-sm font-semibold text-white mb-1">
+            <h3 className="text-sm font-semibold text-zinc-50 mb-1">
               Native SQLite Persistence
             </h3>
             <p className="text-xs text-zinc-400 leading-relaxed">
@@ -626,9 +628,9 @@ export const LandingPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-zinc-800/80 hover:border-indigo-500/30 transition-colors">
+          <div className="p-5 rounded-xl bg-surface border border-zinc-800/80 hover:border-indigo-500/30 transition-colors">
             <ShieldCheck className="w-5 h-5 text-indigo-400 mb-3" />
-            <h3 className="text-sm font-semibold text-white mb-1">
+            <h3 className="text-sm font-semibold text-zinc-50 mb-1">
               High-Altitude Safety Guardrails
             </h3>
             <p className="text-xs text-zinc-400 leading-relaxed">
@@ -636,9 +638,9 @@ export const LandingPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-zinc-800/80 hover:border-indigo-500/30 transition-colors">
+          <div className="p-5 rounded-xl bg-surface border border-zinc-800/80 hover:border-indigo-500/30 transition-colors">
             <Calendar className="w-5 h-5 text-indigo-400 mb-3" />
-            <h3 className="text-sm font-semibold text-white mb-1">
+            <h3 className="text-sm font-semibold text-zinc-50 mb-1">
               Editorial Calendar Grid
             </h3>
             <p className="text-xs text-zinc-400 leading-relaxed">
@@ -646,9 +648,9 @@ export const LandingPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-zinc-800/80 hover:border-indigo-500/30 transition-colors">
+          <div className="p-5 rounded-xl bg-surface border border-zinc-800/80 hover:border-indigo-500/30 transition-colors">
             <Layers className="w-5 h-5 text-indigo-400 mb-3" />
-            <h3 className="text-sm font-semibold text-white mb-1">
+            <h3 className="text-sm font-semibold text-zinc-50 mb-1">
               Historical Audit Trail
             </h3>
             <p className="text-xs text-zinc-400 leading-relaxed">
@@ -656,9 +658,9 @@ export const LandingPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-zinc-800/80 hover:border-indigo-500/30 transition-colors">
+          <div className="p-5 rounded-xl bg-surface border border-zinc-800/80 hover:border-indigo-500/30 transition-colors">
             <BarChart3 className="w-5 h-5 text-indigo-400 mb-3" />
-            <h3 className="text-sm font-semibold text-white mb-1">
+            <h3 className="text-sm font-semibold text-zinc-50 mb-1">
               Safety Reach Telemetry
             </h3>
             <p className="text-xs text-zinc-400 leading-relaxed">
@@ -671,8 +673,8 @@ export const LandingPage: React.FC = () => {
       {/* Operational Metrics Strip */}
       <section id="metrics" className="py-16 px-5 sm:px-8 max-w-6xl mx-auto border-t border-zinc-800/80">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-zinc-800/80">
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-white mb-1">
+          <div className="p-5 rounded-xl bg-surface border border-zinc-800/80">
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-50 mb-1">
               94.2%
             </div>
             <div className="text-[11px] text-zinc-400 uppercase tracking-wider font-mono">
@@ -680,7 +682,7 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-zinc-800/80">
+          <div className="p-5 rounded-xl bg-surface border border-zinc-800/80">
             <div className="text-2xl sm:text-3xl font-mono font-bold text-indigo-400 mb-1">
               &lt; 35ms
             </div>
@@ -689,7 +691,7 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-zinc-800/80">
+          <div className="p-5 rounded-xl bg-surface border border-zinc-800/80">
             <div className="text-2xl sm:text-3xl font-mono font-bold text-emerald-400 mb-1">
               100%
             </div>
@@ -698,8 +700,8 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#101A1F] border border-zinc-800/80">
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-white mb-1">
+          <div className="p-5 rounded-xl bg-surface border border-zinc-800/80">
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-50 mb-1">
               4 Channels
             </div>
             <div className="text-[11px] text-zinc-400 uppercase tracking-wider font-mono">
@@ -711,10 +713,10 @@ export const LandingPage: React.FC = () => {
 
       {/* High-Impact Call To Action */}
       <section id="architecture" className="py-20 px-5 sm:px-8 max-w-4xl mx-auto text-center border-t border-zinc-800/80">
-        <div className="p-8 sm:p-12 rounded-2xl bg-gradient-to-b from-[#101A1F] to-[#0C161B] border border-indigo-500/30 relative overflow-hidden shadow-[0_0_50px_rgba(43,181,166,0.15)]">
+        <div className="p-8 sm:p-12 rounded-2xl bg-gradient-to-b from-surface to-deep border border-indigo-500/30 relative overflow-hidden shadow-[0_0_50px_rgba(43,181,166,0.15)]">
           <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
-          <h2 className="text-2xl sm:text-4xl font-medium tracking-tight text-white mb-3">
+          <h2 className="text-2xl sm:text-4xl font-medium tracking-tight text-zinc-50 mb-3">
             Streamline your campaign pipeline today.
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 max-w-lg mx-auto mb-8">
@@ -756,7 +758,7 @@ export const LandingPage: React.FC = () => {
       {/* Auth Modal (For Unauthenticated Visitors) */}
       {showAuthModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-[#101A1F] border border-zinc-800 rounded-xl max-w-sm w-full p-6 shadow-2xl relative">
+          <div className="bg-surface border border-zinc-800 rounded-xl max-w-sm w-full p-6 shadow-2xl relative">
             <button
               onClick={() => setShowAuthModal(false)}
               className="absolute top-4 right-4 text-zinc-500 hover:text-zinc-300 transition cursor-pointer"
@@ -780,7 +782,7 @@ export const LandingPage: React.FC = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-sm font-semibold text-white">Campaign Flow</h3>
+                <h3 className="text-sm font-semibold text-zinc-50">Campaign Flow</h3>
                 <p className="text-[11px] text-zinc-500">Sign in to authorized workspace</p>
               </div>
             </div>
@@ -803,7 +805,7 @@ export const LandingPage: React.FC = () => {
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     required
-                    className="w-full bg-[#16232A] border border-zinc-800 rounded-lg pl-8.5 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition"
+                    className="w-full bg-raised border border-zinc-800 rounded-lg pl-8.5 pr-3 py-2 text-xs text-zinc-50 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition"
                     placeholder="marketing@himalayanguardian.org.np"
                   />
                 </div>
@@ -820,7 +822,7 @@ export const LandingPage: React.FC = () => {
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     required
-                    className="w-full bg-[#16232A] border border-zinc-800 rounded-lg pl-8.5 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition"
+                    className="w-full bg-raised border border-zinc-800 rounded-lg pl-8.5 pr-3 py-2 text-xs text-zinc-50 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition"
                     placeholder="••••••••••••"
                   />
                 </div>
@@ -840,7 +842,7 @@ export const LandingPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleQuickDemoLogin}
-                className="w-full py-1.5 px-3 rounded-lg bg-[#16232A] hover:bg-zinc-800 border border-zinc-700/60 text-xs font-mono text-zinc-300 transition flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-1.5 px-3 rounded-lg bg-raised hover:bg-zinc-800 border border-zinc-700/60 text-xs font-mono text-zinc-300 transition flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>1-Click Demo Login</span>
               </button>

@@ -322,7 +322,7 @@ export const GeneratorModule: React.FC = () => {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-800/60">
         <div>
-          <h1 className="text-xl font-semibold text-white tracking-tight">
+          <h1 className="text-xl font-semibold text-zinc-50 tracking-tight">
             Marketing Content Generator
           </h1>
           <p className="text-xs text-zinc-400 mt-0.5">
@@ -344,7 +344,7 @@ export const GeneratorModule: React.FC = () => {
           <button
             key={idx}
             onClick={() => handleApplyPreset(p)}
-            className="px-2.5 py-1 rounded-md bg-[#16232A] hover:bg-zinc-800 text-zinc-300 border border-zinc-800 text-xs whitespace-nowrap transition cursor-pointer"
+            className="px-2.5 py-1 rounded-md bg-raised hover:bg-zinc-800 text-zinc-300 border border-zinc-800 text-xs whitespace-nowrap transition cursor-pointer"
           >
             {p.title}
           </button>
@@ -354,7 +354,7 @@ export const GeneratorModule: React.FC = () => {
       {/* Main Workspace Split Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Form: Parameters (5 Cols) */}
-        <div className="lg:col-span-5 space-y-4 border border-zinc-800/80 rounded-lg bg-[#101A1F] p-5">
+        <div className="lg:col-span-5 space-y-4 border border-zinc-800/80 rounded-lg bg-surface p-5">
           <div className="pb-2 border-b border-zinc-850">
             <h2 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider font-mono">
               Configuration Parameters
@@ -368,7 +368,7 @@ export const GeneratorModule: React.FC = () => {
             <select
               value={productService}
               onChange={e => setProductService(e.target.value as HGNProductService)}
-              className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
+              className="w-full bg-raised border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
             >
               {PRODUCT_SERVICES.map(ps => (
                 <option key={ps} value={ps}>{ps}</option>
@@ -384,7 +384,7 @@ export const GeneratorModule: React.FC = () => {
               <select
                 value={category}
                 onChange={e => setCategory(e.target.value as ContentCategory)}
-                className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
+                className="w-full bg-raised border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
               >
                 {CATEGORIES.map(cat => (
                   <option key={cat} value={cat}>{cat}</option>
@@ -399,7 +399,7 @@ export const GeneratorModule: React.FC = () => {
               <select
                 value={objective}
                 onChange={e => setObjective(e.target.value as ContentObjective)}
-                className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
+                className="w-full bg-raised border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
               >
                 {OBJECTIVES.map(obj => (
                   <option key={obj} value={obj}>{obj}</option>
@@ -415,7 +415,7 @@ export const GeneratorModule: React.FC = () => {
             <select
               value={targetAudience}
               onChange={e => setTargetAudience(e.target.value as TargetAudience)}
-              className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
+              className="w-full bg-raised border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
             >
               {TARGET_AUDIENCES.map(aud => (
                 <option key={aud} value={aud}>{aud}</option>
@@ -436,7 +436,7 @@ export const GeneratorModule: React.FC = () => {
               type="text"
               value={primaryKeyword}
               onChange={e => setPrimaryKeyword(e.target.value)}
-              className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 font-mono"
+              className="w-full bg-raised border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 font-mono"
             />
             <div className="flex flex-wrap gap-1.5 pt-1.5">
               {SEO_KEYWORD_EXAMPLES.map(kw => (
@@ -446,8 +446,8 @@ export const GeneratorModule: React.FC = () => {
                   onClick={() => setPrimaryKeyword(kw)}
                   className={`text-[10px] px-1.5 py-0.5 rounded transition font-mono ${
                     primaryKeyword.toLowerCase() === kw.toLowerCase()
-                      ? 'bg-zinc-700 text-white font-medium'
-                      : 'bg-[#16232A] text-zinc-500 hover:text-zinc-300 border border-zinc-800'
+                      ? 'bg-zinc-700 text-zinc-50 font-medium'
+                      : 'bg-raised text-zinc-500 hover:text-zinc-300 border border-zinc-800'
                   }`}
                 >
                   {kw}
@@ -469,7 +469,7 @@ export const GeneratorModule: React.FC = () => {
                   className={`py-1.5 text-center rounded-md text-xs transition cursor-pointer ${
                     platform === p
                       ? 'bg-indigo-600 text-white font-medium shadow-[0_0_10px_rgba(43,181,166,0.35)]'
-                      : 'bg-[#16232A] text-zinc-400 hover:text-zinc-200 border border-zinc-800'
+                      : 'bg-raised text-zinc-400 hover:text-zinc-200 border border-zinc-800'
                   }`}
                 >
                   {p === 'Twitter' ? 'X' : p}
@@ -486,7 +486,7 @@ export const GeneratorModule: React.FC = () => {
               type="text"
               value={topic}
               onChange={e => setTopic(e.target.value)}
-              className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500"
+              className="w-full bg-raised border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500"
             />
           </div>
 
@@ -498,7 +498,7 @@ export const GeneratorModule: React.FC = () => {
               rows={2}
               value={keyRequirements}
               onChange={e => setKeyRequirements(e.target.value)}
-              className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500"
+              className="w-full bg-raised border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500"
             />
           </div>
 
@@ -524,7 +524,7 @@ export const GeneratorModule: React.FC = () => {
         {/* Right Pane: Document Preview & Diagnostic Scorer (7 Cols) */}
         <div className="lg:col-span-7 space-y-5">
           {isGenerating ? (
-            <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] p-12 flex flex-col items-center justify-center text-center min-h-[460px]">
+            <div className="border border-zinc-800/80 rounded-lg bg-surface p-12 flex flex-col items-center justify-center text-center min-h-[460px]">
               <Loader2 className="w-6 h-6 text-zinc-400 animate-spin mb-3" />
               <p className="text-xs font-medium text-zinc-200">
                 Generating post draft via Gemini 3.8 Flash...
@@ -534,7 +534,7 @@ export const GeneratorModule: React.FC = () => {
               </p>
             </div>
           ) : !generatedResult ? (
-            <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] p-12 flex flex-col items-center justify-center text-center min-h-[460px]">
+            <div className="border border-zinc-800/80 rounded-lg bg-surface p-12 flex flex-col items-center justify-center text-center min-h-[460px]">
               <Sparkles className="w-6 h-6 text-zinc-600 mb-3" />
               <h3 className="text-sm font-medium text-zinc-200">
                 Workspace Ready
@@ -546,7 +546,7 @@ export const GeneratorModule: React.FC = () => {
           ) : (
             <div className="space-y-4">
               {/* Document Editor */}
-              <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] p-5 space-y-4">
+              <div className="border border-zinc-800/80 rounded-lg bg-surface p-5 space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-zinc-850 text-xs">
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-zinc-300 font-medium">
@@ -582,7 +582,7 @@ export const GeneratorModule: React.FC = () => {
                     type="text"
                     value={editableTitle}
                     onChange={e => setEditableTitle(e.target.value)}
-                    className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-2 text-sm font-semibold text-white focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-raised border border-zinc-800 rounded-md p-2 text-sm font-semibold text-zinc-50 focus:outline-none focus:border-zinc-500"
                   />
                 </div>
 
@@ -599,7 +599,7 @@ export const GeneratorModule: React.FC = () => {
                     rows={7}
                     value={editableContent}
                     onChange={e => setEditableContent(e.target.value)}
-                    className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-3 text-xs text-zinc-200 leading-relaxed focus:outline-none focus:border-zinc-500 font-sans"
+                    className="w-full bg-raised border border-zinc-800 rounded-md p-3 text-xs text-zinc-200 leading-relaxed focus:outline-none focus:border-zinc-500 font-sans"
                   />
                 </div>
 
@@ -612,7 +612,7 @@ export const GeneratorModule: React.FC = () => {
                       type="text"
                       value={editableCta}
                       onChange={e => setEditableCta(e.target.value)}
-                      className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
+                      className="w-full bg-raised border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
                     />
                   </div>
                   <div>
@@ -623,13 +623,13 @@ export const GeneratorModule: React.FC = () => {
                       type="text"
                       value={editableHashtags}
                       onChange={e => setEditableHashtags(e.target.value)}
-                      className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-2 text-xs text-zinc-300 font-mono focus:outline-none focus:border-zinc-500"
+                      className="w-full bg-raised border border-zinc-800 rounded-md p-2 text-xs text-zinc-300 font-mono focus:outline-none focus:border-zinc-500"
                     />
                   </div>
                 </div>
 
                 {generatedResult.visualPrompt && (
-                  <div className="p-3 bg-[#16232A] rounded-md border border-zinc-800 text-xs">
+                  <div className="p-3 bg-raised rounded-md border border-zinc-800 text-xs">
                     <div className="flex items-center gap-1.5 text-zinc-400 text-[11px] mb-0.5">
                       <ImageIcon className="w-3.5 h-3.5" />
                       <span>Art Direction Prompt:</span>
@@ -657,11 +657,11 @@ export const GeneratorModule: React.FC = () => {
 
               {/* Deterministic Quality Diagnostic Strip */}
               {contentScoreResult && (
-                <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] p-5 space-y-4">
+                <div className="border border-zinc-800/80 rounded-lg bg-surface p-5 space-y-4">
                   <div className="flex items-center justify-between pb-3 border-b border-zinc-850">
                     <div className="flex items-baseline gap-3">
                       <div className="flex items-baseline gap-1">
-                        <span className="text-2xl font-bold font-mono text-white tabular-nums">
+                        <span className="text-2xl font-bold font-mono text-zinc-50 tabular-nums">
                           {contentScoreResult.totalScore}
                         </span>
                         <span className="text-xs text-zinc-500 font-mono">/ 100</span>
@@ -681,7 +681,7 @@ export const GeneratorModule: React.FC = () => {
                     {Object.values(contentScoreResult.breakdown).map(item => (
                       <div
                         key={item.key}
-                        className="p-2 rounded bg-[#16232A] border border-zinc-800 flex items-center justify-between"
+                        className="p-2 rounded bg-raised border border-zinc-800 flex items-center justify-between"
                       >
                         <div className="flex items-center gap-2">
                           <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${
@@ -712,7 +712,7 @@ export const GeneratorModule: React.FC = () => {
                   <div className="pt-3 border-t border-zinc-850 flex items-center justify-end gap-2 text-xs">
                     <button
                       onClick={handleSaveToLibrary}
-                      className="px-3 py-1.5 rounded-md border border-zinc-800 hover:border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white transition"
+                      className="px-3 py-1.5 rounded-md border border-zinc-800 hover:border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-zinc-50 transition"
                     >
                       Save to Library
                     </button>

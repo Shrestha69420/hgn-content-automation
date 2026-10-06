@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { useAuth } from '../../context/AuthContext';
+import { ThemeToggle } from './ThemeToggle';
 import {
   Sparkles,
   LogOut,
@@ -13,7 +14,7 @@ export const Header: React.FC = () => {
   const { currentUser, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-40 bg-[#101A1F]/95 backdrop-blur-md border-b border-zinc-800/80 text-zinc-100">
+    <header className="sticky top-0 z-40 bg-surface/95 backdrop-blur-md border-b border-zinc-800/80 text-zinc-100">
       {/* Main Single-Height Clean Header (No Top Operations Bar) */}
       <div className="px-5 sm:px-8 h-14 flex items-center justify-between">
         {/* Brand & Organization */}
@@ -37,7 +38,7 @@ export const Header: React.FC = () => {
               </svg>
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="font-semibold text-sm tracking-tight text-white font-sans">
+              <span className="font-semibold text-sm tracking-tight text-zinc-50 font-sans">
                 Campaign Flow
               </span>
               <span className="text-[11px] text-zinc-500 font-normal hidden sm:inline">
@@ -83,6 +84,8 @@ export const Header: React.FC = () => {
                 {currentUser?.name || 'User'}
               </span>
             </div>
+
+            <ThemeToggle />
 
             <button
               onClick={() => {

@@ -1,42 +1,239 @@
 @import "tailwindcss";
 
-@theme {
+/* Theme tokens: dark is the default; [data-theme="light"] mirrors the scales. */
+:root {
+  color-scheme: dark;
+  --page: #0a1114;
+  --surface: #101a1f;
+  --raised: #16232a;
+  --deep: #0c161b;
+  --scroll: rgba(255, 255, 255, 0.12);
+  --scroll-hover: rgba(255, 255, 255, 0.22);
+  --zinc-50: #f4f7f8;
+  --zinc-100: #eaf0f2;
+  --zinc-200: #d3dde1;
+  --zinc-300: #b4c3ca;
+  --zinc-400: #93a5ae;
+  --zinc-500: #70838d;
+  --zinc-600: #52646e;
+  --zinc-700: #3a4b54;
+  --zinc-800: #26353d;
+  --zinc-900: #16232a;
+  --zinc-950: #0a1114;
+  --indigo-50: #effaf8;
+  --indigo-100: #d3f3ee;
+  --indigo-200: #a9e7de;
+  --indigo-300: #7fdbcf;
+  --indigo-400: #4fc8ba;
+  --indigo-500: #2bb5a6;
+  --indigo-600: #1b8d81;
+  --indigo-700: #17756b;
+  --indigo-800: #135c55;
+  --indigo-900: #0f4742;
+  --indigo-950: #07282a;
+  --emerald-50: #ecfdf5;
+  --emerald-100: #d1fae5;
+  --emerald-200: #a7f3d0;
+  --emerald-300: #6ee7b7;
+  --emerald-400: #34d399;
+  --emerald-500: #10b981;
+  --emerald-600: #059669;
+  --emerald-700: #047857;
+  --emerald-800: #065f46;
+  --emerald-900: #064e3b;
+  --emerald-950: #022c22;
+  --red-50: #fef2f2;
+  --red-100: #fee2e2;
+  --red-200: #fecaca;
+  --red-300: #fca5a5;
+  --red-400: #f87171;
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+  --red-800: #991b1b;
+  --red-900: #7f1d1d;
+  --red-950: #450a0a;
+  --amber-50: #fffbeb;
+  --amber-100: #fef3c7;
+  --amber-200: #fde68a;
+  --amber-300: #f7c97a;
+  --amber-400: #f2a93b;
+  --amber-500: #e08f1c;
+  --amber-600: #d97706;
+  --amber-700: #b45309;
+  --amber-800: #92400e;
+  --amber-900: #78350f;
+  --amber-950: #451a03;
+  --cyan-50: #ecfeff;
+  --cyan-100: #cffafe;
+  --cyan-200: #a5f3fc;
+  --cyan-300: #67e8f9;
+  --cyan-400: #22d3ee;
+  --cyan-500: #06b6d4;
+  --cyan-600: #0891b2;
+  --cyan-700: #0e7490;
+  --cyan-800: #155e75;
+  --cyan-900: #164e63;
+  --cyan-950: #083344;
+  --zinc-750: #314149;
+  --zinc-850: #1f2c33;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --page: #eef3f4;
+  --surface: #ffffff;
+  --raised: #f4f8f9;
+  --deep: #e8eff1;
+  --scroll: rgba(0, 0, 0, 0.18);
+  --scroll-hover: rgba(0, 0, 0, 0.3);
+  --zinc-50: #0a1114;
+  --zinc-100: #16232a;
+  --zinc-200: #26353d;
+  --zinc-300: #3a4b54;
+  --zinc-400: #52646e;
+  --zinc-500: #5f727c;
+  --zinc-600: #74868f;
+  --zinc-700: #b4c3ca;
+  --zinc-800: #d3dde1;
+  --zinc-900: #eaf0f2;
+  --zinc-950: #f4f7f8;
+  --indigo-50: #07282a;
+  --indigo-100: #0f4742;
+  --indigo-200: #135c55;
+  --indigo-300: #17756b;
+  --indigo-400: #1b8d81;
+  --indigo-500: #2bb5a6;
+  --indigo-600: #1b8d81;
+  --indigo-700: #7fdbcf;
+  --indigo-800: #a9e7de;
+  --indigo-900: #d3f3ee;
+  --indigo-950: #effaf8;
+  --emerald-50: #022c22;
+  --emerald-100: #064e3b;
+  --emerald-200: #065f46;
+  --emerald-300: #047857;
+  --emerald-400: #059669;
+  --emerald-500: #10b981;
+  --emerald-600: #059669;
+  --emerald-700: #6ee7b7;
+  --emerald-800: #a7f3d0;
+  --emerald-900: #d1fae5;
+  --emerald-950: #ecfdf5;
+  --red-50: #450a0a;
+  --red-100: #7f1d1d;
+  --red-200: #991b1b;
+  --red-300: #b91c1c;
+  --red-400: #dc2626;
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+  --red-700: #fca5a5;
+  --red-800: #fecaca;
+  --red-900: #fee2e2;
+  --red-950: #fef2f2;
+  --amber-50: #451a03;
+  --amber-100: #78350f;
+  --amber-200: #92400e;
+  --amber-300: #b45309;
+  --amber-400: #d97706;
+  --amber-500: #e08f1c;
+  --amber-600: #d97706;
+  --amber-700: #f7c97a;
+  --amber-800: #fde68a;
+  --amber-900: #fef3c7;
+  --amber-950: #fffbeb;
+  --cyan-50: #083344;
+  --cyan-100: #164e63;
+  --cyan-200: #155e75;
+  --cyan-300: #0e7490;
+  --cyan-400: #0891b2;
+  --cyan-500: #06b6d4;
+  --cyan-600: #0891b2;
+  --cyan-700: #67e8f9;
+  --cyan-800: #a5f3fc;
+  --cyan-900: #cffafe;
+  --cyan-950: #ecfeff;
+  --zinc-750: #dbe4e8;
+  --zinc-850: #e6edf0;
+}
+
+@theme inline {
   --font-sans: "Ubuntu", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-serif: Georgia, "Times New Roman", serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Neutrals: cool slate with a hint of glacier teal */
-  --color-zinc-50: #f4f7f8;
-  --color-zinc-100: #eaf0f2;
-  --color-zinc-200: #d3dde1;
-  --color-zinc-300: #b4c3ca;
-  --color-zinc-400: #93a5ae;
-  --color-zinc-500: #70838d;
-  --color-zinc-600: #52646e;
-  --color-zinc-700: #3a4b54;
-  --color-zinc-750: #314149;
-  --color-zinc-800: #26353d;
-  --color-zinc-850: #1f2c33;
-  --color-zinc-900: #16232a;
-  --color-zinc-950: #0a1114;
-
-  /* Primary: glacier teal (replaces indigo) */
-  --color-indigo-50: #effaf8;
-  --color-indigo-100: #d3f3ee;
-  --color-indigo-200: #a9e7de;
-  --color-indigo-300: #7fdbcf;
-  --color-indigo-400: #4fc8ba;
-  --color-indigo-500: #2bb5a6;
-  --color-indigo-600: #1b8d81;
-  --color-indigo-700: #17756b;
-  --color-indigo-800: #135c55;
-  --color-indigo-900: #0f4742;
-  --color-indigo-950: #07282a;
-
-  /* Accent: saffron (amber) */
-  --color-amber-300: #f7c97a;
-  --color-amber-400: #f2a93b;
-  --color-amber-500: #e08f1c;
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-deep: var(--deep);
+  --color-zinc-50: var(--zinc-50);
+  --color-zinc-100: var(--zinc-100);
+  --color-zinc-200: var(--zinc-200);
+  --color-zinc-300: var(--zinc-300);
+  --color-zinc-400: var(--zinc-400);
+  --color-zinc-500: var(--zinc-500);
+  --color-zinc-600: var(--zinc-600);
+  --color-zinc-700: var(--zinc-700);
+  --color-zinc-800: var(--zinc-800);
+  --color-zinc-900: var(--zinc-900);
+  --color-zinc-950: var(--zinc-950);
+  --color-indigo-50: var(--indigo-50);
+  --color-indigo-100: var(--indigo-100);
+  --color-indigo-200: var(--indigo-200);
+  --color-indigo-300: var(--indigo-300);
+  --color-indigo-400: var(--indigo-400);
+  --color-indigo-500: var(--indigo-500);
+  --color-indigo-600: var(--indigo-600);
+  --color-indigo-700: var(--indigo-700);
+  --color-indigo-800: var(--indigo-800);
+  --color-indigo-900: var(--indigo-900);
+  --color-indigo-950: var(--indigo-950);
+  --color-emerald-50: var(--emerald-50);
+  --color-emerald-100: var(--emerald-100);
+  --color-emerald-200: var(--emerald-200);
+  --color-emerald-300: var(--emerald-300);
+  --color-emerald-400: var(--emerald-400);
+  --color-emerald-500: var(--emerald-500);
+  --color-emerald-600: var(--emerald-600);
+  --color-emerald-700: var(--emerald-700);
+  --color-emerald-800: var(--emerald-800);
+  --color-emerald-900: var(--emerald-900);
+  --color-emerald-950: var(--emerald-950);
+  --color-red-50: var(--red-50);
+  --color-red-100: var(--red-100);
+  --color-red-200: var(--red-200);
+  --color-red-300: var(--red-300);
+  --color-red-400: var(--red-400);
+  --color-red-500: var(--red-500);
+  --color-red-600: var(--red-600);
+  --color-red-700: var(--red-700);
+  --color-red-800: var(--red-800);
+  --color-red-900: var(--red-900);
+  --color-red-950: var(--red-950);
+  --color-amber-50: var(--amber-50);
+  --color-amber-100: var(--amber-100);
+  --color-amber-200: var(--amber-200);
+  --color-amber-300: var(--amber-300);
+  --color-amber-400: var(--amber-400);
+  --color-amber-500: var(--amber-500);
+  --color-amber-600: var(--amber-600);
+  --color-amber-700: var(--amber-700);
+  --color-amber-800: var(--amber-800);
+  --color-amber-900: var(--amber-900);
+  --color-amber-950: var(--amber-950);
+  --color-cyan-50: var(--cyan-50);
+  --color-cyan-100: var(--cyan-100);
+  --color-cyan-200: var(--cyan-200);
+  --color-cyan-300: var(--cyan-300);
+  --color-cyan-400: var(--cyan-400);
+  --color-cyan-500: var(--cyan-500);
+  --color-cyan-600: var(--cyan-600);
+  --color-cyan-700: var(--cyan-700);
+  --color-cyan-800: var(--cyan-800);
+  --color-cyan-900: var(--cyan-900);
+  --color-cyan-950: var(--cyan-950);
+  --color-zinc-750: var(--zinc-750);
+  --color-zinc-850: var(--zinc-850);
 }
 
 @layer base {
@@ -46,7 +243,7 @@
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+    scrollbar-color: var(--scroll) transparent;
   }
 
   ::-webkit-scrollbar {
@@ -59,11 +256,11 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.12);
+    background: var(--scroll);
     border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.22);
+    background: var(--scroll-hover);
   }
 }
