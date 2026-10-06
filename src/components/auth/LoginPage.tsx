@@ -69,27 +69,32 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
       {/* Top Subtle Nav */}
       <header className="w-full px-6 py-5 flex items-center justify-between border-b border-zinc-850">
         <div className="flex items-center gap-2.5">
-          <div className="w-6 h-6 rounded-md bg-zinc-800 border border-zinc-700/60 flex items-center justify-center text-zinc-200">
+          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-[0_0_12px_rgba(99,102,241,0.4)]">
             <svg
-              className="w-3.5 h-3.5 text-zinc-200"
+              className="w-3.5 h-3.5 text-white"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.2"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" />
-              <path d="M7 14l3.5-4.5L13 12l4-5" />
+              <path d="M4 15c2.5-4 5.5-4 8 0s5.5 4 8 0" />
+              <path d="M4 9c2.5-4 5.5-4 8 0s5.5 4 8 0" />
             </svg>
           </div>
-          <span className="font-medium text-xs tracking-tight text-white">
-            Himalayan Guardian Nepal
-          </span>
+          <div className="flex items-baseline gap-1.5">
+            <span className="font-semibold text-xs tracking-tight text-white">
+              Campaign Flow
+            </span>
+            <span className="text-[10px] text-zinc-500 font-normal">
+              HGN Operations
+            </span>
+          </div>
         </div>
 
         <span className="text-[11px] font-mono text-zinc-500">
-          Internal Operations
+          Internal Workspace
         </span>
       </header>
 
@@ -98,11 +103,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
         <div className="w-full max-w-sm space-y-6">
           <div className="text-center space-y-1.5">
             <h1 className="text-xl font-semibold text-white tracking-tight">
-              {mode === 'login' ? 'Sign in to workspace' : 'Create authorized account'}
+              {mode === 'login' ? 'Sign in to Campaign Flow' : 'Create authorized account'}
             </h1>
             <p className="text-xs text-zinc-400">
               {mode === 'login'
-                ? 'Marketing content automation & high-altitude dispatch'
+                ? 'High-altitude marketing automation & deterministic compliance'
                 : 'Enter your credentials to access the safety publishing grid'}
             </p>
           </div>
@@ -126,7 +131,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
                     value={loginEmail}
                     onChange={e => setLoginEmail(e.target.value)}
                     required
-                    className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
+                    className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition"
                     placeholder="name@himalayanguardian.org.np"
                   />
                 </div>
@@ -143,7 +148,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
                     value={loginPassword}
                     onChange={e => setLoginPassword(e.target.value)}
                     required
-                    className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
+                    className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition"
                     placeholder="••••••••••••"
                   />
                 </div>
@@ -152,7 +157,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-2 px-4 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-medium transition shadow-sm flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                className="w-full py-2 px-4 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_0_12px_rgba(99,102,241,0.3)] flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
                 <span>{isLoading ? 'Verifying...' : 'Sign in'}</span>
                 {!isLoading && <ArrowRight className="w-3.5 h-3.5" />}

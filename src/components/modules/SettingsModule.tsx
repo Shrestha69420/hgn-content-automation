@@ -237,7 +237,7 @@ export const SettingsModule: React.FC = () => {
               type="submit"
               form="settings-form"
               disabled={isSaving}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-zinc-100 hover:bg-white text-zinc-950 font-medium text-xs rounded-lg transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs rounded-lg transition-colors shadow-[0_1px_10px_rgba(99,102,241,0.25)] disabled:opacity-50 cursor-pointer"
             >
               <Save className="w-3.5 h-3.5" />
               <span>{isSaving ? 'Saving...' : 'Save Configuration'}</span>

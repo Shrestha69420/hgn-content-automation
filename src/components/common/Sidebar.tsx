@@ -9,7 +9,7 @@ import {
   Calendar,
   BarChart3,
   Settings,
-  Circle
+  Globe
 } from 'lucide-react';
 
 interface NavItem {
@@ -85,36 +85,66 @@ export const Sidebar: React.FC = () => {
             <button
               key={item.id}
               onClick={() => setActiveModule(item.id)}
-              className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs transition-colors cursor-pointer ${
+              className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-zinc-800/90 text-white font-medium'
+                  ? 'bg-indigo-500/10 text-indigo-100 border-l-2 border-indigo-500 font-medium shadow-[inset_0_0_12px_rgba(99,102,241,0.06)]'
                   : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850/50'
               }`}
             >
               <div className="flex items-center gap-2.5 truncate">
                 <Icon
-                  className={`w-4 h-4 shrink-0 ${
-                    isActive ? 'text-zinc-200' : 'text-zinc-500'
+                  className={`w-4 h-4 shrink-0 transition-colors ${
+                    isActive ? 'text-indigo-400' : 'text-zinc-500'
                   }`}
                 />
                 <span className="truncate">{item.label}</span>
               </div>
 
               {item.badge !== undefined && (
-                <span className="text-[10px] font-mono text-zinc-500 tabular-nums">
+                <span
+                  className={`text-[10px] font-mono tabular-nums px-1.5 py-0.2 rounded ${
+                    isActive
+                      ? 'text-indigo-300 bg-indigo-500/20'
+                      : 'text-zinc-500 bg-zinc-850'
+                  }`}
+                >
                   {item.badge}
                 </span>
               )}
             </button>
           );
         })}
+
+        <div className="pt-3 mt-3 border-t border-zinc-850/80">
+          <p className="px-2 pb-1.5 text-[10px] font-semibold text-zinc-600 uppercase tracking-wider font-mono">
+            Public View
+          </p>
+          <button
+            onClick={() => setActiveModule('landing')}
+            className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs transition-all cursor-pointer ${
+              activeModule === 'landing'
+                ? 'bg-indigo-500/10 text-indigo-100 border-l-2 border-indigo-500 font-medium'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850/50'
+            }`}
+          >
+            <div className="flex items-center gap-2.5 truncate">
+              <Globe
+                className={`w-4 h-4 shrink-0 transition-colors ${
+                  activeModule === 'landing' ? 'text-indigo-400' : 'text-zinc-500'
+                }`}
+              />
+              <span className="truncate">Product Landing</span>
+            </div>
+            <span className="text-[10px] font-mono text-zinc-600">Preview</span>
+          </button>
+        </div>
       </nav>
 
       {/* Subtle Telemetry Footer */}
       <div className="p-3 border-t border-zinc-850/80 flex items-center justify-between text-[11px] text-zinc-500">
         <div className="flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-          <span>Dispatch Grid</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+          <span className="font-mono text-xs text-zinc-400">Campaign Flow</span>
         </div>
         <span className="font-mono text-[10px] text-zinc-600">v2.4</span>
       </div>

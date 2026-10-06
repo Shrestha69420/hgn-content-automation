@@ -310,7 +310,7 @@ export const QualityScoreModule: React.FC = () => {
             <div className="px-4 py-1">
               <p className="text-[11px] font-medium text-zinc-400">Total Quality Score</p>
               <div className="flex items-baseline gap-2 mt-1">
-                <span className="text-2xl font-semibold text-white font-mono tabular-nums">
+                <span className="text-2xl font-semibold text-indigo-400 font-mono tabular-nums">
                   {scoreResult.totalScore}
                 </span>
                 <span className="text-xs text-zinc-500 font-mono">/ 100</span>
@@ -360,7 +360,7 @@ export const QualityScoreModule: React.FC = () => {
                       onClick={() => setPlatform(p)}
                       className={`px-2 py-0.5 rounded text-xs transition cursor-pointer ${
                         platform === p
-                          ? 'bg-zinc-200 text-zinc-950 font-medium'
+                          ? 'bg-indigo-600 text-white font-medium shadow-[0_0_10px_rgba(99,102,241,0.35)]'
                           : 'text-zinc-400 hover:text-zinc-200 bg-[#121316] border border-zinc-800'
                       }`}
                     >
@@ -541,7 +541,7 @@ export const QualityScoreModule: React.FC = () => {
 
                   <button
                     onClick={handleSaveDraft}
-                    className="px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 font-medium transition shadow-sm"
+                    className="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition shadow-[0_1px_10px_rgba(99,102,241,0.25)] cursor-pointer"
                   >
                     Save to Library
                   </button>
@@ -576,7 +576,7 @@ export const QualityScoreModule: React.FC = () => {
                 type="datetime-local"
                 value={scheduleDateTime}
                 onChange={e => setScheduleDateTime(e.target.value)}
-                className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
+                className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500"
               />
             </div>
 
@@ -589,7 +589,7 @@ export const QualityScoreModule: React.FC = () => {
               </button>
               <button
                 onClick={handleConfirmSchedule}
-                className="px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-medium transition shadow-sm"
+                className="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_10px_rgba(99,102,241,0.25)] cursor-pointer"
               >
                 Confirm Schedule
               </button>

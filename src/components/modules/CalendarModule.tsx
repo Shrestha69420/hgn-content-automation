@@ -72,9 +72,9 @@ export const CalendarModule: React.FC = () => {
           <div className="flex items-center bg-[#121316] p-0.5 rounded-md border border-zinc-800 text-xs">
             <button
               onClick={() => setViewMode('month')}
-              className={`px-2.5 py-1 rounded text-xs transition ${
+              className={`px-2.5 py-1 rounded text-xs transition cursor-pointer ${
                 viewMode === 'month'
-                  ? 'bg-zinc-800 text-white font-medium'
+                  ? 'bg-indigo-600 text-white font-medium shadow-[0_0_8px_rgba(99,102,241,0.3)]'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
@@ -82,9 +82,9 @@ export const CalendarModule: React.FC = () => {
             </button>
             <button
               onClick={() => setViewMode('agenda')}
-              className={`px-2.5 py-1 rounded text-xs transition ${
+              className={`px-2.5 py-1 rounded text-xs transition cursor-pointer ${
                 viewMode === 'agenda'
-                  ? 'bg-zinc-800 text-white font-medium'
+                  ? 'bg-indigo-600 text-white font-medium shadow-[0_0_8px_rgba(99,102,241,0.3)]'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
@@ -94,7 +94,7 @@ export const CalendarModule: React.FC = () => {
 
           <button
             onClick={() => setActiveModule('generator')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-medium transition shadow-sm cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(99,102,241,0.25)] border border-indigo-400/30 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Draft Post</span>
@@ -109,7 +109,7 @@ export const CalendarModule: React.FC = () => {
           <div className="flex items-center gap-1">
             <button
               onClick={handlePrevMonth}
-              className="p-1 rounded text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition"
+              className="p-1 rounded text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition cursor-pointer"
               title="Previous month"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -119,7 +119,7 @@ export const CalendarModule: React.FC = () => {
             </span>
             <button
               onClick={handleNextMonth}
-              className="p-1 rounded text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition"
+              className="p-1 rounded text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition cursor-pointer"
               title="Next month"
             >
               <ChevronRight className="w-4 h-4" />
@@ -135,7 +135,7 @@ export const CalendarModule: React.FC = () => {
               onClick={() => setPlatformFilter(plat)}
               className={`px-2.5 py-1 rounded-md text-xs whitespace-nowrap transition cursor-pointer ${
                 platformFilter === plat
-                  ? 'bg-zinc-800 text-white font-medium'
+                  ? 'bg-indigo-500/15 text-indigo-200 border border-indigo-500/30 font-medium'
                   : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850/50'
               }`}
             >

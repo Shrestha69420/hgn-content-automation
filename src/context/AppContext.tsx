@@ -19,6 +19,7 @@ import { useAuth } from './AuthContext';
 import { apiService } from '../services/apiService';
 
 export type ActiveModule =
+  | 'landing'
   | 'dashboard'
   | 'campaigns'
   | 'generator'

@@ -81,7 +81,7 @@ export const ContentLibraryModule: React.FC = () => {
 
         <button
           onClick={() => setActiveModule('generator')}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-medium transition shadow-sm cursor-pointer self-start sm:self-auto"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(99,102,241,0.25)] border border-indigo-400/30 cursor-pointer self-start sm:self-auto"
         >
           <Sparkles className="w-3.5 h-3.5" />
           <span>New Content Draft</span>
@@ -98,7 +98,7 @@ export const ContentLibraryModule: React.FC = () => {
             placeholder="Search by title, body, campaign, or hashtags..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-500"
+            className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500"
           />
         </div>
 
@@ -110,7 +110,7 @@ export const ContentLibraryModule: React.FC = () => {
               onClick={() => setStatusFilter(status)}
               className={`px-2.5 py-1 rounded-md text-xs whitespace-nowrap transition cursor-pointer ${
                 statusFilter === status
-                  ? 'bg-zinc-800 text-white font-medium'
+                  ? 'bg-indigo-500/15 text-indigo-200 border border-indigo-500/30 font-medium'
                   : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850/50'
               }`}
             >

@@ -114,7 +114,7 @@ export const CampaignModule: React.FC = () => {
 
         <button
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-medium transition shadow-sm self-start sm:self-auto cursor-pointer"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(99,102,241,0.25)] border border-indigo-400/30 self-start sm:self-auto cursor-pointer"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>New Campaign</span>
@@ -131,7 +131,7 @@ export const CampaignModule: React.FC = () => {
             placeholder="Search campaigns, codes, or safety focus..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
+            className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40"
           />
         </div>
 
@@ -143,7 +143,7 @@ export const CampaignModule: React.FC = () => {
               onClick={() => setFilterSeason(season)}
               className={`px-2.5 py-1 rounded-md text-xs whitespace-nowrap transition cursor-pointer ${
                 filterSeason === season
-                  ? 'bg-zinc-800 text-white font-medium'
+                  ? 'bg-indigo-500/15 text-indigo-200 border border-indigo-500/30 font-medium'
                   : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850/50'
               }`}
             >
@@ -238,11 +238,11 @@ export const CampaignModule: React.FC = () => {
                   <div className="flex items-center gap-3 sm:w-64">
                     <div className="flex-1 bg-zinc-800 rounded-full h-1.5 overflow-hidden">
                       <div
-                        className="bg-zinc-300 h-1.5 rounded-full"
+                        className="bg-indigo-500 h-1.5 rounded-full"
                         style={{ width: `${reachPct}%` }}
                       />
                     </div>
-                    <span className="font-mono text-[11px] text-zinc-300 shrink-0">
+                    <span className="font-mono text-[11px] text-indigo-400 shrink-0 font-medium">
                       {reachPct}% reach
                     </span>
                   </div>
@@ -374,7 +374,7 @@ export const CampaignModule: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 font-medium text-xs transition shadow-sm"
+                  className="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition shadow-[0_1px_10px_rgba(99,102,241,0.25)]"
                 >
                   Save Campaign
                 </button>

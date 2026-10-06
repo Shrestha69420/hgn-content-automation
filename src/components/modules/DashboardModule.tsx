@@ -45,13 +45,13 @@ export const DashboardModule: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveModule('quality-score')}
-            className="px-3 py-1.5 rounded-md border border-zinc-800 hover:border-zinc-700 bg-zinc-900/60 hover:bg-zinc-850 text-xs font-medium text-zinc-300 transition"
+            className="px-3 py-1.5 rounded-md border border-zinc-800 hover:border-zinc-700 bg-zinc-900/60 hover:bg-zinc-850 text-xs font-medium text-zinc-300 transition cursor-pointer"
           >
             Quality Standards
           </button>
           <button
             onClick={() => setActiveModule('generator')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-medium transition shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(99,102,241,0.25)] border border-indigo-400/30 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Create Draft</span>
@@ -171,13 +171,13 @@ export const DashboardModule: React.FC = () => {
                     <div className="flex-1">
                       <div className="w-full bg-zinc-800/80 rounded-full h-1.5 overflow-hidden">
                         <div
-                          className="bg-zinc-300 h-1.5 rounded-full"
+                          className="bg-indigo-500 h-1.5 rounded-full"
                           style={{ width: `${reachPercent}%` }}
                         />
                       </div>
                     </div>
                     <div className="flex items-center gap-2 text-zinc-400 font-mono text-[11px] shrink-0">
-                      <span className="text-zinc-300 font-semibold">{reachPercent}%</span>
+                      <span className="text-indigo-400 font-semibold">{reachPercent}%</span>
                       <span>({camp.kpis.currentReach.toLocaleString()} reached)</span>
                     </div>
                   </div>

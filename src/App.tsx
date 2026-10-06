@@ -29,18 +29,20 @@ import {
   Bell
 } from 'lucide-react';
 
+import { LandingPage } from './components/landing/LandingPage';
+
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const { activeModule, setActiveModule, toastMessage } = useApp();
 
-  // If user is not authenticated, render the dedicated LoginPage
-  if (!isAuthenticated) {
-    return <LoginPage onLoginSuccess={() => setActiveModule('dashboard')} />;
+  // If user is not authenticated or chooses public view, render LandingPage
+  if (!isAuthenticated || activeModule === 'landing') {
+    return <LandingPage />;
   }
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-[#090A0C] text-zinc-100 flex flex-col font-sans selection:bg-zinc-800 selection:text-zinc-200 antialiased">
+      <div className="min-h-screen bg-[#090A0C] text-zinc-100 flex flex-col font-sans selection:bg-indigo-500/30 selection:text-indigo-200 antialiased">
         {/* Top Header */}
         <Header />
 

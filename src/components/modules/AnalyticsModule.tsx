@@ -204,7 +204,7 @@ export const AnalyticsModule: React.FC = () => {
         <div className="px-4 py-2">
           <p className="text-[11px] font-medium text-zinc-400">Avg Quality Score</p>
           <div className="flex items-baseline gap-1 mt-1">
-            <span className="text-2xl font-semibold text-white font-mono tabular-nums">
+            <span className="text-2xl font-semibold text-indigo-400 font-mono tabular-nums">
               {avgQualityScore}
             </span>
             <span className="text-xs text-zinc-500 font-mono">/ 100</span>
@@ -246,7 +246,7 @@ export const AnalyticsModule: React.FC = () => {
                   </div>
                   <div className="w-full bg-zinc-800 rounded-full h-1.5 overflow-hidden">
                     <div
-                      className="bg-zinc-300 h-1.5 rounded-full"
+                      className="bg-indigo-500 h-1.5 rounded-full"
                       style={{ width: `${pct}%` }}
                     />
                   </div>

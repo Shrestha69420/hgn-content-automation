@@ -472,7 +472,7 @@ export const GeneratorModule: React.FC = () => {
                   onClick={() => setPlatform(p)}
                   className={`py-1.5 text-center rounded-md text-xs transition cursor-pointer ${
                     platform === p
-                      ? 'bg-zinc-200 text-zinc-950 font-medium'
+                      ? 'bg-indigo-600 text-white font-medium shadow-[0_0_10px_rgba(99,102,241,0.35)]'
                       : 'bg-[#121316] text-zinc-400 hover:text-zinc-200 border border-zinc-800'
                   }`}
                 >
@@ -490,7 +490,7 @@ export const GeneratorModule: React.FC = () => {
               type="text"
               value={topic}
               onChange={e => setTopic(e.target.value)}
-              className="w-full bg-[#121316] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
+              className="w-full bg-[#121316] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500"
             />
           </div>
 
@@ -502,14 +502,14 @@ export const GeneratorModule: React.FC = () => {
               rows={2}
               value={keyRequirements}
               onChange={e => setKeyRequirements(e.target.value)}
-              className="w-full bg-[#121316] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
+              className="w-full bg-[#121316] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500"
             />
           </div>
 
           <button
             onClick={handleGenerate}
             disabled={isGenerating}
-            className="w-full py-2 px-4 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 font-medium text-xs transition shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            className="w-full py-2 px-4 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition shadow-[0_2px_14px_rgba(99,102,241,0.3)] border border-indigo-400/30 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
           >
             {isGenerating ? (
               <>
@@ -722,7 +722,7 @@ export const GeneratorModule: React.FC = () => {
                     </button>
                     <button
                       onClick={handleSendToEvaluator}
-                      className="px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 font-medium transition shadow-sm flex items-center gap-1"
+                      className="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition shadow-[0_1px_10px_rgba(99,102,241,0.25)] flex items-center gap-1 cursor-pointer"
                     >
                       <span>Detailed Scorer</span>
                       <ArrowRight className="w-3 h-3" />
