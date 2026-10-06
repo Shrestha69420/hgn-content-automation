@@ -227,7 +227,7 @@ export const QualityScoreModule: React.FC = () => {
 
       {activeTab === 'algorithm-code' ? (
         /* Rule Specifications View */
-        <div className="border border-zinc-800/80 rounded-lg bg-[#0E1013] p-6 space-y-5">
+        <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] p-6 space-y-5">
           <div className="pb-3 border-b border-zinc-850">
             <h2 className="text-sm font-semibold text-white">
               Deterministic Scoring Logic Specifications
@@ -238,7 +238,7 @@ export const QualityScoreModule: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
-            <div className="p-3.5 rounded-md bg-[#121316] border border-zinc-800">
+            <div className="p-3.5 rounded-md bg-[#16232A] border border-zinc-800">
               <span className="text-zinc-200 font-semibold block mb-1">
                 1. Caption Length (15 pts)
               </span>
@@ -247,7 +247,7 @@ export const QualityScoreModule: React.FC = () => {
               </p>
             </div>
 
-            <div className="p-3.5 rounded-md bg-[#121316] border border-zinc-800">
+            <div className="p-3.5 rounded-md bg-[#16232A] border border-zinc-800">
               <span className="text-zinc-200 font-semibold block mb-1">
                 2. Call to Action (15 pts)
               </span>
@@ -256,7 +256,7 @@ export const QualityScoreModule: React.FC = () => {
               </p>
             </div>
 
-            <div className="p-3.5 rounded-md bg-[#121316] border border-zinc-800">
+            <div className="p-3.5 rounded-md bg-[#16232A] border border-zinc-800">
               <span className="text-zinc-200 font-semibold block mb-1">
                 3. HGN Brand Presence (10 pts)
               </span>
@@ -265,7 +265,7 @@ export const QualityScoreModule: React.FC = () => {
               </p>
             </div>
 
-            <div className="p-3.5 rounded-md bg-[#121316] border border-zinc-800">
+            <div className="p-3.5 rounded-md bg-[#16232A] border border-zinc-800">
               <span className="text-zinc-200 font-semibold block mb-1">
                 4. Primary Keyword (20 pts)
               </span>
@@ -274,7 +274,7 @@ export const QualityScoreModule: React.FC = () => {
               </p>
             </div>
 
-            <div className="p-3.5 rounded-md bg-[#121316] border border-zinc-800">
+            <div className="p-3.5 rounded-md bg-[#16232A] border border-zinc-800">
               <span className="text-zinc-200 font-semibold block mb-1">
                 5. Hashtag Density (15 pts)
               </span>
@@ -283,7 +283,7 @@ export const QualityScoreModule: React.FC = () => {
               </p>
             </div>
 
-            <div className="p-3.5 rounded-md bg-[#121316] border border-zinc-800">
+            <div className="p-3.5 rounded-md bg-[#16232A] border border-zinc-800">
               <span className="text-zinc-200 font-semibold block mb-1">
                 6. Readability & Formatting (10 pts)
               </span>
@@ -292,7 +292,7 @@ export const QualityScoreModule: React.FC = () => {
               </p>
             </div>
 
-            <div className="p-3.5 rounded-md bg-[#121316] border border-zinc-800 md:col-span-2">
+            <div className="p-3.5 rounded-md bg-[#16232A] border border-zinc-800 md:col-span-2">
               <span className="text-zinc-200 font-semibold block mb-1">
                 7. Content Objective Match (15 pts)
               </span>
@@ -347,7 +347,7 @@ export const QualityScoreModule: React.FC = () => {
           {/* Two-Column Editor & Inspection Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Left Pane: Interactive Editor (6 Cols) */}
-            <div className="lg:col-span-6 space-y-4 border border-zinc-800/80 rounded-lg bg-[#0E1013] p-5">
+            <div className="lg:col-span-6 space-y-4 border border-zinc-800/80 rounded-lg bg-[#101A1F] p-5">
               <div className="flex items-center justify-between pb-3 border-b border-zinc-850">
                 <h2 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider font-mono">
                   Post Content & Channel
@@ -360,8 +360,8 @@ export const QualityScoreModule: React.FC = () => {
                       onClick={() => setPlatform(p)}
                       className={`px-2 py-0.5 rounded text-xs transition cursor-pointer ${
                         platform === p
-                          ? 'bg-indigo-600 text-white font-medium shadow-[0_0_10px_rgba(99,102,241,0.35)]'
-                          : 'text-zinc-400 hover:text-zinc-200 bg-[#121316] border border-zinc-800'
+                          ? 'bg-indigo-600 text-white font-medium shadow-[0_0_10px_rgba(43,181,166,0.35)]'
+                          : 'text-zinc-400 hover:text-zinc-200 bg-[#16232A] border border-zinc-800'
                       }`}
                     >
                       {p === 'X/Twitter' ? 'X' : p}
@@ -379,7 +379,7 @@ export const QualityScoreModule: React.FC = () => {
                   value={title}
                   onChange={e => setTitle(e.target.value)}
                   placeholder="Catchy headline or advisory title..."
-                  className="w-full bg-[#121316] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
+                  className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
                 />
               </div>
 
@@ -391,7 +391,7 @@ export const QualityScoreModule: React.FC = () => {
                   rows={9}
                   value={content}
                   onChange={e => setContent(e.target.value)}
-                  className="w-full bg-[#121316] border border-zinc-800 rounded-md p-3 text-xs text-zinc-200 leading-relaxed font-sans focus:outline-none focus:border-zinc-500 resize-y"
+                  className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-3 text-xs text-zinc-200 leading-relaxed font-sans focus:outline-none focus:border-zinc-500 resize-y"
                   placeholder="Write or edit marketing copy here..."
                 />
               </div>
@@ -405,7 +405,7 @@ export const QualityScoreModule: React.FC = () => {
                     type="text"
                     value={primaryKeyword}
                     onChange={e => setPrimaryKeyword(e.target.value)}
-                    className="w-full bg-[#121316] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
                   />
                 </div>
 
@@ -416,7 +416,7 @@ export const QualityScoreModule: React.FC = () => {
                   <select
                     value={objective}
                     onChange={e => setObjective(e.target.value as ContentObjective)}
-                    className="w-full bg-[#121316] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-[#16232A] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
                   >
                     <option value="Education">Education</option>
                     <option value="Brand Awareness">Brand Awareness</option>
@@ -436,28 +436,28 @@ export const QualityScoreModule: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleApplyFix('cta')}
-                    className="px-2 py-1 rounded bg-[#121316] border border-zinc-800 text-zinc-400 hover:text-zinc-200 text-[11px] transition"
+                    className="px-2 py-1 rounded bg-[#16232A] border border-zinc-800 text-zinc-400 hover:text-zinc-200 text-[11px] transition"
                   >
                     + Append CTA
                   </button>
                   <button
                     type="button"
                     onClick={() => handleApplyFix('brand')}
-                    className="px-2 py-1 rounded bg-[#121316] border border-zinc-800 text-zinc-400 hover:text-zinc-200 text-[11px] transition"
+                    className="px-2 py-1 rounded bg-[#16232A] border border-zinc-800 text-zinc-400 hover:text-zinc-200 text-[11px] transition"
                   >
                     + Brand Tag
                   </button>
                   <button
                     type="button"
                     onClick={() => handleApplyFix('keyword')}
-                    className="px-2 py-1 rounded bg-[#121316] border border-zinc-800 text-zinc-400 hover:text-zinc-200 text-[11px] transition"
+                    className="px-2 py-1 rounded bg-[#16232A] border border-zinc-800 text-zinc-400 hover:text-zinc-200 text-[11px] transition"
                   >
                     + Keyword
                   </button>
                   <button
                     type="button"
                     onClick={() => handleApplyFix('hashtags')}
-                    className="px-2 py-1 rounded bg-[#121316] border border-zinc-800 text-zinc-400 hover:text-zinc-200 text-[11px] transition"
+                    className="px-2 py-1 rounded bg-[#16232A] border border-zinc-800 text-zinc-400 hover:text-zinc-200 text-[11px] transition"
                   >
                     + Standard Hashtags
                   </button>
@@ -466,7 +466,7 @@ export const QualityScoreModule: React.FC = () => {
             </div>
 
             {/* Right Pane: 7-Rule Inspection Breakdown (6 Cols) */}
-            <div className="lg:col-span-6 space-y-4 border border-zinc-800/80 rounded-lg bg-[#0E1013] p-5 flex flex-col justify-between">
+            <div className="lg:col-span-6 space-y-4 border border-zinc-800/80 rounded-lg bg-[#101A1F] p-5 flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="pb-3 border-b border-zinc-850 flex items-center justify-between">
                   <h2 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider font-mono">
@@ -524,7 +524,7 @@ export const QualityScoreModule: React.FC = () => {
               <div className="pt-4 border-t border-zinc-850 flex items-center justify-between gap-2 text-xs">
                 <button
                   onClick={handleCopy}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-zinc-400 hover:text-zinc-200 bg-[#121316] border border-zinc-800 transition"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-zinc-400 hover:text-zinc-200 bg-[#16232A] border border-zinc-800 transition"
                 >
                   {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                   <span>{copied ? 'Copied' : 'Copy'}</span>
@@ -541,7 +541,7 @@ export const QualityScoreModule: React.FC = () => {
 
                   <button
                     onClick={handleSaveDraft}
-                    className="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition shadow-[0_1px_10px_rgba(99,102,241,0.25)] cursor-pointer"
+                    className="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition shadow-[0_1px_10px_rgba(43,181,166,0.25)] cursor-pointer"
                   >
                     Save to Library
                   </button>
@@ -555,7 +555,7 @@ export const QualityScoreModule: React.FC = () => {
       {/* Schedule Modal */}
       {showScheduleModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#121316] border border-zinc-800 rounded-xl max-w-sm w-full p-5 space-y-4 shadow-2xl">
+          <div className="bg-[#16232A] border border-zinc-800 rounded-xl max-w-sm w-full p-5 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-zinc-850">
               <h3 className="text-sm font-semibold text-white">
                 Schedule Publication
@@ -576,7 +576,7 @@ export const QualityScoreModule: React.FC = () => {
                 type="datetime-local"
                 value={scheduleDateTime}
                 onChange={e => setScheduleDateTime(e.target.value)}
-                className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500"
               />
             </div>
 
@@ -589,7 +589,7 @@ export const QualityScoreModule: React.FC = () => {
               </button>
               <button
                 onClick={handleConfirmSchedule}
-                className="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_10px_rgba(99,102,241,0.25)] cursor-pointer"
+                className="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_10px_rgba(43,181,166,0.25)] cursor-pointer"
               >
                 Confirm Schedule
               </button>

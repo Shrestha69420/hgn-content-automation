@@ -114,7 +114,7 @@ export const CampaignModule: React.FC = () => {
 
         <button
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(99,102,241,0.25)] border border-indigo-400/30 self-start sm:self-auto cursor-pointer"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(43,181,166,0.25)] border border-indigo-400/30 self-start sm:self-auto cursor-pointer"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>New Campaign</span>
@@ -131,7 +131,7 @@ export const CampaignModule: React.FC = () => {
             placeholder="Search campaigns, codes, or safety focus..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40"
+            className="w-full bg-[#16232A] border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40"
           />
         </div>
 
@@ -154,7 +154,7 @@ export const CampaignModule: React.FC = () => {
       </div>
 
       {/* Campaigns List (Card-less Unified Table Surface) */}
-      <div className="border border-zinc-800/80 rounded-lg bg-[#0E1013] divide-y divide-zinc-850/80 overflow-hidden">
+      <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] divide-y divide-zinc-850/80 overflow-hidden">
         {filteredCampaigns.length === 0 ? (
           <div className="p-8 text-center text-xs text-zinc-500">
             No matching campaigns found.
@@ -256,7 +256,7 @@ export const CampaignModule: React.FC = () => {
       {/* Minimal Create Campaign Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#121316] border border-zinc-800 rounded-xl max-w-xl w-full p-6 space-y-4 shadow-2xl">
+          <div className="bg-[#16232A] border border-zinc-800 rounded-xl max-w-xl w-full p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
               <h3 className="text-sm font-semibold text-white">
                 Create Safety Marketing Campaign
@@ -280,7 +280,7 @@ export const CampaignModule: React.FC = () => {
                   placeholder="e.g. Winter High-Pass Safety & Microspikes Drive"
                   value={newCampaign.name}
                   onChange={e => setNewCampaign({ ...newCampaign, name: e.target.value })}
-                  className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
+                  className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
                 />
               </div>
 
@@ -293,7 +293,7 @@ export const CampaignModule: React.FC = () => {
                     type="text"
                     value={newCampaign.code}
                     onChange={e => setNewCampaign({ ...newCampaign, code: e.target.value })}
-                    className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
                   />
                 </div>
                 <div>
@@ -303,7 +303,7 @@ export const CampaignModule: React.FC = () => {
                   <select
                     value={newCampaign.season}
                     onChange={e => setNewCampaign({ ...newCampaign, season: e.target.value as any })}
-                    className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
                   >
                     <option value="Autumn Peak">Autumn Peak</option>
                     <option value="Spring Everest">Spring Everest</option>
@@ -322,7 +322,7 @@ export const CampaignModule: React.FC = () => {
                   value={newCampaign.description}
                   onChange={e => setNewCampaign({ ...newCampaign, description: e.target.value })}
                   placeholder="Operational mandate, safety guidelines, target routes..."
-                  className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
+                  className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
                 />
               </div>
 
@@ -335,7 +335,7 @@ export const CampaignModule: React.FC = () => {
                   value={newCampaign.safetyFocus}
                   onChange={e => setNewCampaign({ ...newCampaign, safetyFocus: e.target.value })}
                   placeholder="e.g. AMS symptoms, helicopter evacuation coverage, guide permits..."
-                  className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
+                  className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
                 />
               </div>
 
@@ -348,7 +348,7 @@ export const CampaignModule: React.FC = () => {
                     type="number"
                     value={newCampaign.budgetNPR}
                     onChange={e => setNewCampaign({ ...newCampaign, budgetNPR: Number(e.target.value) })}
-                    className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
                   />
                 </div>
                 <div>
@@ -359,7 +359,7 @@ export const CampaignModule: React.FC = () => {
                     type="number"
                     value={newCampaign.targetReach}
                     onChange={e => setNewCampaign({ ...newCampaign, targetReach: Number(e.target.value) })}
-                    className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
                   />
                 </div>
               </div>
@@ -374,7 +374,7 @@ export const CampaignModule: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition shadow-[0_1px_10px_rgba(99,102,241,0.25)]"
+                  className="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition shadow-[0_1px_10px_rgba(43,181,166,0.25)]"
                 >
                   Save Campaign
                 </button>

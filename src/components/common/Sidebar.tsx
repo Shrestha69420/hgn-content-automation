@@ -69,7 +69,7 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-56 bg-[#0E1013] border-r border-zinc-800/80 flex flex-col shrink-0 min-h-[calc(100vh-56px)] select-none">
+    <aside className="w-56 bg-[#101A1F] border-r border-zinc-800/80 flex flex-col shrink-0 min-h-[calc(100vh-56px)] select-none">
       <div className="px-3 pt-4 pb-2">
         <p className="px-2 text-[10px] font-semibold text-zinc-500 uppercase tracking-wider font-mono">
           Workspace
@@ -87,7 +87,7 @@ export const Sidebar: React.FC = () => {
               onClick={() => setActiveModule(item.id)}
               className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-indigo-500/10 text-indigo-100 border-l-2 border-indigo-500 font-medium shadow-[inset_0_0_12px_rgba(99,102,241,0.06)]'
+                  ? 'bg-indigo-500/10 text-indigo-100 border-l-2 border-indigo-500 font-medium shadow-[inset_0_0_12px_rgba(43,181,166,0.06)]'
                   : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850/50'
               }`}
             >
@@ -143,7 +143,7 @@ export const Sidebar: React.FC = () => {
       {/* Subtle Telemetry Footer */}
       <div className="p-3 border-t border-zinc-850/80 flex items-center justify-between text-[11px] text-zinc-500">
         <div className="flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-[0_0_8px_rgba(43,181,166,0.6)]" />
           <span className="font-mono text-xs text-zinc-400">Campaign Flow</span>
         </div>
         <span className="font-mono text-[10px] text-zinc-600">v2.4</span>

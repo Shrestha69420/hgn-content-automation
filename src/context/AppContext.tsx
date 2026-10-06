@@ -14,7 +14,7 @@ import {
   INITIAL_USERS,
   INITIAL_ANALYTICS,
 } from '../lib/initialData';
-import { evaluateContentQuality } from '../lib/qualityScoringEngine';
+import { evaluateContentQuality, ALGORITHM_VERSION } from '../lib/qualityScoringEngine';
 import { useAuth } from './AuthContext';
 import { apiService } from '../services/apiService';
 
@@ -86,6 +86,21 @@ const STORAGE_KEY_POSTS = 'hg_nepal_posts_v2';
 const STORAGE_KEY_CAMPAIGNS = 'hg_nepal_campaigns_v2';
 const STORAGE_KEY_USER = 'hg_nepal_active_user_v2';
 
+/** Re-score posts whose stored report came from an older scoring algorithm. */
+const rescoreStale = (list: ContentPost[]): ContentPost[] =>
+  list.map(p =>
+    p.qualityReport?.algorithmVersion === ALGORITHM_VERSION
+      ? p
+      : {
+          ...p,
+          qualityReport: evaluateContentQuality(p.content, p.platform, p.hashtags || [], p.callToAction || '', {
+            title: p.title,
+            primaryKeyword: p.primaryKeyword,
+            objective: p.objective,
+          }),
+        }
+  );
+
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { currentUser: authUser } = useAuth();
   const [activeModule, setActiveModule] = useState<ActiveModule>('dashboard');
@@ -114,12 +129,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const saved = localStorage.getItem(STORAGE_KEY_POSTS);
     if (saved) {
       try {
-        return JSON.parse(saved);
+        return rescoreStale(JSON.parse(saved));
       } catch (e) {
         console.error(e);
       }
     }
-    return INITIAL_POSTS;
+    return rescoreStale(INITIAL_POSTS);
   });
 
   const [activePost, setActivePost] = useState<ContentPost | null>(null);
@@ -169,7 +184,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     apiService.getPosts()
       .then(serverPosts => {
         if (Array.isArray(serverPosts) && serverPosts.length > 0) {
-          setPosts(serverPosts);
+          setPosts(rescoreStale(serverPosts));
         }
       })
       .catch(err => {
@@ -236,7 +251,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       postData.content,
       postData.platform,
       postData.hashtags,
-      postData.callToAction
+      postData.callToAction,
+      { title: postData.title, primaryKeyword: postData.primaryKeyword, objective: postData.objective }
     );
 
     const newPost: ContentPost = {
@@ -273,7 +289,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             updated.content,
             updated.platform,
             updated.hashtags,
-            updated.callToAction
+            updated.callToAction,
+            { title: updated.title, primaryKeyword: updated.primaryKeyword, objective: updated.objective }
           );
           updated.qualityReport = newReport;
           const currentHist = updated.versionHistory || [];

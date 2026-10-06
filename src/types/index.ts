@@ -78,7 +78,7 @@ export interface Campaign {
 
 export interface QualityRuleResult {
   ruleId: string;
-  category: 'safety' | 'readability' | 'cta' | 'platform' | 'seo';
+  category: string;
   title: string;
   status: 'passed' | 'warning' | 'failed';
   earnedScore: number;
@@ -91,7 +91,7 @@ export interface QualityRuleResult {
 
 export interface DimensionScore {
   name: string;
-  key: 'safety' | 'readability' | 'cta' | 'platform' | 'seo';
+  key: string;
   weight: number; // e.g., 0.25
   score: number; // 0 to 100
   weightedScore: number; // weight * score

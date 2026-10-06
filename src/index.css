@@ -1,6 +1,49 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Ubuntu", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Neutrals: cool slate with a hint of glacier teal */
+  --color-zinc-50: #f4f7f8;
+  --color-zinc-100: #eaf0f2;
+  --color-zinc-200: #d3dde1;
+  --color-zinc-300: #b4c3ca;
+  --color-zinc-400: #93a5ae;
+  --color-zinc-500: #70838d;
+  --color-zinc-600: #52646e;
+  --color-zinc-700: #3a4b54;
+  --color-zinc-750: #314149;
+  --color-zinc-800: #26353d;
+  --color-zinc-850: #1f2c33;
+  --color-zinc-900: #16232a;
+  --color-zinc-950: #0a1114;
+
+  /* Primary: glacier teal (replaces indigo) */
+  --color-indigo-50: #effaf8;
+  --color-indigo-100: #d3f3ee;
+  --color-indigo-200: #a9e7de;
+  --color-indigo-300: #7fdbcf;
+  --color-indigo-400: #4fc8ba;
+  --color-indigo-500: #2bb5a6;
+  --color-indigo-600: #1b8d81;
+  --color-indigo-700: #17756b;
+  --color-indigo-800: #135c55;
+  --color-indigo-900: #0f4742;
+  --color-indigo-950: #07282a;
+
+  /* Accent: saffron (amber) */
+  --color-amber-300: #f7c97a;
+  --color-amber-400: #f2a93b;
+  --color-amber-500: #e08f1c;
+}
+
 @layer base {
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+  }
+
   * {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.12) transparent;

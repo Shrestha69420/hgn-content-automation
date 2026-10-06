@@ -69,12 +69,12 @@ export const CalendarModule: React.FC = () => {
 
         <div className="flex items-center gap-2">
           {/* View Mode Toggle */}
-          <div className="flex items-center bg-[#121316] p-0.5 rounded-md border border-zinc-800 text-xs">
+          <div className="flex items-center bg-[#16232A] p-0.5 rounded-md border border-zinc-800 text-xs">
             <button
               onClick={() => setViewMode('month')}
               className={`px-2.5 py-1 rounded text-xs transition cursor-pointer ${
                 viewMode === 'month'
-                  ? 'bg-indigo-600 text-white font-medium shadow-[0_0_8px_rgba(99,102,241,0.3)]'
+                  ? 'bg-indigo-600 text-white font-medium shadow-[0_0_8px_rgba(43,181,166,0.3)]'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
@@ -84,7 +84,7 @@ export const CalendarModule: React.FC = () => {
               onClick={() => setViewMode('agenda')}
               className={`px-2.5 py-1 rounded text-xs transition cursor-pointer ${
                 viewMode === 'agenda'
-                  ? 'bg-indigo-600 text-white font-medium shadow-[0_0_8px_rgba(99,102,241,0.3)]'
+                  ? 'bg-indigo-600 text-white font-medium shadow-[0_0_8px_rgba(43,181,166,0.3)]'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
@@ -94,7 +94,7 @@ export const CalendarModule: React.FC = () => {
 
           <button
             onClick={() => setActiveModule('generator')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(99,102,241,0.25)] border border-indigo-400/30 cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(43,181,166,0.25)] border border-indigo-400/30 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Draft Post</span>
@@ -147,9 +147,9 @@ export const CalendarModule: React.FC = () => {
 
       {viewMode === 'month' ? (
         /* Minimalist Month Grid */
-        <div className="border border-zinc-800/80 rounded-lg bg-[#0E1013] overflow-hidden">
+        <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] overflow-hidden">
           {/* Day Names Header */}
-          <div className="grid grid-cols-7 border-b border-zinc-800 bg-[#121316] text-center text-[11px] font-mono text-zinc-400 py-2">
+          <div className="grid grid-cols-7 border-b border-zinc-800 bg-[#16232A] text-center text-[11px] font-mono text-zinc-400 py-2">
             <span>Sun</span>
             <span>Mon</span>
             <span>Tue</span>
@@ -201,7 +201,7 @@ export const CalendarModule: React.FC = () => {
                       <div
                         key={p.id}
                         onClick={() => setSelectedPost(p)}
-                        className="p-1 rounded bg-[#121316] hover:bg-zinc-800 border border-zinc-800/80 text-[10px] text-zinc-300 truncate cursor-pointer transition"
+                        className="p-1 rounded bg-[#16232A] hover:bg-zinc-800 border border-zinc-800/80 text-[10px] text-zinc-300 truncate cursor-pointer transition"
                         title={p.title}
                       >
                         <span className="text-zinc-500 mr-1">{p.platform.slice(0, 2)}</span>
@@ -221,7 +221,7 @@ export const CalendarModule: React.FC = () => {
         </div>
       ) : (
         /* Agenda View */
-        <div className="border border-zinc-800/80 rounded-lg bg-[#0E1013] divide-y divide-zinc-850/80 overflow-hidden">
+        <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] divide-y divide-zinc-850/80 overflow-hidden">
           {calendarPosts.length === 0 ? (
             <div className="p-12 text-center text-xs text-zinc-500">
               No scheduled posts for this timeframe.
@@ -274,7 +274,7 @@ export const CalendarModule: React.FC = () => {
       {/* Reschedule Modal */}
       {selectedPost && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#121316] border border-zinc-800 rounded-xl max-w-sm w-full p-5 space-y-4 shadow-2xl">
+          <div className="bg-[#16232A] border border-zinc-800 rounded-xl max-w-sm w-full p-5 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-zinc-850">
               <h3 className="text-sm font-semibold text-white">
                 Reschedule Publication
@@ -300,7 +300,7 @@ export const CalendarModule: React.FC = () => {
                 type="datetime-local"
                 value={newScheduleTime}
                 onChange={e => setNewScheduleTime(e.target.value)}
-                className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
+                className="w-full bg-[#101A1F] border border-zinc-800 rounded-md p-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500"
               />
             </div>
 

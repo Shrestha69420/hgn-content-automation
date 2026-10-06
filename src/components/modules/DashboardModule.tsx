@@ -51,7 +51,7 @@ export const DashboardModule: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveModule('generator')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(99,102,241,0.25)] border border-indigo-400/30 cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(43,181,166,0.25)] border border-indigo-400/30 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Create Draft</span>
@@ -119,7 +119,7 @@ export const DashboardModule: React.FC = () => {
             </button>
           </div>
 
-          <div className="divide-y divide-zinc-800/60 border border-zinc-800/80 rounded-lg bg-[#0E1013] overflow-hidden">
+          <div className="divide-y divide-zinc-800/60 border border-zinc-800/80 rounded-lg bg-[#101A1F] overflow-hidden">
             {campaigns.slice(0, 3).map(camp => {
               const reachPercent = Math.min(
                 100,
@@ -202,7 +202,7 @@ export const DashboardModule: React.FC = () => {
             </button>
           </div>
 
-          <div className="divide-y divide-zinc-800/60 border border-zinc-800/80 rounded-lg bg-[#0E1013] overflow-hidden">
+          <div className="divide-y divide-zinc-800/60 border border-zinc-800/80 rounded-lg bg-[#101A1F] overflow-hidden">
             {posts.slice(0, 4).map(post => {
               const score = post.qualityReport?.overallScore ?? post.deterministicScoreResult?.totalScore ?? 85;
 

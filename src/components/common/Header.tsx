@@ -13,7 +13,7 @@ export const Header: React.FC = () => {
   const { currentUser, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-40 bg-[#0E1013]/95 backdrop-blur-md border-b border-zinc-800/80 text-zinc-100">
+    <header className="sticky top-0 z-40 bg-[#101A1F]/95 backdrop-blur-md border-b border-zinc-800/80 text-zinc-100">
       {/* Main Single-Height Clean Header (No Top Operations Bar) */}
       <div className="px-5 sm:px-8 h-14 flex items-center justify-between">
         {/* Brand & Organization */}
@@ -22,7 +22,7 @@ export const Header: React.FC = () => {
             onClick={() => setActiveModule('dashboard')}
             className="flex items-center gap-2.5 text-left cursor-pointer group focus:outline-none"
           >
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-[0_0_14px_rgba(99,102,241,0.35)] transition group-hover:scale-105">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-[0_0_14px_rgba(43,181,166,0.35)] transition group-hover:scale-105">
               <svg
                 className="w-4 h-4 text-white"
                 viewBox="0 0 24 24"
@@ -67,7 +67,7 @@ export const Header: React.FC = () => {
           {/* Quick AI Generator Launch with Accent Styling */}
           <button
             onClick={() => setActiveModule('generator')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(99,102,241,0.25)] border border-indigo-400/30 active:scale-[0.98] cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(43,181,166,0.25)] border border-indigo-400/30 active:scale-[0.98] cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 text-indigo-200" />
             <span>New Post Draft</span>

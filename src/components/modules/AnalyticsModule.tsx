@@ -136,7 +136,7 @@ export const AnalyticsModule: React.FC = () => {
 
         <div className="flex items-center gap-2">
           {/* Timeframe Selector */}
-          <div className="flex items-center bg-[#121316] p-0.5 rounded-md border border-zinc-800 text-xs">
+          <div className="flex items-center bg-[#16232A] p-0.5 rounded-md border border-zinc-800 text-xs">
             <button
               onClick={() => setSelectedTimeframe('all')}
               className={`px-2.5 py-1 rounded text-xs transition ${
@@ -225,7 +225,7 @@ export const AnalyticsModule: React.FC = () => {
       {/* Breakdowns Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Channel Volume Breakdown */}
-        <div className="border border-zinc-800/80 rounded-lg bg-[#0E1013] p-5 space-y-4">
+        <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] p-5 space-y-4">
           <div className="pb-3 border-b border-zinc-850">
             <h2 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider font-mono">
               Channel Volume Distribution
@@ -257,7 +257,7 @@ export const AnalyticsModule: React.FC = () => {
         </div>
 
         {/* Publishing Status Lifecycle */}
-        <div className="border border-zinc-800/80 rounded-lg bg-[#0E1013] p-5 space-y-4">
+        <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] p-5 space-y-4">
           <div className="pb-3 border-b border-zinc-850">
             <h2 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider font-mono">
               Publishing Lifecycle Status
@@ -299,7 +299,7 @@ export const AnalyticsModule: React.FC = () => {
       </div>
 
       {/* Campaign Performance Table */}
-      <div className="border border-zinc-800/80 rounded-lg bg-[#0E1013] overflow-hidden">
+      <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] overflow-hidden">
         <div className="p-4 border-b border-zinc-850">
           <h2 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider font-mono">
             Campaign Reach & Quality Overview

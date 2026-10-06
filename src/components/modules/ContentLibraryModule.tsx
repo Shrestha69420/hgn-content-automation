@@ -81,7 +81,7 @@ export const ContentLibraryModule: React.FC = () => {
 
         <button
           onClick={() => setActiveModule('generator')}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(99,102,241,0.25)] border border-indigo-400/30 cursor-pointer self-start sm:self-auto"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(43,181,166,0.25)] border border-indigo-400/30 cursor-pointer self-start sm:self-auto"
         >
           <Sparkles className="w-3.5 h-3.5" />
           <span>New Content Draft</span>
@@ -98,7 +98,7 @@ export const ContentLibraryModule: React.FC = () => {
             placeholder="Search by title, body, campaign, or hashtags..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500"
+            className="w-full bg-[#16232A] border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500"
           />
         </div>
 
@@ -121,7 +121,7 @@ export const ContentLibraryModule: React.FC = () => {
       </div>
 
       {/* Table / List Surface (Zero Card Soup) */}
-      <div className="border border-zinc-800/80 rounded-lg bg-[#0E1013] divide-y divide-zinc-850/80 overflow-hidden">
+      <div className="border border-zinc-800/80 rounded-lg bg-[#101A1F] divide-y divide-zinc-850/80 overflow-hidden">
         {filteredPosts.length === 0 ? (
           <div className="p-12 text-center text-xs text-zinc-500">
             No matching posts found in library.
@@ -237,7 +237,7 @@ export const ContentLibraryModule: React.FC = () => {
       {/* Clean Modal for Preview */}
       {previewPost && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#121316] border border-zinc-800 rounded-xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+          <div className="bg-[#16232A] border border-zinc-800 rounded-xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-zinc-850">
               <div>
                 <span className="text-xs font-mono text-zinc-400">{previewPost.platform}</span>

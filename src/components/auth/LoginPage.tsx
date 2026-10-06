@@ -65,11 +65,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#090A0C] text-zinc-100 flex flex-col justify-between selection:bg-zinc-800 selection:text-zinc-100 antialiased font-sans">
+    <div className="min-h-screen w-full bg-[#0A1114] text-zinc-100 flex flex-col justify-between selection:bg-zinc-800 selection:text-zinc-100 antialiased font-sans">
       {/* Top Subtle Nav */}
       <header className="w-full px-6 py-5 flex items-center justify-between border-b border-zinc-850">
         <div className="flex items-center gap-2.5">
-          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-[0_0_12px_rgba(99,102,241,0.4)]">
+          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-[0_0_12px_rgba(43,181,166,0.4)]">
             <svg
               className="w-3.5 h-3.5 text-white"
               viewBox="0 0 24 24"
@@ -131,7 +131,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
                     value={loginEmail}
                     onChange={e => setLoginEmail(e.target.value)}
                     required
-                    className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition"
+                    className="w-full bg-[#16232A] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition"
                     placeholder="name@himalayanguardian.org.np"
                   />
                 </div>
@@ -148,7 +148,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
                     value={loginPassword}
                     onChange={e => setLoginPassword(e.target.value)}
                     required
-                    className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition"
+                    className="w-full bg-[#16232A] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition"
                     placeholder="••••••••••••"
                   />
                 </div>
@@ -157,7 +157,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-2 px-4 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_0_12px_rgba(99,102,241,0.3)] flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                className="w-full py-2 px-4 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_0_12px_rgba(43,181,166,0.3)] flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
                 <span>{isLoading ? 'Verifying...' : 'Sign in'}</span>
                 {!isLoading && <ArrowRight className="w-3.5 h-3.5" />}
@@ -176,7 +176,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
                     value={fullName}
                     onChange={e => setFullName(e.target.value)}
                     required
-                    className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
+                    className="w-full bg-[#16232A] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
                     placeholder="Tenzing Sherpa"
                   />
                 </div>
@@ -193,7 +193,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
                     value={registerEmail}
                     onChange={e => setRegisterEmail(e.target.value)}
                     required
-                    className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
+                    className="w-full bg-[#16232A] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
                     placeholder="tenzing@himalayanguardian.org.np"
                   />
                 </div>
@@ -210,7 +210,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
                     value={registerPassword}
                     onChange={e => setRegisterPassword(e.target.value)}
                     required
-                    className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
+                    className="w-full bg-[#16232A] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
                     placeholder="Create password"
                   />
                 </div>
@@ -227,7 +227,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
                     value={confirmPassword}
                     onChange={e => setConfirmPassword(e.target.value)}
                     required
-                    className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
+                    className="w-full bg-[#16232A] border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
                     placeholder="Repeat password"
                   />
                 </div>
