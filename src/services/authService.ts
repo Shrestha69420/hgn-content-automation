@@ -1,5 +1,9 @@
 /**
- * Simple Authentication Service with SQLite Backend & Local Storage Sync
+ * Authentication service.
+ * Credentials are verified by the server, which issues an httpOnly session
+ * cookie. Nothing secret is stored in the browser: `localStorage` only caches
+ * the signed-in user's display profile, and the server is asked to confirm the
+ * session (`restoreSession`) every time the app loads.
  * Organization: Himalayan Guardian Nepal
  * Platform: HGN Marketing Hub
  */
@@ -8,208 +12,107 @@ export interface SimpleUser {
   id: string;
   name: string;
   email: string;
-  password?: string;
 }
 
-const STORAGE_KEY_USERS = 'hgn_registered_users';
 const STORAGE_KEY_SESSION = 'hgn_logged_in_user';
+export const UNAUTHORIZED_EVENT = 'hgn:unauthorized';
 
-// Initial default user if no users registered yet
-const DEFAULT_USER: SimpleUser = {
-  id: 'hgn-default-1',
-  name: 'HGN Marketing Specialist',
-  email: 'marketing@himalayanguardian.org.np',
-  password: 'password123',
-};
+type AuthResult = { success: boolean; user?: SimpleUser; error?: string };
+
+const toSimpleUser = (u: any): SimpleUser => ({ id: u.id, name: u.name, email: u.email });
+
+function cacheUser(user: SimpleUser | null): void {
+  try {
+    if (user) localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(user));
+    else localStorage.removeItem(STORAGE_KEY_SESSION);
+  } catch (e) {
+    console.warn('[authService] Could not update cached user', e);
+  }
+}
+
+async function postAuth(url: string, body: object): Promise<AuthResult> {
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success || !data.user) {
+      return { success: false, error: data.error || 'Request failed. Please try again.' };
+    }
+    const user = toSimpleUser(data.user);
+    cacheUser(user);
+    return { success: true, user };
+  } catch {
+    return { success: false, error: 'Cannot reach the server. Please check your connection and try again.' };
+  }
+}
 
 export const authService = {
-  /**
-   * Get all registered accounts from local storage
-   */
-  getRegisteredUsers(): SimpleUser[] {
-    try {
-      const data = localStorage.getItem(STORAGE_KEY_USERS);
-      if (data) {
-        return JSON.parse(data);
-      }
-    } catch (e) {
-      console.error('Error reading registered users', e);
-    }
-    // Seed default user if empty
-    const initial = [
-      DEFAULT_USER,
-      {
-        id: 'hgn-default-2',
-        name: 'Himalayan Guardian',
-        email: 'himalayanguardian@gmail.com',
-        password: 'password123',
-      }
-    ];
-    localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(initial));
-    return initial;
-  },
-
-  /**
-   * Create account (Register) - Persisted to SQLite backend + LocalStorage
-   */
-  async createAccount(
-    name: string,
-    email: string,
-    password: string,
-    confirmPassword: string
-  ): Promise<{ success: boolean; user?: SimpleUser; error?: string }> {
-    // 1. Check that all fields are filled
-    if (!name.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
+  async createAccount(name: string, email: string, password: string, confirmPassword: string): Promise<AuthResult> {
+    if (!name.trim() || !email.trim() || !password || !confirmPassword) {
       return { success: false, error: 'Please fill in all fields.' };
     }
-
-    // 2. Check that password and confirm password match
     if (password !== confirmPassword) {
       return { success: false, error: 'Passwords do not match.' };
     }
-
-    const trimmedEmail = email.trim().toLowerCase();
-
-    // 3. Try to register with SQLite backend
-    try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name.trim(),
-          email: trimmedEmail,
-          password: password.trim(),
-          confirmPassword: confirmPassword.trim(),
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        return { success: false, error: data.error || 'Registration failed.' };
-      }
-
-      const sessionData: SimpleUser = {
-        id: data.user.id,
-        name: data.user.name,
-        email: data.user.email,
-      };
-
-      // Save locally for fast re-entry
-      localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(sessionData));
-      const users = this.getRegisteredUsers();
-      users.push({ ...sessionData, password: password.trim() });
-      localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(users));
-
-      return { success: true, user: sessionData };
-    } catch (err) {
-      console.warn('[authService] Server register failed, falling back to local storage:', err);
-      // Offline fallback
-      const users = this.getRegisteredUsers();
-      const existing = users.find(u => u.email.toLowerCase() === trimmedEmail);
-      if (existing) {
-        return { success: false, error: 'An account with this email already exists.' };
-      }
-
-      const newUser: SimpleUser = {
-        id: `usr-${Date.now()}`,
-        name: name.trim(),
-        email: trimmedEmail,
-        password: password.trim(),
-      };
-
-      users.push(newUser);
-      localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(users));
-      const sessionData: SimpleUser = {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-      };
-      localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(sessionData));
-      return { success: true, user: sessionData };
+    if (password.length < 8) {
+      return { success: false, error: 'Password must be at least 8 characters.' };
     }
+    return postAuth('/api/auth/register', {
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      password,
+      confirmPassword,
+    });
   },
 
-  /**
-   * Log In - Authenticated with SQLite backend + LocalStorage
-   */
-  async login(
-    email: string,
-    password: string
-  ): Promise<{ success: boolean; user?: SimpleUser; error?: string }> {
-    const trimmedEmail = email.trim().toLowerCase();
-    const trimmedPassword = password.trim();
-
-    if (!trimmedEmail || !trimmedPassword) {
+  async login(email: string, password: string): Promise<AuthResult> {
+    if (!email.trim() || !password) {
       return { success: false, error: 'Invalid email or password.' };
     }
-
-    // 1. Try to log in with SQLite backend
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: trimmedEmail, password: trimmedPassword }),
-      });
-
-      const data = await res.json();
-      if (res.ok && data.success && data.user) {
-        const sessionData: SimpleUser = {
-          id: data.user.id,
-          name: data.user.name,
-          email: data.user.email,
-        };
-        localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(sessionData));
-        return { success: true, user: sessionData };
-      }
-    } catch (err) {
-      console.warn('[authService] Server login unreachable, trying local credentials:', err);
-    }
-
-    // 2. Check local accounts fallback
-    const users = this.getRegisteredUsers();
-    const matched = users.find(
-      u => u.email.toLowerCase() === trimmedEmail && u.password === trimmedPassword
-    );
-
-    if (matched) {
-      const sessionData: SimpleUser = {
-        id: matched.id,
-        name: matched.name,
-        email: matched.email,
-      };
-      localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(sessionData));
-      return { success: true, user: sessionData };
-    }
-
-    return { success: false, error: 'Invalid email or password.' };
+    return postAuth('/api/auth/login', { email: email.trim().toLowerCase(), password });
   },
 
-  /**
-   * Get current logged-in user from local storage
-   */
-  getCurrentUser(): SimpleUser | null {
+  /** Ask the server whether the session cookie is still valid. */
+  async restoreSession(): Promise<SimpleUser | null> {
+    if (!this.getCurrentUser()) return null; // never signed in on this browser: skip the request
     try {
-      const data = localStorage.getItem(STORAGE_KEY_SESSION);
-      if (data) {
-        return JSON.parse(data);
+      const res = await fetch('/api/auth/me');
+      if (res.ok) {
+        const data = await res.json();
+        const user = toSimpleUser(data.user);
+        cacheUser(user);
+        return user;
       }
-    } catch (e) {
-      console.error('Error reading current user session', e);
+      if (res.status === 401) cacheUser(null);
+    } catch {
+      // Server unreachable: keep the cached profile so the UI can render; API calls will still fail without a session.
+      return this.getCurrentUser();
     }
     return null;
   },
 
-  /**
-   * Check if authenticated
-   */
+  getCurrentUser(): SimpleUser | null {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY_SESSION);
+      return data ? JSON.parse(data) : null;
+    } catch {
+      return null;
+    }
+  },
+
   isAuthenticated(): boolean {
     return this.getCurrentUser() !== null;
   },
 
-  /**
-   * Logout
-   */
-  logout(): void {
-    localStorage.removeItem(STORAGE_KEY_SESSION);
+  async logout(): Promise<void> {
+    cacheUser(null);
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch {
+      /* cookie expires on its own */
+    }
   },
 };

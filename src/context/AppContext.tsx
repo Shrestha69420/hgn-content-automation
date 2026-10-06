@@ -169,8 +169,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem(STORAGE_KEY_USER, currentUser.id);
   }, [currentUser]);
 
-  // Initial load: Fetch directly from SQLite backend
+  // Load from the SQLite backend once signed in (the API requires a session)
   useEffect(() => {
+    if (!authUser) return;
     apiService.getCampaigns()
       .then(serverCampaigns => {
         if (Array.isArray(serverCampaigns) && serverCampaigns.length > 0) {
@@ -190,7 +191,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       .catch(err => {
         console.warn('[AppContext] Could not fetch posts from SQLite server:', err);
       });
-  }, []);
+  }, [authUser?.id]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);

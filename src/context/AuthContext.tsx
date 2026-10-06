@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authService, SimpleUser } from '../services/authService';
+import { authService, SimpleUser, UNAUTHORIZED_EVENT } from '../services/authService';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -19,15 +19,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return authService.isAuthenticated();
   });
 
+  // Confirm the cached profile against the server's session cookie, and sign out on any 401.
   useEffect(() => {
-    const user = authService.getCurrentUser();
-    if (user) {
+    let cancelled = false;
+    authService.restoreSession().then(user => {
+      if (cancelled) return;
       setCurrentUser(user);
-      setIsAuthenticated(true);
-    } else {
+      setIsAuthenticated(user !== null);
+    });
+
+    const onUnauthorized = () => {
+      authService.logout();
       setCurrentUser(null);
       setIsAuthenticated(false);
-    }
+    };
+    window.addEventListener(UNAUTHORIZED_EVENT, onUnauthorized);
+    return () => {
+      cancelled = true;
+      window.removeEventListener(UNAUTHORIZED_EVENT, onUnauthorized);
+    };
   }, []);
 
   const login = async (email: string, password: string) => {

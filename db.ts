@@ -12,6 +12,8 @@ import { DatabaseSync } from 'node:sqlite';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import crypto from 'node:crypto';
+import { hashPassword, isHashed } from './auth.js';
 import { INITIAL_USERS, INITIAL_CAMPAIGNS, INITIAL_POSTS } from './src/lib/initialData.js';
 import type { Campaign, ContentPost, UserProfile } from './src/types/index.js';
 
@@ -30,6 +32,15 @@ export const db = new DatabaseSync(dbPath);
 // Enable WAL mode for concurrent reads & writes and foreign keys
 db.exec('PRAGMA journal_mode = WAL;');
 db.exec('PRAGMA foreign_keys = ON;');
+
+/** Hash any password rows still stored as plaintext by older versions of the app. */
+function migratePlaintextPasswords(): void {
+  const rows = db.prepare('SELECT id, password FROM users').all() as { id: string; password: string | null }[];
+  const update = db.prepare('UPDATE users SET password = ? WHERE id = ?');
+  for (const r of rows) {
+    if (r.password && !isHashed(r.password)) update.run(hashPassword(r.password), r.id);
+  }
+}
 
 /**
  * Initialize database tables
@@ -97,6 +108,8 @@ export function initDb() {
     );
   `);
 
+  migratePlaintextPasswords();
+
   // Seed default users if empty
   const userCount = db.prepare('SELECT COUNT(*) as cnt FROM users').get() as { cnt: number };
   if (userCount.cnt === 0) {
@@ -104,13 +117,16 @@ export function initDb() {
       INSERT INTO users (id, name, email, password, role, department, avatar)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `);
+    // Demo accounts share this password. Override with DEMO_PASSWORD (min 8 chars) outside local dev.
+    const demoPassword = process.env.DEMO_PASSWORD && process.env.DEMO_PASSWORD.length >= 8 ? process.env.DEMO_PASSWORD : 'password123';
+    const demoHash = hashPassword(demoPassword);
 
     for (const u of INITIAL_USERS) {
       insertUser.run(
         u.id,
         u.name,
         u.email,
-        'password123',
+        demoHash,
         u.role || 'Marketing Officer',
         u.department || 'Digital Marketing & Community',
         u.avatar || ''
@@ -122,7 +138,7 @@ export function initDb() {
       'usr-default-marketing',
       'HGN Marketing Specialist',
       'marketing@himalayanguardian.org.np',
-      'password123',
+      demoHash,
       'Marketing Officer',
       'Digital Marketing & Community',
       'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
@@ -456,7 +472,7 @@ export function getUserByEmail(email: string): any {
 }
 
 export function createUser(user: { id?: string; name: string; email: string; password?: string; role?: string; department?: string; avatar?: string }): UserProfile {
-  const id = user.id || `usr-${Date.now()}`;
+  const id = user.id || `usr-${crypto.randomUUID()}`;
   const stmt = db.prepare(`
     INSERT INTO users (id, name, email, password, role, department, avatar)
     VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -466,7 +482,7 @@ export function createUser(user: { id?: string; name: string; email: string; pas
     id,
     user.name,
     user.email.toLowerCase(),
-    user.password || 'password123',
+    hashPassword(user.password || crypto.randomBytes(18).toString('base64url')),
     user.role || 'Marketing Officer',
     user.department || 'Digital Marketing & Community',
     user.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
@@ -516,4 +532,8 @@ export function resetDatabase(): void {
   `);
 
   initDb();
+}
+
+export function getUserById(id: string): any {
+  return db.prepare('SELECT * FROM users WHERE id = ?').get(id) as any;
 }

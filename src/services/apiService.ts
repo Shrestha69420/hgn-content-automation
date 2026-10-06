@@ -7,20 +7,28 @@
  */
 
 import { Campaign, ContentPost, UserProfile } from '../types';
+import { UNAUTHORIZED_EVENT } from './authService';
+
+/** fetch wrapper: a 401 anywhere signs the user out (see AuthContext). */
+export async function api(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+  const res = await fetch(input, init);
+  if (res.status === 401) window.dispatchEvent(new Event(UNAUTHORIZED_EVENT));
+  return res;
+}
 
 export const apiService = {
   // ---------------------------------------------------------------------------
   // CAMPAIGNS API
   // ---------------------------------------------------------------------------
   async getCampaigns(): Promise<Campaign[]> {
-    const res = await fetch('/api/campaigns');
+    const res = await api('/api/campaigns');
     if (!res.ok) throw new Error('Failed to fetch campaigns');
     const data = await res.json();
     return data.data;
   },
 
   async createCampaign(campaign: Omit<Campaign, 'id'>): Promise<Campaign> {
-    const res = await fetch('/api/campaigns', {
+    const res = await api('/api/campaigns', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(campaign),
@@ -31,7 +39,7 @@ export const apiService = {
   },
 
   async updateCampaign(id: string, updates: Partial<Campaign>): Promise<Campaign> {
-    const res = await fetch(`/api/campaigns/${encodeURIComponent(id)}`, {
+    const res = await api(`/api/campaigns/${encodeURIComponent(id)}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates),
@@ -42,7 +50,7 @@ export const apiService = {
   },
 
   async deleteCampaign(id: string): Promise<void> {
-    const res = await fetch(`/api/campaigns/${encodeURIComponent(id)}`, {
+    const res = await api(`/api/campaigns/${encodeURIComponent(id)}`, {
       method: 'DELETE',
     });
     if (!res.ok) throw new Error('Failed to delete campaign');
@@ -52,14 +60,14 @@ export const apiService = {
   // POSTS / CONTENT API
   // ---------------------------------------------------------------------------
   async getPosts(): Promise<ContentPost[]> {
-    const res = await fetch('/api/posts');
+    const res = await api('/api/posts');
     if (!res.ok) throw new Error('Failed to fetch posts');
     const data = await res.json();
     return data.data;
   },
 
   async createPost(post: any): Promise<ContentPost> {
-    const res = await fetch('/api/posts', {
+    const res = await api('/api/posts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(post),
@@ -70,7 +78,7 @@ export const apiService = {
   },
 
   async updatePost(id: string, updates: Partial<ContentPost>): Promise<ContentPost> {
-    const res = await fetch(`/api/posts/${encodeURIComponent(id)}`, {
+    const res = await api(`/api/posts/${encodeURIComponent(id)}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates),
@@ -81,14 +89,14 @@ export const apiService = {
   },
 
   async deletePost(id: string): Promise<void> {
-    const res = await fetch(`/api/posts/${encodeURIComponent(id)}`, {
+    const res = await api(`/api/posts/${encodeURIComponent(id)}`, {
       method: 'DELETE',
     });
     if (!res.ok) throw new Error('Failed to delete post');
   },
 
   async schedulePost(id: string, scheduledFor: string): Promise<ContentPost> {
-    const res = await fetch(`/api/posts/${encodeURIComponent(id)}/schedule`, {
+    const res = await api(`/api/posts/${encodeURIComponent(id)}/schedule`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ scheduledFor }),
@@ -99,7 +107,7 @@ export const apiService = {
   },
 
   async publishPost(id: string): Promise<ContentPost> {
-    const res = await fetch(`/api/posts/${encodeURIComponent(id)}/publish`, {
+    const res = await api(`/api/posts/${encodeURIComponent(id)}/publish`, {
       method: 'POST',
     });
     if (!res.ok) throw new Error('Failed to publish post');
@@ -111,14 +119,14 @@ export const apiService = {
   // USERS & AUTH API
   // ---------------------------------------------------------------------------
   async getUsers(): Promise<UserProfile[]> {
-    const res = await fetch('/api/users');
+    const res = await api('/api/users');
     if (!res.ok) throw new Error('Failed to fetch users');
     const data = await res.json();
     return data.data;
   },
 
   async registerUser(name: string, email: string, password: string, confirmPassword?: string): Promise<any> {
-    const res = await fetch('/api/auth/register', {
+    const res = await api('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password, confirmPassword }),
@@ -131,7 +139,7 @@ export const apiService = {
   },
 
   async loginUser(email: string, password: string): Promise<any> {
-    const res = await fetch('/api/auth/login', {
+    const res = await api('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -147,14 +155,14 @@ export const apiService = {
   // SETTINGS & RESET API
   // ---------------------------------------------------------------------------
   async getSettings(): Promise<Record<string, string>> {
-    const res = await fetch('/api/settings');
+    const res = await api('/api/settings');
     if (!res.ok) throw new Error('Failed to fetch settings');
     const data = await res.json();
     return data.data;
   },
 
   async saveSettings(settings: Record<string, string>): Promise<void> {
-    const res = await fetch('/api/settings', {
+    const res = await api('/api/settings', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(settings),
@@ -163,7 +171,7 @@ export const apiService = {
   },
 
   async resetDatabase(): Promise<void> {
-    const res = await fetch('/api/settings/reset', {
+    const res = await api('/api/settings/reset', {
       method: 'POST',
     });
     if (!res.ok) throw new Error('Failed to reset database');

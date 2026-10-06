@@ -3,15 +3,19 @@
 Each flow was exercised against the running app (Express + Vite on :3000, SQLite backend) on 2026-10-06. State is mirrored in `localStorage` and SQLite via `apiService`.
 
 ## 1. Landing and authentication
+Passwords are hashed (scrypt) on the server. Sign-in sets an httpOnly, SameSite session cookie that expires after 12 hours; the browser only caches the display profile (no password).
+
 | When the user... | Then... |
 |---|---|
 | Opens the app signed out | Landing page renders (`App.tsx`: not authenticated, or `activeModule === 'landing'`). |
 | Clicks **Sign in** or **Launch Platform** | Login modal opens with demo credentials pre-filled. |
-| Clicks **Sign In** with valid credentials | `POST /api/auth/login`; the session goes to `localStorage` (`hgn_logged_in_user`); the Overview dashboard opens. |
-| Enters wrong credentials | "Invalid email or password." |
-| Switches to **Create account** | Register form; empty fields or mismatched passwords give an inline error; a duplicate email is rejected by the server. |
-| Server unreachable | Login/register fall back to `localStorage` accounts. |
-| Clicks the sign-out icon (Header) | Session cleared, toast, landing page. |
+| Clicks **Sign In** with valid credentials | `POST /api/auth/login` sets the session cookie; the Overview dashboard opens; campaigns and posts load from the server. |
+| Enters wrong credentials | "Invalid email or password." (more than 20 attempts per 15 minutes per IP gets 429). |
+| Switches to **Create account** | Server validates name, email and password (8+ characters); mismatched passwords or a duplicate email show an inline error. Registration signs the user in. Set `ALLOW_REGISTRATION=false` to disable it. |
+| Reloads the page | `GET /api/auth/me` confirms the cookie; if it is invalid the user lands on the landing page. |
+| Any API call returns 401 (expired or cleared session) | The user is signed out automatically and sent to the landing page. |
+| Server unreachable at login | "Cannot reach the server." There is no offline login any more. |
+| Clicks the sign-out icon (Header) | `POST /api/auth/logout` clears the cookie, toast, landing page. |
 | Clicks **Landing Page** (Header) or **Product Landing** (Sidebar) | `activeModule = 'landing'`. |
 
 ## 1b. Theme
@@ -64,21 +68,22 @@ Platform tabs and the **+ Append CTA / Brand Tag / Keyword / Standard Hashtags**
 
 ## Remaining to be fixed
 
-### Security (highest priority)
-1. **Plaintext passwords.** They are stored and compared as plain text in SQLite (`db.ts`, `server.ts`), and seeded defaults use `password123`. Hash them (argon2 or bcrypt).
-2. **No server-side auth.** Every `/api/*` route is open, including `DELETE` and `POST /api/settings/reset` (wipes the DB). The "session" is a JSON blob in `localStorage`. Add server-issued sessions or JWTs plus middleware.
-3. **`GET /api/users`** is unauthenticated and should never return password fields.
-4. **No input validation** on request bodies, and `/api/generate-content` interpolates raw fields into the prompt. Add schema validation and rate limiting (the endpoint can run up Gemini cost).
-5. **Errors leak.** Handlers return `e.message` with a 500.
-6. **API key in `.env.example`.** The local uncommitted edit contains a real-looking Gemini key. Revert it and rotate the key.
-7. **Offline login fallback** accepts `localStorage` credentials, which bypasses the server entirely.
+### Security: done
+Plaintext passwords (now scrypt hashes; legacy rows are migrated at startup), open API (session cookie required on everything except health/login/register), input validation on campaigns, posts, schedule, settings and registration, generic 500 messages, rate limits on auth and AI generation, prompt-field sanitising, offline login fallback removed, `localStorage` no longer holds credentials.
+
+### Security: still open
+1. **API key in `.env.example`.** The local uncommitted edit contains a real-looking Gemini key. Revert it, put the key in `.env`, and rotate it if it is real.
+2. **Demo accounts** are seeded with the shared password `password123` (the login modal pre-fills it). Set `DEMO_PASSWORD` before the first run outside local dev, or delete the demo users.
+3. **No roles.** Any signed-in user can delete data or reset the database (`POST /api/settings/reset`). Add an admin role and restrict reset and user listing.
+4. **Set `SESSION_SECRET`** (16+ characters) in production. Without it a random secret is generated per start and everyone is signed out on restart. Set `ALLOW_REGISTRATION=false` once accounts exist.
+5. Rate limits are in memory (per process); use a shared store if you run several instances. Add HTTPS in production (the cookie is `Secure` when `NODE_ENV=production`).
 
 ### Correctness
 8. **Optimistic updates never roll back.** `AppContext.tsx` updates the UI first and only logs failed API calls, so UI and database can silently diverge.
-9. **Gemini model id** `gemini-3.8-flash` is hardcoded in two places in `server.ts`. I have not verified it is a valid model id, and any failure silently falls back to templates. Make the model configurable and surface the failure.
+9. **Gemini model id** `gemini-3.8-flash` is now overridable with `GEMINI_MODEL`, but I have not verified it is a valid model id, and any failure silently falls back to templates. Surface the failure (the response `source` field shows which engine answered).
 10. **Fallback drafts score low** (about 20/100 for the Twitter template) under the 7-rule engine. Rewrite the templates to pass the rules.
 11. **"Publish" only changes a status.** Nothing is sent to a social network.
-12. **Ids** use `Date.now()` and can collide. Use `crypto.randomUUID()`.
+12. **Client ids** (`camp-`/`post-hg-` + `Date.now()`) can still collide. The server now uses `crypto.randomUUID()` for ids it creates.
 13. **`node:sqlite`** needs a recent Node (22.5 or later). Add an `engines` field.
 
 ### Maintenance

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { api } from '../../services/apiService';
 import { toScoringPlatform } from '../../lib/qualityScoringEngine';
 import {
   Sparkles,
@@ -192,7 +193,7 @@ export const GeneratorModule: React.FC = () => {
     const selectedCampaign = campaigns.find(c => c.id === selectedCampaignId);
 
     try {
-      const response = await fetch('/api/generate-content', {
+      const response = await api('/api/generate-content', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
