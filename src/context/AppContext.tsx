@@ -16,8 +16,10 @@ import {
 } from '../lib/initialData';
 import { evaluateContentQuality } from '../lib/qualityScoringEngine';
 import { useAuth } from './AuthContext';
+import { apiService } from '../services/apiService';
 
 export type ActiveModule =
+  | 'landing'
   | 'dashboard'
   | 'campaigns'
   | 'generator'
@@ -152,6 +154,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem(STORAGE_KEY_USER, currentUser.id);
   }, [currentUser]);
 
+  // Initial load: Fetch directly from SQLite backend
+  useEffect(() => {
+    apiService.getCampaigns()
+      .then(serverCampaigns => {
+        if (Array.isArray(serverCampaigns) && serverCampaigns.length > 0) {
+          setCampaigns(serverCampaigns);
+        }
+      })
+      .catch(err => {
+        console.warn('[AppContext] Could not fetch campaigns from SQLite server:', err);
+      });
+
+    apiService.getPosts()
+      .then(serverPosts => {
+        if (Array.isArray(serverPosts) && serverPosts.length > 0) {
+          setPosts(serverPosts);
+        }
+      })
+      .catch(err => {
+        console.warn('[AppContext] Could not fetch posts from SQLite server:', err);
+      });
+  }, []);
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => {
@@ -174,16 +199,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
     setCampaigns(prev => [newCamp, ...prev]);
     showToast(`Campaign "${newCamp.name}" successfully created!`);
+    apiService.createCampaign(newCamp).catch(err => {
+      console.warn('Could not persist new campaign to SQLite server:', err);
+    });
   };
 
   const updateCampaign = (id: string, updates: Partial<Campaign>) => {
     setCampaigns(prev => prev.map(c => (c.id === id ? { ...c, ...updates } : c)));
     showToast('Campaign updated successfully.');
+    apiService.updateCampaign(id, updates).catch(err => {
+      console.warn('Could not persist updated campaign to SQLite server:', err);
+    });
   };
 
   const deleteCampaign = (id: string) => {
     setCampaigns(prev => prev.filter(c => c.id !== id));
     showToast('Campaign archived.');
+    apiService.deleteCampaign(id).catch(err => {
+      console.warn('Could not delete campaign on SQLite server:', err);
+    });
   };
 
   const evaluatePostContent = (
@@ -222,10 +256,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     setPosts(prev => [newPost, ...prev]);
     showToast(`Content saved to Library! Quality Score: ${report.overallScore}/100 (${report.letterGrade})`);
+    apiService.createPost(newPost).catch(err => {
+      console.warn('Could not persist new post to SQLite server:', err);
+    });
     return newPost;
   };
 
   const updatePost = (id: string, updates: Partial<ContentPost>) => {
+    let updatedPostToSave: ContentPost | null = null;
     setPosts(prev =>
       prev.map(p => {
         if (p.id !== id) return p;
@@ -249,15 +287,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             },
           ];
         }
+        updatedPostToSave = updated;
         return updated;
       })
     );
     showToast('Post updated and re-evaluated.');
+    if (updatedPostToSave) {
+      apiService.updatePost(id, updatedPostToSave).catch(err => {
+        console.warn('Could not persist updated post to SQLite server:', err);
+      });
+    }
   };
 
   const deletePost = (id: string) => {
     setPosts(prev => prev.filter(p => p.id !== id));
     showToast('Post removed from Library.');
+    apiService.deletePost(id).catch(err => {
+      console.warn('Could not delete post on SQLite server:', err);
+    });
   };
 
   const schedulePost = (id: string, scheduledFor: string) => {
@@ -273,6 +320,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       )
     );
     showToast(`Post scheduled for ${new Date(scheduledFor).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}`);
+    apiService.schedulePost(id, scheduledFor).catch(err => {
+      console.warn('Could not schedule post on SQLite server:', err);
+    });
   };
 
   const publishPostNow = (id: string) => {
@@ -288,6 +338,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       )
     );
     showToast('Content marked as published to live channel!');
+    apiService.publishPost(id).catch(err => {
+      console.warn('Could not publish post on SQLite server:', err);
+    });
   };
 
   const transferToQualityScorer = (draft: any) => {

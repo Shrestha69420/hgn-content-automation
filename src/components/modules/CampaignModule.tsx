@@ -54,7 +54,8 @@ export const CampaignModule: React.FC = () => {
     const matchesSearch =
       c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       c.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.description.toLowerCase().includes(searchQuery.toLowerCase());
+      c.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      c.safetyFocus.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesSeason && matchesSearch;
   });
 
@@ -100,52 +101,50 @@ export const CampaignModule: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Top Header & Search Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-800/60">
         <div>
-          <div className="flex items-center gap-2">
-            <Compass className="w-5 h-5 text-amber-400" />
-            <h1 className="text-xl font-bold text-white font-serif">
-              Campaign Management & Safety Objectives
-            </h1>
-          </div>
-          <p className="text-xs text-slate-400 mt-1">
-            Organize seasonal trekking safety initiatives, emergency helicopter insurance drives, and eco-tourism campaigns for Himalayan Guardian Nepal.
+          <h1 className="text-xl font-semibold text-white tracking-tight">
+            Safety Campaigns & Objectives
+          </h1>
+          <p className="text-xs text-zinc-400 mt-0.5">
+            Seasonal trekking advisories, emergency insurance awareness, and regional trail initiatives.
           </p>
         </div>
 
         <button
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs shadow-md shadow-amber-500/20 active:scale-95 transition"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(99,102,241,0.25)] border border-indigo-400/30 self-start sm:self-auto cursor-pointer"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-3.5 h-3.5" />
           <span>New Campaign</span>
         </button>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-        <div className="flex items-center gap-2 flex-1 min-w-[240px]">
-          <Search className="w-4 h-4 text-slate-400" />
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+        {/* Search */}
+        <div className="relative flex-1 max-w-md">
+          <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search campaigns by name, code (e.g. HG-EBC-SP26), or safety focus..."
+            placeholder="Search campaigns, codes, or safety focus..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full bg-transparent text-xs text-slate-200 placeholder-slate-500 focus:outline-none"
+            className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40"
           />
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-400">Season:</span>
+        {/* Segmented Season Filter */}
+        <div className="flex items-center gap-1 overflow-x-auto pb-1 md:pb-0">
           {['All', 'Autumn Peak', 'Spring Everest', 'Monsoon Safety', 'Winter High-Pass'].map(season => (
             <button
               key={season}
               onClick={() => setFilterSeason(season)}
-              className={`px-3 py-1 rounded-lg text-xs font-medium transition ${
+              className={`px-2.5 py-1 rounded-md text-xs whitespace-nowrap transition cursor-pointer ${
                 filterSeason === season
-                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                  ? 'bg-indigo-500/15 text-indigo-200 border border-indigo-500/30 font-medium'
+                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850/50'
               }`}
             >
               {season}
@@ -154,262 +153,230 @@ export const CampaignModule: React.FC = () => {
         </div>
       </div>
 
-      {/* Campaign Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {filteredCampaigns.map(camp => {
-          const linkedPosts = posts.filter(p => p.campaignId === camp.id);
-          const reachPct = Math.min(
-            100,
-            Math.round((camp.kpis.currentReach / Math.max(1, camp.kpis.targetReach)) * 100)
-          );
+      {/* Campaigns List (Card-less Unified Table Surface) */}
+      <div className="border border-zinc-800/80 rounded-lg bg-[#0E1013] divide-y divide-zinc-850/80 overflow-hidden">
+        {filteredCampaigns.length === 0 ? (
+          <div className="p-8 text-center text-xs text-zinc-500">
+            No matching campaigns found.
+          </div>
+        ) : (
+          filteredCampaigns.map(camp => {
+            const linkedPosts = posts.filter(p => p.campaignId === camp.id);
+            const reachPct = Math.min(
+              100,
+              Math.round((camp.kpis.currentReach / Math.max(1, camp.kpis.targetReach)) * 100)
+            );
 
-          return (
-            <div
-              key={camp.id}
-              className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between hover:border-slate-700 transition shadow-lg"
-            >
-              <div>
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs text-amber-400 bg-amber-950/70 px-2 py-0.5 rounded border border-amber-800/40">
+            return (
+              <div
+                key={camp.id}
+                className="p-5 hover:bg-zinc-850/30 transition flex flex-col gap-3.5"
+              >
+                <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
+                  <div className="space-y-1 flex-1">
+                    <div className="flex items-center gap-2 text-[11px]">
+                      <span className="font-mono text-zinc-300 font-medium">
                         {camp.code}
                       </span>
-                      <span className="text-[10px] font-semibold text-slate-400">
-                        {camp.season}
-                      </span>
-                      <span className="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">
-                        {camp.category}
+                      <span className="text-zinc-600">•</span>
+                      <span className="text-zinc-400">{camp.season}</span>
+                      <span className="text-zinc-600">•</span>
+                      <span className="text-zinc-400">{camp.category}</span>
+                      <span className="text-zinc-600">•</span>
+                      <span className="flex items-center gap-1.5 text-zinc-400 font-medium">
+                        <span className={`w-1.5 h-1.5 rounded-full ${camp.status === 'Active' ? 'bg-emerald-400' : 'bg-zinc-500'}`} />
+                        {camp.status}
                       </span>
                     </div>
-                    <h3 className="font-bold text-white text-base mt-2 font-serif">
+
+                    <h2 className="text-base font-medium text-white tracking-tight">
                       {camp.name}
-                    </h3>
+                    </h2>
+
+                    <p className="text-xs text-zinc-400 leading-relaxed max-w-3xl">
+                      {camp.description}
+                    </p>
+
+                    <p className="text-xs text-zinc-500 pt-1">
+                      <span className="text-zinc-400 font-medium">Safety Focus: </span>
+                      {camp.safetyFocus}
+                    </p>
                   </div>
 
-                  <span
-                    className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
-                      camp.status === 'Active'
-                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                        : 'bg-slate-800 text-slate-400'
-                    }`}
-                  >
-                    {camp.status}
-                  </span>
-                </div>
-
-                <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                  {camp.description}
-                </p>
-
-                {/* Safety Pillar Badge */}
-                <div className="mt-3 p-2.5 rounded-lg bg-red-950/20 border border-red-900/30 text-xs text-red-200 flex items-start gap-2">
-                  <Target className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-red-300">Safety Pillar: </span>
-                    <span>{camp.safetyFocus}</span>
-                  </div>
-                </div>
-
-                {/* Meta details */}
-                <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-slate-400 font-mono">
-                  <div className="flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-slate-500" />
-                    <span>{camp.startDate} → {camp.endDate}</span>
-                  </div>
-                  <div className="text-right">
-                    Budget: NPR {camp.budgetNPR.toLocaleString()}
-                  </div>
-                </div>
-
-                {/* Target channels */}
-                <div className="mt-3 flex items-center gap-1.5">
-                  <span className="text-[11px] text-slate-400">Channels:</span>
-                  {camp.targetChannels.map(ch => (
-                    <span
-                      key={ch}
-                      className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono"
+                  {/* Actions & Channels */}
+                  <div className="flex flex-col md:items-end gap-2.5 shrink-0">
+                    <button
+                      onClick={() => handleLaunchGeneratorForCampaign(camp)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-800 hover:bg-zinc-750 text-zinc-200 hover:text-white border border-zinc-700/60 text-xs font-medium transition cursor-pointer"
                     >
-                      {ch}
+                      <Sparkles className="w-3.5 h-3.5 text-zinc-300" />
+                      <span>Draft Post</span>
+                    </button>
+
+                    <div className="flex items-center gap-1.5">
+                      {camp.targetChannels.map(ch => (
+                        <span
+                          key={ch}
+                          className="text-[10px] px-2 py-0.5 rounded bg-zinc-800/60 text-zinc-400 border border-zinc-700/40"
+                        >
+                          {ch}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Metric Summary Bar */}
+                <div className="pt-3 border-t border-zinc-850/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-zinc-400">
+                  <div className="flex items-center gap-4 font-mono text-[11px]">
+                    <span>Timeline: {camp.startDate} → {camp.endDate}</span>
+                    <span>Budget: NPR {camp.budgetNPR.toLocaleString()}</span>
+                    <span>Posts: {linkedPosts.length} created</span>
+                  </div>
+
+                  {/* Reach Progress */}
+                  <div className="flex items-center gap-3 sm:w-64">
+                    <div className="flex-1 bg-zinc-800 rounded-full h-1.5 overflow-hidden">
+                      <div
+                        className="bg-indigo-500 h-1.5 rounded-full"
+                        style={{ width: `${reachPct}%` }}
+                      />
+                    </div>
+                    <span className="font-mono text-[11px] text-indigo-400 shrink-0 font-medium">
+                      {reachPct}% reach
                     </span>
-                  ))}
+                  </div>
                 </div>
               </div>
-
-              {/* Progress & Actions */}
-              <div className="mt-5 pt-4 border-t border-slate-800">
-                <div className="mb-3">
-                  <div className="flex justify-between text-xs font-mono mb-1">
-                    <span className="text-slate-400">Reach Goal Progress</span>
-                    <span className="text-amber-400 font-bold">
-                      {camp.kpis.currentReach.toLocaleString()} / {camp.kpis.targetReach.toLocaleString()} ({reachPct}%)
-                    </span>
-                  </div>
-                  <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                    <div
-                      className="bg-gradient-to-r from-amber-500 to-amber-400 h-full rounded-full"
-                      style={{ width: `${reachPct}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-1.5 text-slate-400 font-mono">
-                    <Layers className="w-3.5 h-3.5" />
-                    <span>{linkedPosts.length} posts created</span>
-                  </div>
-
-                  <button
-                    onClick={() => handleLaunchGeneratorForCampaign(camp)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 font-medium text-xs border border-amber-500/30 transition"
-                  >
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>Generate AI Content</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
 
-      {/* Create Campaign Modal */}
+      {/* Minimal Create Campaign Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-2xl shadow-2xl p-6 overflow-hidden">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-800">
-              <div className="flex items-center gap-2">
-                <Compass className="w-5 h-5 text-amber-400" />
-                <h3 className="font-bold text-white text-base font-serif">
-                  Create Himalayan Marketing & Safety Campaign
-                </h3>
-              </div>
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#121316] border border-zinc-800 rounded-xl max-w-xl w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+              <h3 className="text-sm font-semibold text-white">
+                Create Safety Marketing Campaign
+              </h3>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white"
+                className="text-zinc-500 hover:text-zinc-300"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleCreateCampaign} className="space-y-4 mt-4 text-xs">
+            <form onSubmit={handleCreateCampaign} className="space-y-3.5 text-xs">
               <div>
-                <label className="block text-slate-300 font-medium mb-1">
-                  Campaign Title *
+                <label className="block text-zinc-300 font-medium mb-1">
+                  Campaign Title
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Langtang Valley Monsoon Preparedness & Landslide Safety"
+                  placeholder="e.g. Winter High-Pass Safety & Microspikes Drive"
                   value={newCampaign.name}
                   onChange={e => setNewCampaign({ ...newCampaign, name: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:border-amber-400 focus:outline-none"
+                  className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-medium mb-1">
+                  <label className="block text-zinc-300 font-medium mb-1">
                     Campaign Code
                   </label>
                   <input
                     type="text"
                     value={newCampaign.code}
                     onChange={e => setNewCampaign({ ...newCampaign, code: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-200 font-mono"
+                    className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-300 font-medium mb-1">
-                    Season Window
+                  <label className="block text-zinc-300 font-medium mb-1">
+                    Season
                   </label>
                   <select
                     value={newCampaign.season}
-                    onChange={e =>
-                      setNewCampaign({ ...newCampaign, season: e.target.value as any })
-                    }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-200"
+                    onChange={e => setNewCampaign({ ...newCampaign, season: e.target.value as any })}
+                    className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
                   >
-                    <option value="Autumn Peak">Autumn Peak (Sep - Nov)</option>
-                    <option value="Spring Everest">Spring Everest (Mar - May)</option>
-                    <option value="Monsoon Safety">Monsoon Safety (Jun - Aug)</option>
-                    <option value="Winter High-Pass">Winter High-Pass (Dec - Feb)</option>
+                    <option value="Autumn Peak">Autumn Peak</option>
+                    <option value="Spring Everest">Spring Everest</option>
+                    <option value="Monsoon Safety">Monsoon Safety</option>
+                    <option value="Winter High-Pass">Winter High-Pass</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">
-                  Description & Strategic Intent
+                <label className="block text-zinc-300 font-medium mb-1">
+                  Description
                 </label>
                 <textarea
                   rows={2}
-                  placeholder="Summary of objectives, regulatory announcements, or safety advisory..."
                   value={newCampaign.description}
-                  onChange={e =>
-                    setNewCampaign({ ...newCampaign, description: e.target.value })
-                  }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:border-amber-400 focus:outline-none"
+                  onChange={e => setNewCampaign({ ...newCampaign, description: e.target.value })}
+                  placeholder="Operational mandate, safety guidelines, target routes..."
+                  className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">
-                  Primary Mountain Safety Pillar
+                <label className="block text-zinc-300 font-medium mb-1">
+                  Safety Protocol Focus
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Hypothermia prevention, emergency pulse oximetry, avalanche warning"
                   value={newCampaign.safetyFocus}
-                  onChange={e =>
-                    setNewCampaign({ ...newCampaign, safetyFocus: e.target.value })
-                  }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-200"
+                  onChange={e => setNewCampaign({ ...newCampaign, safetyFocus: e.target.value })}
+                  placeholder="e.g. AMS symptoms, helicopter evacuation coverage, guide permits..."
+                  className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 focus:outline-none focus:border-zinc-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-medium mb-1">
-                    Target Reach Goal
-                  </label>
-                  <input
-                    type="number"
-                    value={newCampaign.targetReach}
-                    onChange={e =>
-                      setNewCampaign({ ...newCampaign, targetReach: Number(e.target.value) })
-                    }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-200 font-mono"
-                  />
-                </div>
-                <div>
-                  <label className="block text-slate-300 font-medium mb-1">
+                  <label className="block text-zinc-300 font-medium mb-1">
                     Budget (NPR)
                   </label>
                   <input
                     type="number"
                     value={newCampaign.budgetNPR}
-                    onChange={e =>
-                      setNewCampaign({ ...newCampaign, budgetNPR: Number(e.target.value) })
-                    }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-200 font-mono"
+                    onChange={e => setNewCampaign({ ...newCampaign, budgetNPR: Number(e.target.value) })}
+                    className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-zinc-300 font-medium mb-1">
+                    Target Reach
+                  </label>
+                  <input
+                    type="number"
+                    value={newCampaign.targetReach}
+                    onChange={e => setNewCampaign({ ...newCampaign, targetReach: Number(e.target.value) })}
+                    className="w-full bg-[#0E1013] border border-zinc-800 rounded-md p-2 text-zinc-200 font-mono focus:outline-none focus:border-zinc-500"
                   />
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-800 flex items-center justify-end gap-2">
+              <div className="pt-3 flex items-center justify-end gap-2 border-t border-zinc-800">
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-medium"
+                  className="px-3 py-1.5 rounded-md text-zinc-400 hover:text-zinc-200 text-xs transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-lg transition"
+                  className="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition shadow-[0_1px_10px_rgba(99,102,241,0.25)]"
                 >
-                  Create Campaign
+                  Save Campaign
                 </button>
               </div>
             </form>

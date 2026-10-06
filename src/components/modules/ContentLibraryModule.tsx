@@ -3,16 +3,14 @@ import { useApp } from '../../context/AppContext';
 import {
   Layers,
   Search,
-  Award,
   Sparkles,
-  Calendar,
   Send,
   Trash2,
   Copy,
   Check,
   Eye,
   X,
-  History
+  Clock
 } from 'lucide-react';
 import { ContentPost, ContentStatus, Platform } from '../../types';
 
@@ -49,7 +47,7 @@ export const ContentLibraryModule: React.FC = () => {
     navigator.clipboard.writeText(text);
     setCopiedId(post.id);
     setTimeout(() => setCopiedId(null), 2000);
-    showToast('Copied content to clipboard!');
+    showToast('Copied content to clipboard.');
   };
 
   const handleEditAndEvaluate = (post: ContentPost) => {
@@ -63,209 +61,172 @@ export const ContentLibraryModule: React.FC = () => {
       campaignId: post.campaignId,
       campaignName: post.campaignName,
       visualPrompt: post.visualPrompt,
+      primaryKeyword: post.primaryKeyword,
+      objective: post.objective,
     });
   };
 
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-800/60">
         <div>
-          <div className="flex items-center gap-2">
-            <Layers className="w-5 h-5 text-amber-400" />
-            <h1 className="text-xl font-bold text-white font-serif">
-              Content Library & Asset Archive
-            </h1>
-            <span className="text-xs bg-slate-800 text-slate-300 font-mono px-2 py-0.5 rounded">
-              {posts.length} Total Posts
-            </span>
-          </div>
-          <p className="text-xs text-slate-400 mt-1">
-            Central repository of all Himalayan Guardian safety advisories, marketing campaigns, and scheduled social media releases.
+          <h1 className="text-xl font-semibold text-white tracking-tight">
+            Content Library & Repository
+          </h1>
+          <p className="text-xs text-zinc-400 mt-0.5">
+            Archived and scheduled advisories, campaign releases, and safety broadcasts.
           </p>
         </div>
 
         <button
           onClick={() => setActiveModule('generator')}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs shadow-md shadow-amber-500/20 active:scale-95 transition"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(99,102,241,0.25)] border border-indigo-400/30 cursor-pointer self-start sm:self-auto"
         >
-          <Sparkles className="w-4 h-4" />
-          <span>Create New Content</span>
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>New Content Draft</span>
         </button>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-slate-900/70 border border-slate-800 p-4 rounded-xl space-y-3">
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-2 flex-1 bg-slate-950 px-3 py-2 rounded-lg border border-slate-800">
-            <Search className="w-4 h-4 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search content by keyword, topic, campaign, or #hashtag..."
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              className="w-full bg-transparent text-xs text-slate-200 placeholder-slate-500 focus:outline-none"
-            />
-          </div>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+        {/* Search */}
+        <div className="relative flex-1 max-w-md">
+          <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Search by title, body, campaign, or hashtags..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            className="w-full bg-[#121316] border border-zinc-800 rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500"
+          />
+        </div>
 
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-slate-400">Platform:</span>
-            <select
-              value={platformFilter}
-              onChange={e => setPlatformFilter(e.target.value)}
-              className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200"
+        {/* Status Filter */}
+        <div className="flex items-center gap-1 overflow-x-auto pb-1 md:pb-0">
+          {['All', 'Draft', 'Approved', 'Scheduled', 'Published'].map(status => (
+            <button
+              key={status}
+              onClick={() => setStatusFilter(status)}
+              className={`px-2.5 py-1 rounded-md text-xs whitespace-nowrap transition cursor-pointer ${
+                statusFilter === status
+                  ? 'bg-indigo-500/15 text-indigo-200 border border-indigo-500/30 font-medium'
+                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850/50'
+              }`}
             >
-              <option value="All">All Platforms</option>
-              <option value="Instagram">Instagram</option>
-              <option value="LinkedIn">LinkedIn</option>
-              <option value="Facebook">Facebook</option>
-              <option value="Twitter">Twitter / X</option>
-              <option value="Blog">Blog</option>
-            </select>
-          </div>
-
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-slate-400">Status:</span>
-            <select
-              value={statusFilter}
-              onChange={e => setStatusFilter(e.target.value)}
-              className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200"
-            >
-              <option value="All">All Statuses</option>
-              <option value="Published">Published</option>
-              <option value="Scheduled">Scheduled</option>
-              <option value="Approved">Approved</option>
-              <option value="In Review">In Review</option>
-              <option value="Draft">Draft</option>
-            </select>
-          </div>
+              {status}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Posts Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* Table / List Surface (Zero Card Soup) */}
+      <div className="border border-zinc-800/80 rounded-lg bg-[#0E1013] divide-y divide-zinc-850/80 overflow-hidden">
         {filteredPosts.length === 0 ? (
-          <div className="col-span-full py-16 text-center text-slate-500 text-xs">
-            No content matches the selected filters.
+          <div className="p-12 text-center text-xs text-zinc-500">
+            No matching posts found in library.
           </div>
         ) : (
           filteredPosts.map(post => {
-            const score = post.qualityReport?.overallScore || 70;
-            const letterGrade = post.qualityReport?.letterGrade || 'B';
-
-            let statusColor = 'bg-slate-800 text-slate-400';
-            if (post.status === 'Published') statusColor = 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
-            else if (post.status === 'Scheduled') statusColor = 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30';
-            else if (post.status === 'Approved') statusColor = 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30';
-            else if (post.status === 'In Review') statusColor = 'bg-amber-500/20 text-amber-300 border border-amber-500/30';
+            const score = post.qualityReport?.overallScore ?? post.deterministicScoreResult?.totalScore ?? 85;
 
             return (
               <div
                 key={post.id}
-                className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between hover:border-slate-700 transition shadow-lg group"
+                className="p-4 hover:bg-zinc-850/30 transition flex flex-col md:flex-row md:items-center justify-between gap-4"
               >
-                <div>
-                  {/* Card Header */}
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-mono text-[11px] font-bold text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/40">
-                        {post.platform}
-                      </span>
-                      <span className="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded truncate max-w-[130px]">
-                        {post.category}
-                      </span>
-                    </div>
-
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${statusColor}`}>
+                {/* Content Info */}
+                <div className="space-y-1 flex-1 min-w-0">
+                  <div className="flex items-center gap-2 text-[11px]">
+                    <span className="font-medium text-zinc-300">
+                      {post.platform}
+                    </span>
+                    <span className="text-zinc-600">•</span>
+                    <span className="text-zinc-400 truncate max-w-xs">
+                      {post.campaignName}
+                    </span>
+                    <span className="text-zinc-600">•</span>
+                    <span className="flex items-center gap-1 font-medium text-zinc-400">
+                      <span className={`w-1.5 h-1.5 rounded-full ${
+                        post.status === 'Published'
+                          ? 'bg-emerald-400'
+                          : post.status === 'Scheduled'
+                          ? 'bg-amber-400'
+                          : 'bg-zinc-500'
+                      }`} />
                       {post.status}
                     </span>
                   </div>
 
-                  {/* Title & Campaign */}
-                  <h3 className="font-bold text-white text-sm line-clamp-2 mt-2 group-hover:text-amber-300 transition">
+                  <h3 className="text-sm font-medium text-white truncate">
                     {post.title}
                   </h3>
-                  <p className="text-[11px] text-slate-400 font-mono mt-0.5 truncate">
-                    {post.campaignName}
-                  </p>
 
-                  {/* Content Preview */}
-                  <p className="text-xs text-slate-300 line-clamp-3 mt-2.5 leading-relaxed">
+                  <p className="text-xs text-zinc-400 line-clamp-1 leading-relaxed">
                     {post.content}
                   </p>
 
-                  {/* Hashtags */}
-                  <div className="flex flex-wrap gap-1 mt-3">
-                    {post.hashtags.slice(0, 3).map((tag, i) => (
-                      <span key={i} className="text-[10px] text-sky-400 font-mono bg-sky-950/40 px-1.5 py-0.5 rounded">
-                        {tag}
-                      </span>
-                    ))}
-                    {post.hashtags.length > 3 && (
-                      <span className="text-[10px] text-slate-500 font-mono">
-                        +{post.hashtags.length - 3}
-                      </span>
+                  <div className="flex items-center gap-3 pt-1 text-[11px] text-zinc-500 font-mono">
+                    <span>Score: <strong className="text-zinc-300 font-medium">{score}/100</strong></span>
+                    <span>•</span>
+                    <span>Author: {post.author || 'Staff'}</span>
+                    {post.scheduledFor && (
+                      <>
+                        <span>•</span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3 text-zinc-400" />
+                          {new Date(post.scheduledFor).toLocaleDateString()}
+                        </span>
+                      </>
                     )}
                   </div>
                 </div>
 
-                {/* Card Footer: Deterministic Score + Actions */}
-                <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-1.5">
-                    <div className="flex items-center gap-1 px-2 py-0.5 rounded bg-slate-950 border border-slate-800">
-                      <Award className="w-3.5 h-3.5 text-cyan-400" />
-                      <span className="font-mono font-bold text-amber-400 text-xs">
-                        {score}
-                      </span>
-                      <span className="text-[10px] font-mono text-slate-400">
-                        ({letterGrade})
-                      </span>
-                    </div>
-                  </div>
+                {/* Inline Action Buttons */}
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    onClick={() => setPreviewPost(post)}
+                    className="p-1.5 rounded text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition"
+                    title="View Full Post"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                  </button>
 
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={() => setPreviewPost(post)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
-                      title="Quick Preview"
-                    >
-                      <Eye className="w-3.5 h-3.5" />
-                    </button>
-
-                    <button
-                      onClick={() => handleCopyPost(post)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
-                      title="Copy Content"
-                    >
-                      {copiedId === post.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                    </button>
-
-                    <button
-                      onClick={() => handleEditAndEvaluate(post)}
-                      className="px-2 py-1 rounded-lg bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-800/40 text-cyan-300 text-[11px] font-semibold transition"
-                      title="Inspect in Quality Engine"
-                    >
-                      Score
-                    </button>
-
-                    {post.status !== 'Published' && (
-                      <button
-                        onClick={() => publishPostNow(post.id)}
-                        className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-950 transition"
-                        title="Publish Live"
-                      >
-                        <Send className="w-3.5 h-3.5" />
-                      </button>
+                  <button
+                    onClick={() => handleCopyPost(post)}
+                    className="p-1.5 rounded text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition"
+                    title="Copy Text"
+                  >
+                    {copiedId === post.id ? (
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    ) : (
+                      <Copy className="w-3.5 h-3.5" />
                     )}
+                  </button>
 
+                  <button
+                    onClick={() => handleEditAndEvaluate(post)}
+                    className="px-2.5 py-1 text-xs rounded border border-zinc-800 hover:border-zinc-700 bg-zinc-900/60 hover:bg-zinc-850 text-zinc-300 transition"
+                  >
+                    Inspect
+                  </button>
+
+                  {post.status !== 'Published' && (
                     <button
-                      onClick={() => deletePost(post.id)}
-                      className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 transition"
-                      title="Delete Post"
+                      onClick={() => publishPostNow(post.id)}
+                      className="px-2.5 py-1 text-xs rounded bg-zinc-800 hover:bg-zinc-750 text-zinc-200 hover:text-white transition"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      Publish
                     </button>
-                  </div>
+                  )}
+
+                  <button
+                    onClick={() => deletePost(post.id)}
+                    className="p-1.5 rounded text-zinc-500 hover:text-red-400 hover:bg-zinc-800 transition"
+                    title="Delete post"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
             );
@@ -273,90 +234,41 @@ export const ContentLibraryModule: React.FC = () => {
         )}
       </div>
 
-      {/* Preview Modal */}
+      {/* Clean Modal for Preview */}
       {previewPost && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-2xl shadow-2xl p-6 overflow-hidden">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-xs text-amber-400 font-mono bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800/40">
-                  {previewPost.platform}
-                </span>
-                <span className="text-xs text-slate-400">
-                  {previewPost.campaignName}
-                </span>
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#121316] border border-zinc-800 rounded-xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-850">
+              <div>
+                <span className="text-xs font-mono text-zinc-400">{previewPost.platform}</span>
+                <h3 className="text-sm font-semibold text-white mt-0.5">{previewPost.title}</h3>
               </div>
               <button
                 onClick={() => setPreviewPost(null)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white"
+                className="text-zinc-500 hover:text-zinc-300"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="space-y-4 mt-4 text-xs">
-              <h2 className="text-base font-bold text-white font-serif">
-                {previewPost.title}
-              </h2>
-
-              <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-slate-200 leading-relaxed whitespace-pre-line font-sans">
-                {previewPost.content}
-              </div>
-
-              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-slate-400 font-medium">CTA: </span>
-                <span className="text-amber-300 font-semibold">{previewPost.callToAction}</span>
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {previewPost.hashtags.map((tag, i) => (
-                    <span key={i} className="text-[10px] text-sky-400 font-mono bg-sky-950/60 px-1.5 py-0.5 rounded">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Version History Audit Trail */}
-              {previewPost.versionHistory && (
-                <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
-                  <div className="flex items-center gap-1.5 text-slate-400 font-bold mb-2">
-                    <History className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Editorial Revision & Quality Audit History:</span>
-                  </div>
-                  <div className="space-y-1.5">
-                    {previewPost.versionHistory.map((h, i) => (
-                      <div key={i} className="text-[11px] flex justify-between text-slate-300 border-l-2 border-amber-500/40 pl-2">
-                        <span>{h.summary} ({h.editor})</span>
-                        <span className="font-mono text-amber-400 font-bold">{h.score}/100</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+            <div className="max-h-96 overflow-y-auto space-y-3 text-xs leading-relaxed text-zinc-300 whitespace-pre-line font-sans">
+              <p>{previewPost.content}</p>
+              {previewPost.callToAction && (
+                <p className="text-zinc-400 font-medium">{previewPost.callToAction}</p>
               )}
+              {previewPost.hashtags && previewPost.hashtags.length > 0 && (
+                <p className="font-mono text-zinc-400">{previewPost.hashtags.join(' ')}</p>
+              )}
+            </div>
 
-              <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                <button
-                  onClick={() => {
-                    handleCopyPost(previewPost);
-                  }}
-                  className="px-3 py-1.5 bg-slate-800 text-slate-200 rounded-lg flex items-center gap-1.5"
-                >
-                  <Copy className="w-3.5 h-3.5" />
-                  <span>Copy Text</span>
-                </button>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => {
-                      const p = previewPost;
-                      setPreviewPost(null);
-                      handleEditAndEvaluate(p);
-                    }}
-                    className="px-4 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold rounded-lg transition"
-                  >
-                    Open in Quality Scorer
-                  </button>
-                </div>
-              </div>
+            <div className="pt-3 border-t border-zinc-850 flex items-center justify-between text-xs">
+              <span className="text-zinc-500 font-mono">Status: {previewPost.status}</span>
+              <button
+                onClick={() => setPreviewPost(null)}
+                className="px-3 py-1.5 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>

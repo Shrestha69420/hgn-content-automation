@@ -2,10 +2,9 @@ import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { useAuth } from '../../context/AuthContext';
 import {
-  ShieldAlert,
   Sparkles,
-  PhoneCall,
   LogOut,
+  Globe,
   Radio
 } from 'lucide-react';
 
@@ -14,106 +13,86 @@ export const Header: React.FC = () => {
   const { currentUser, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 text-slate-100">
-      {/* Top Urgent Emergency Alert Bar */}
-      <div className="bg-gradient-to-r from-red-950 via-slate-900 to-amber-950 px-4 py-1.5 text-xs flex flex-wrap items-center justify-between border-b border-red-900/30">
-        <div className="flex items-center gap-2">
-          <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-          </span>
-          <span className="font-semibold text-red-400 uppercase tracking-wider text-[11px] flex items-center gap-1">
-            <ShieldAlert className="w-3.5 h-3.5 text-red-400" />
-            Live Trail Dispatch:
-          </span>
-          <span className="text-slate-300 hidden md:inline">
-            Khumbu: High Season Fair • Thorong La Pass: Sub-zero advisory (-14°C) • Heli Evacuation: On Standby
-          </span>
-        </div>
-
-        <div className="flex items-center gap-3 ml-auto">
-          <div className="flex items-center gap-1.5 text-amber-300 font-mono text-[11px] bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/40">
-            <PhoneCall className="w-3 h-3 text-amber-400" />
-            <span>24/7 SOS: +977-1-4412345</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-emerald-400 text-[11px] bg-emerald-950/50 px-2 py-0.5 rounded border border-emerald-800/40 font-mono">
-            <Radio className="w-3 h-3 text-emerald-400 animate-pulse" />
-            <span>Operations: Online</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main App Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand & Organization Title */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 via-red-600 to-sky-700 flex items-center justify-center shadow-lg shadow-amber-900/20 ring-2 ring-amber-500/30">
-            <svg
-              className="w-6 h-6 text-white"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              {/* Himalayan peak & safety shield icon */}
-              <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" />
-              <path d="M7 14l3.5-4.5L13 12l4-5" />
-            </svg>
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-base tracking-tight text-white font-serif">
-                HIMALAYAN GUARDIAN
+    <header className="sticky top-0 z-40 bg-[#0E1013]/95 backdrop-blur-md border-b border-zinc-800/80 text-zinc-100">
+      {/* Main Single-Height Clean Header (No Top Operations Bar) */}
+      <div className="px-5 sm:px-8 h-14 flex items-center justify-between">
+        {/* Brand & Organization */}
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setActiveModule('dashboard')}
+            className="flex items-center gap-2.5 text-left cursor-pointer group focus:outline-none"
+          >
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-[0_0_14px_rgba(99,102,241,0.35)] transition group-hover:scale-105">
+              <svg
+                className="w-4 h-4 text-white"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4 15c2.5-4 5.5-4 8 0s5.5 4 8 0" />
+                <path d="M4 9c2.5-4 5.5-4 8 0s5.5 4 8 0" />
+              </svg>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <span className="font-semibold text-sm tracking-tight text-white font-sans">
+                Campaign Flow
               </span>
-              <span className="bg-red-500/20 text-red-300 text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border border-red-500/30">
-                NEPAL
+              <span className="text-[11px] text-zinc-500 font-normal hidden sm:inline">
+                Himalayan Guardian Nepal
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 truncate max-w-xs sm:max-w-md">
-              Marketing Automation Platform • HGN Marketing Hub
-            </p>
+          </button>
+
+          <div className="hidden lg:flex items-center gap-1.5 pl-3 border-l border-zinc-850 text-[11px] font-mono text-zinc-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span>SQLite Active</span>
           </div>
         </div>
 
-        {/* Action Controls & User Switcher */}
-        <div className="flex items-center gap-2.5">
-          {/* Quick AI Generator Launch */}
+        {/* Action Controls & User */}
+        <div className="flex items-center gap-3">
+          {/* Landing Page Link */}
+          <button
+            onClick={() => setActiveModule('landing')}
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850/60 text-xs font-medium transition cursor-pointer"
+            title="View Public Product Landing Page"
+          >
+            <Globe className="w-3.5 h-3.5 text-indigo-400" />
+            <span>Landing Page</span>
+          </button>
+
+          {/* Quick AI Generator Launch with Accent Styling */}
           <button
             onClick={() => setActiveModule('generator')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 text-xs font-bold transition shadow-md shadow-amber-500/20 active:scale-95"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(99,102,241,0.25)] border border-indigo-400/30 active:scale-[0.98] cursor-pointer"
           >
-            <Sparkles className="w-3.5 h-3.5 text-slate-950" />
-            <span>AI Content Generator</span>
+            <Sparkles className="w-3.5 h-3.5 text-indigo-200" />
+            <span>New Post Draft</span>
           </button>
 
           {/* User Profile / Logout Action */}
-          <div className="flex items-center gap-3 pl-2 sm:pl-3 border-l border-slate-800">
+          <div className="flex items-center gap-2.5 pl-3 border-l border-zinc-800">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-500/20 to-amber-700/20 border border-amber-500/40 text-amber-300 flex items-center justify-center font-bold text-xs font-mono shrink-0">
+              <div className="w-6 h-6 rounded-full bg-indigo-950/60 border border-indigo-500/30 text-indigo-200 flex items-center justify-center font-medium text-xs font-mono shrink-0">
                 {(currentUser?.name || 'H')[0]?.toUpperCase() || 'U'}
               </div>
-              <div className="hidden sm:block leading-tight text-left">
-                <div className="font-semibold text-xs text-slate-200 truncate max-w-[140px]">
-                  {currentUser?.name || 'User'}
-                </div>
-                <div className="text-[10px] text-slate-400 font-mono truncate max-w-[140px]">
-                  {currentUser?.email || ''}
-                </div>
-              </div>
+              <span className="hidden sm:inline font-normal text-xs text-zinc-300 truncate max-w-[120px]">
+                {currentUser?.name || 'User'}
+              </span>
             </div>
 
             <button
               onClick={() => {
                 logout();
-                showToast('Logged out of HGN Marketing Hub.');
+                showToast('Signed out of Campaign Flow.');
               }}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-red-950/60 hover:text-red-300 border border-slate-700 hover:border-red-800/60 text-slate-300 text-xs font-medium transition cursor-pointer"
-              title="Logout"
+              className="p-1.5 text-zinc-400 hover:text-zinc-200 rounded-md transition cursor-pointer"
+              title="Sign out"
             >
-              <LogOut className="w-3.5 h-3.5 text-red-400" />
-              <span className="hidden md:inline">Logout</span>
+              <LogOut className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>

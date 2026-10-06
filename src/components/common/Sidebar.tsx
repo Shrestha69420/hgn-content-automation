@@ -9,16 +9,14 @@ import {
   Calendar,
   BarChart3,
   Settings,
-  Radio
+  Globe
 } from 'lucide-react';
 
 interface NavItem {
   id: ActiveModule;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
-  badge?: string;
-  badgeColor?: string;
-  highlight?: boolean;
+  badge?: string | number;
 }
 
 export const Sidebar: React.FC = () => {
@@ -27,44 +25,36 @@ export const Sidebar: React.FC = () => {
   const navItems: NavItem[] = [
     {
       id: 'dashboard',
-      label: 'Dashboard',
+      label: 'Overview',
       icon: LayoutDashboard,
     },
     {
       id: 'campaigns',
       label: 'Campaigns',
       icon: Target,
-      badge: `${campaigns.filter(c => c.status === 'Active').length} Active`,
-      badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+      badge: campaigns.filter(c => c.status === 'Active').length || undefined,
     },
     {
       id: 'generator',
-      label: 'AI Content Generator',
+      label: 'AI Generator',
       icon: Sparkles,
-      badge: 'Assisted',
-      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
     },
     {
       id: 'quality-score',
-      label: 'Content Quality',
+      label: 'Quality Scorer',
       icon: Award,
-      badge: 'Standards',
-      badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
-      highlight: true,
     },
     {
       id: 'library',
       label: 'Content Library',
       icon: Layers,
-      badge: `${posts.length}`,
-      badgeColor: 'bg-slate-700 text-slate-300',
+      badge: posts.length || undefined,
     },
     {
       id: 'calendar',
-      label: 'Content Calendar',
+      label: 'Editorial Calendar',
       icon: Calendar,
-      badge: `${posts.filter(p => p.status === 'Scheduled').length} Queue`,
-      badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
+      badge: posts.filter(p => p.status === 'Scheduled').length || undefined,
     },
     {
       id: 'analytics',
@@ -79,15 +69,14 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0 min-h-[calc(100vh-68px)]">
-      {/* Navigation Header */}
-      <div className="p-4 border-b border-slate-800/80">
-        <p className="text-[10px] font-semibold text-slate-400 tracking-wider uppercase font-mono">
-          Marketing Modules
+    <aside className="w-56 bg-[#0E1013] border-r border-zinc-800/80 flex flex-col shrink-0 min-h-[calc(100vh-56px)] select-none">
+      <div className="px-3 pt-4 pb-2">
+        <p className="px-2 text-[10px] font-semibold text-zinc-500 uppercase tracking-wider font-mono">
+          Workspace
         </p>
       </div>
 
-      <nav className="p-3 space-y-1.5 flex-1">
+      <nav className="px-2 space-y-0.5 flex-1">
         {navItems.map(item => {
           const Icon = item.icon;
           const isActive = activeModule === item.id;
@@ -96,29 +85,27 @@ export const Sidebar: React.FC = () => {
             <button
               key={item.id}
               onClick={() => setActiveModule(item.id)}
-              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all group ${
+              className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30 shadow-sm'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-800/70 border border-transparent'
-              } ${item.highlight && !isActive ? 'ring-1 ring-cyan-500/20 bg-cyan-950/20 text-cyan-200' : ''}`}
+                  ? 'bg-indigo-500/10 text-indigo-100 border-l-2 border-indigo-500 font-medium shadow-[inset_0_0_12px_rgba(99,102,241,0.06)]'
+                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850/50'
+              }`}
             >
-              <div className="flex items-center gap-3 truncate">
+              <div className="flex items-center gap-2.5 truncate">
                 <Icon
-                  className={`w-4 h-4 transition-transform group-hover:scale-110 ${
-                    isActive
-                      ? 'text-amber-400'
-                      : item.highlight
-                      ? 'text-cyan-400'
-                      : 'text-slate-400 group-hover:text-slate-200'
+                  className={`w-4 h-4 shrink-0 transition-colors ${
+                    isActive ? 'text-indigo-400' : 'text-zinc-500'
                   }`}
                 />
                 <span className="truncate">{item.label}</span>
               </div>
 
-              {item.badge && (
+              {item.badge !== undefined && (
                 <span
-                  className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
-                    item.badgeColor || 'bg-slate-800 text-slate-400 border-slate-700'
+                  className={`text-[10px] font-mono tabular-nums px-1.5 py-0.2 rounded ${
+                    isActive
+                      ? 'text-indigo-300 bg-indigo-500/20'
+                      : 'text-zinc-500 bg-zinc-850'
                   }`}
                 >
                   {item.badge}
@@ -127,28 +114,39 @@ export const Sidebar: React.FC = () => {
             </button>
           );
         })}
+
+        <div className="pt-3 mt-3 border-t border-zinc-850/80">
+          <p className="px-2 pb-1.5 text-[10px] font-semibold text-zinc-600 uppercase tracking-wider font-mono">
+            Public View
+          </p>
+          <button
+            onClick={() => setActiveModule('landing')}
+            className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs transition-all cursor-pointer ${
+              activeModule === 'landing'
+                ? 'bg-indigo-500/10 text-indigo-100 border-l-2 border-indigo-500 font-medium'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850/50'
+            }`}
+          >
+            <div className="flex items-center gap-2.5 truncate">
+              <Globe
+                className={`w-4 h-4 shrink-0 transition-colors ${
+                  activeModule === 'landing' ? 'text-indigo-400' : 'text-zinc-500'
+                }`}
+              />
+              <span className="truncate">Product Landing</span>
+            </div>
+            <span className="text-[10px] font-mono text-zinc-600">Preview</span>
+          </button>
+        </div>
       </nav>
 
-      {/* Operations Status in Sidebar Footer */}
-      <div className="p-3.5 border-t border-slate-800 bg-slate-950/60 m-2 rounded-xl">
-        <div className="flex items-start gap-2.5">
-          <div className="p-1.5 rounded-lg bg-emerald-950 border border-emerald-800 text-emerald-400 shrink-0">
-            <Radio className="w-4 h-4 animate-pulse" />
-          </div>
-          <div className="flex-1">
-            <p className="text-[11px] font-bold text-emerald-300">
-              Operations Center
-            </p>
-            <p className="text-[10px] text-slate-400 mt-0.5 leading-snug">
-              Kathmandu Dispatch & Social Media Telemetry Active.
-            </p>
-          </div>
+      {/* Subtle Telemetry Footer */}
+      <div className="p-3 border-t border-zinc-850/80 flex items-center justify-between text-[11px] text-zinc-500">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+          <span className="font-mono text-xs text-zinc-400">Campaign Flow</span>
         </div>
-      </div>
-
-      {/* Organization Footer Tag */}
-      <div className="p-3 text-[10px] text-slate-500 font-mono text-center border-t border-slate-800/60">
-        Himalayan Guardian Nepal • HGN Marketing Hub
+        <span className="font-mono text-[10px] text-zinc-600">v2.4</span>
       </div>
     </aside>
   );

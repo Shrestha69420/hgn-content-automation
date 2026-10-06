@@ -4,8 +4,8 @@ import { authService, SimpleUser } from '../services/authService';
 interface AuthContextType {
   isAuthenticated: boolean;
   currentUser: SimpleUser | null;
-  login: (email: string, password: string) => { success: boolean; error?: string };
-  createAccount: (name: string, email: string, password: string, confirmPassword: string) => { success: boolean; error?: string };
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  createAccount: (name: string, email: string, password: string, confirmPassword: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
 }
 
@@ -30,8 +30,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = (email: string, password: string) => {
-    const result = authService.login(email, password);
+  const login = async (email: string, password: string) => {
+    const result = await authService.login(email, password);
     if (result.success && result.user) {
       setCurrentUser(result.user);
       setIsAuthenticated(true);
@@ -40,8 +40,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { success: false, error: result.error || 'Invalid email or password.' };
   };
 
-  const createAccount = (name: string, email: string, password: string, confirmPassword: string) => {
-    const result = authService.createAccount(name, email, password, confirmPassword);
+  const createAccount = async (name: string, email: string, password: string, confirmPassword: string) => {
+    const result = await authService.createAccount(name, email, password, confirmPassword);
     if (result.success && result.user) {
       setCurrentUser(result.user);
       setIsAuthenticated(true);

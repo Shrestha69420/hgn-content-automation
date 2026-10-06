@@ -3,6 +3,27 @@ import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import {
+  initDb,
+  getAllCampaigns,
+  getCampaignById,
+  insertCampaign,
+  updateCampaign,
+  deleteCampaign,
+  getAllPosts,
+  getPostById,
+  insertPost,
+  updatePost,
+  deletePost,
+  schedulePost,
+  publishPost,
+  getAllUsers,
+  getUserByEmail,
+  createUser,
+  getSettings,
+  saveSettings,
+  resetDatabase,
+} from './db.js';
 
 dotenv.config();
 
@@ -14,6 +35,9 @@ async function startServer() {
   const PORT = Number(process.env.PORT) || 3000;
 
   app.use(express.json({ limit: '10mb' }));
+
+  // Initialize SQLite database
+  initDb();
 
   // Initialize Gemini API if key is present
   const apiKey = process.env.GEMINI_API_KEY;
@@ -135,8 +159,224 @@ Respond with a JSON object in this exact structure:
       organization: 'Himalayan Guardian Nepal',
       geminiActive: !!ai,
       model: 'gemini-3.8-flash',
+      database: 'SQLite (data/hgn.db)',
       timestamp: new Date().toISOString(),
     });
+  });
+
+  // ---------------------------------------------------------------------------
+  // REST API: Campaigns (SQLite)
+  // ---------------------------------------------------------------------------
+  app.get('/api/campaigns', (_req, res) => {
+    try {
+      const campaigns = getAllCampaigns();
+      res.json({ success: true, data: campaigns });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.get('/api/campaigns/:id', (req, res) => {
+    try {
+      const campaign = getCampaignById(req.params.id);
+      if (!campaign) return res.status(404).json({ success: false, error: 'Campaign not found' });
+      res.json({ success: true, data: campaign });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.post('/api/campaigns', (req, res) => {
+    try {
+      const c = req.body;
+      if (!c.id) c.id = `camp-${Date.now()}`;
+      const created = insertCampaign(c);
+      res.status(201).json({ success: true, data: created });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.put('/api/campaigns/:id', (req, res) => {
+    try {
+      const updated = updateCampaign(req.params.id, req.body);
+      if (!updated) return res.status(404).json({ success: false, error: 'Campaign not found' });
+      res.json({ success: true, data: updated });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.delete('/api/campaigns/:id', (req, res) => {
+    try {
+      deleteCampaign(req.params.id);
+      res.json({ success: true, message: 'Campaign deleted' });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  // ---------------------------------------------------------------------------
+  // REST API: Posts / Content (SQLite)
+  // ---------------------------------------------------------------------------
+  app.get('/api/posts', (_req, res) => {
+    try {
+      const posts = getAllPosts();
+      res.json({ success: true, data: posts });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.get('/api/posts/:id', (req, res) => {
+    try {
+      const post = getPostById(req.params.id);
+      if (!post) return res.status(404).json({ success: false, error: 'Post not found' });
+      res.json({ success: true, data: post });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.post('/api/posts', (req, res) => {
+    try {
+      const p = req.body;
+      if (!p.id) p.id = `post-${Date.now()}`;
+      const created = insertPost(p);
+      res.status(201).json({ success: true, data: created });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.put('/api/posts/:id', (req, res) => {
+    try {
+      const updated = updatePost(req.params.id, req.body);
+      if (!updated) return res.status(404).json({ success: false, error: 'Post not found' });
+      res.json({ success: true, data: updated });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.delete('/api/posts/:id', (req, res) => {
+    try {
+      deletePost(req.params.id);
+      res.json({ success: true, message: 'Post deleted' });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.post('/api/posts/:id/schedule', (req, res) => {
+    try {
+      const { scheduledFor } = req.body;
+      const updated = schedulePost(req.params.id, scheduledFor);
+      if (!updated) return res.status(404).json({ success: false, error: 'Post not found' });
+      res.json({ success: true, data: updated });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.post('/api/posts/:id/publish', (req, res) => {
+    try {
+      const updated = publishPost(req.params.id);
+      if (!updated) return res.status(404).json({ success: false, error: 'Post not found' });
+      res.json({ success: true, data: updated });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  // ---------------------------------------------------------------------------
+  // REST API: Authentication & Users (SQLite)
+  // ---------------------------------------------------------------------------
+  app.get('/api/users', (_req, res) => {
+    try {
+      const users = getAllUsers();
+      res.json({ success: true, data: users });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.post('/api/auth/register', (req, res) => {
+    try {
+      const { name, email, password, confirmPassword } = req.body;
+      if (!name?.trim() || !email?.trim() || !password?.trim()) {
+        return res.status(400).json({ success: false, error: 'All fields are required' });
+      }
+      if (confirmPassword && password !== confirmPassword) {
+        return res.status(400).json({ success: false, error: 'Passwords do not match' });
+      }
+      const existing = getUserByEmail(email.trim());
+      if (existing) {
+        return res.status(400).json({ success: false, error: 'An account with this email already exists' });
+      }
+      const created = createUser({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        password: password.trim(),
+      });
+      res.status(201).json({ success: true, user: created });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.post('/api/auth/login', (req, res) => {
+    try {
+      const { email, password } = req.body;
+      if (!email?.trim() || !password?.trim()) {
+        return res.status(400).json({ success: false, error: 'Email and password are required' });
+      }
+      const user = getUserByEmail(email.trim());
+      if (!user || user.password !== password.trim()) {
+        return res.status(401).json({ success: false, error: 'Invalid email or password' });
+      }
+      const userSession = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        department: user.department,
+        avatar: user.avatar,
+      };
+      res.json({ success: true, user: userSession });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  // ---------------------------------------------------------------------------
+  // REST API: Settings & Database Reset (SQLite)
+  // ---------------------------------------------------------------------------
+  app.get('/api/settings', (_req, res) => {
+    try {
+      const settings = getSettings();
+      res.json({ success: true, data: settings });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.put('/api/settings', (req, res) => {
+    try {
+      saveSettings(req.body);
+      res.json({ success: true, message: 'Settings saved' });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.post('/api/settings/reset', (_req, res) => {
+    try {
+      resetDatabase();
+      res.json({ success: true, message: 'Database reset to default seed data' });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
   });
 
   // Connect Vite in development or serve static in production
