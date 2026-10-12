@@ -18,21 +18,59 @@ export const db = new DatabaseSync(path.join(dataDir, 'hgn.db'));
 db.exec('PRAGMA journal_mode = WAL;');
 db.exec('PRAGMA foreign_keys = ON;');
 
-export const SAMPLE_BRAND: Brand = {
-  id: 'brand-sample',
-  name: 'Sample Brand',
-  tagline: 'Edit this brand profile to match yours',
-  industry: 'General',
-  voice: 'Friendly, clear and confident. Short sentences. No jargon.',
-  audience: 'Curious people who follow the brand on Instagram',
-  website: '',
-  handle: '',
-  colors: { primary: '#2bb5a6', accent: '#f2a93b', background: '#0a1114', text: '#ffffff' },
-  hashtags: [],
-  cta: 'Follow for more.',
-  avoid: [],
-  topics: ['Tips', 'Behind the scenes', 'News'],
-};
+export const SEED_BRANDS: Brand[] = [
+  {
+    id: 'brand-sample',
+    name: 'Growth Studio (any company)',
+    tagline: 'Marketing content for any business',
+    industry: 'General business marketing: product launches, offers, customer stories, tips',
+    voice: 'Confident, clear and benefit-led. Short sentences, active verbs, one idea per slide. No jargon or hype.',
+    audience: 'Prospective customers and small-business owners who follow the company on Instagram',
+    region: 'Global',
+    keywords: ['small business marketing', 'social media trends', 'consumer trends'],
+    website: '',
+    handle: '',
+    colors: { primary: '#4f46e5', accent: '#f59e0b', background: '#0f172a', text: '#ffffff' },
+    hashtags: [],
+    cta: 'Learn more at the link in bio.',
+    avoid: ['guaranteed results', 'get rich quick', 'best in the world'],
+    topics: ['Product highlights', 'Customer stories', 'Offers and launches', 'Tips and how-tos'],
+  },
+  {
+    id: 'brand-education',
+    name: 'BrightPath Learning (education)',
+    tagline: 'Learn something useful every day',
+    industry: 'Education content: study tips, exam preparation, career guidance, explainers',
+    voice: 'Encouraging, clear and curious. Explain ideas simply with one example. Never talk down to the learner.',
+    audience: 'Students aged 15-25 and early-career learners',
+    region: 'South Asia',
+    keywords: ['exam season', 'scholarships', 'study techniques', 'online learning', 'career skills'],
+    website: '',
+    handle: '',
+    colors: { primary: '#2563eb', accent: '#facc15', background: '#0b1b3a', text: '#ffffff' },
+    hashtags: ['#studytips', '#learning'],
+    cta: 'Save this for revision and share it with a study buddy.',
+    avoid: ['guaranteed pass', 'cheat', 'shortcut to success'],
+    topics: ['Study techniques', 'Exam preparation', 'Career guidance', 'Quick explainers'],
+  },
+  {
+    id: 'brand-himalayan-guardian',
+    name: 'Himalayan Guardian Nepal (sample)',
+    tagline: 'Trek prepared. Trek protected.',
+    industry: 'Trekking safety, emergency coordination and tourism protection in Nepal',
+    voice: 'Authoritative yet warm. Practical safety guidance, no fear-mongering. Short, factual sentences.',
+    audience: 'International trekkers, adventure travellers and trekking agencies planning Nepal trips',
+    region: 'Nepal (Everest, Annapurna, Langtang, Manaslu regions)',
+    keywords: ['Nepal trekking season', 'altitude sickness', 'trekking permits TIMS', 'Nepal weather advisory', 'Nepal tourism news'],
+    website: 'https://www.himalayanguardian.org.np',
+    handle: '@himalayanguardian',
+    colors: { primary: '#2bb5a6', accent: '#f2a93b', background: '#0a1114', text: '#ffffff' },
+    hashtags: ['#HimalayanGuardian', '#TrekNepal', '#TrekSafe'],
+    cta: 'Travel prepared with Himalayan Guardian Nepal.',
+    avoid: ['100% safe', 'risk-free', 'guaranteed rescue', 'medical advice'],
+    topics: ['Altitude awareness', 'Trekking preparation', 'Seasonal advisories', 'Emergency readiness'],
+  },
+];
 
 function migratePlaintextPasswords(): void {
   const rows = db.prepare('SELECT id, password FROM users').all() as { id: string; password: string | null }[];
@@ -92,8 +130,14 @@ export function initDb() {
     createUser({ name: 'Demo Marketer', email: 'demo@campaignflow.app', password: demoPassword });
   }
 
-  const brandCount = db.prepare('SELECT COUNT(*) as cnt FROM brands').get() as { cnt: number };
-  if (brandCount.cnt === 0) insertBrand(SAMPLE_BRAND);
+  seedBrands();
+}
+
+/** Adds the sample brands that are missing; upgrades the original blank "Sample Brand" in place. */
+function seedBrands(): void {
+  const old = getBrandById('brand-sample');
+  if (old && old.name === 'Sample Brand') updateBrand('brand-sample', SEED_BRANDS[0]);
+  for (const b of SEED_BRANDS) if (!getBrandById(b.id)) insertBrand(b);
 }
 
 // -----------------------------------------------------------------------------

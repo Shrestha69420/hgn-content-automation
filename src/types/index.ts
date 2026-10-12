@@ -19,6 +19,8 @@ export interface Brand {
   industry: string;
   voice: string; // tone description
   audience: string;
+  region?: string; // where the audience is; scopes news, seasons and holidays
+  keywords?: string[]; // search terms for trend research
   website: string;
   handle: string; // social handle
   colors: { primary: string; accent: string; background: string; text: string };
@@ -112,6 +114,7 @@ export interface IdeasResult {
   ideas: Idea[];
   avoidNow: string[];
   sources: { title: string; url: string }[];
+  searches?: string[]; // web queries Gemini actually ran
   source: string;
 }
 

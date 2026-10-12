@@ -65,6 +65,10 @@ export const BrandsModule: React.FC = () => {
         <Card title="Voice and rules">
           <div className="space-y-3">
             <div><Label>Voice</Label><textarea rows={3} className={inputCls} value={form.voice} onChange={e => set({ voice: e.target.value })} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><Label hint="Scopes news, seasons and holidays">Region / market</Label><input className={inputCls} value={form.region || ''} onChange={e => set({ region: e.target.value })} placeholder="e.g. Nepal, or Global" /></div>
+              <div><Label hint="Used for web research">Research keywords</Label><input className={inputCls} value={(form.keywords || []).join(', ')} onChange={e => set({ keywords: list(e.target.value, /,/) })} /></div>
+            </div>
             <div><Label>Audience</Label><textarea rows={2} className={inputCls} value={form.audience} onChange={e => set({ audience: e.target.value })} /></div>
             <div><Label>Content pillars (comma separated)</Label><input className={inputCls} value={form.topics.join(', ')} onChange={e => set({ topics: list(e.target.value, /,/) })} /></div>
             <div><Label>Never say (comma separated)</Label><input className={inputCls} value={form.avoid.join(', ')} onChange={e => set({ avoid: list(e.target.value, /,/) })} /></div>

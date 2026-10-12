@@ -20,6 +20,8 @@ function brandBrief(b: Brand): string {
     `Industry: ${b.industry}`,
     `Voice: ${b.voice}`,
     `Audience: ${b.audience}`,
+    b.region ? `Region / market: ${b.region}` : '',
+    b.keywords?.length ? `Research keywords: ${b.keywords.join(', ')}` : '',
     b.topics.length ? `Content pillars: ${b.topics.join(', ')}` : '',
     b.avoid.length ? `Never use or mention: ${b.avoid.join(', ')}` : '',
     `Brand colors: primary ${b.colors.primary}, accent ${b.colors.accent}, background ${b.colors.background}`,
@@ -60,7 +62,7 @@ export async function researchIdeas(brand: Brand, focus: string, platform: strin
   if (!ai) return fallbackIdeas(brand);
   const response = await ai.models.generateContent({
     model: config.models.research,
-    contents: `Today is ${today}. Search the web for what is happening RIGHT NOW that matters to this brand's audience on ${platform}: current news, trending topics, seasonal moments, upcoming dates, and anything sensitive (tragedies, controversies) the brand should stay away from.
+    contents: `Today is ${today}. Search the web for what is happening RIGHT NOW that matters to this brand's audience on ${platform}. Stay strictly inside the brand's industry, region and keywords: ignore news that has no link to them. Cover current news, trending topics, seasonal moments, upcoming dates, and anything sensitive (tragedies, controversies, safety incidents) the brand should stay away from.
 
 ${brandBrief(brand)}
 <brief>Optional focus: ${clean(focus, 300) || 'none'}</brief>
@@ -77,6 +79,7 @@ Return ONLY a JSON object:
     ideas: (data.ideas || []).slice(0, 8),
     avoidNow: data.avoidNow || [],
     sources: groundingSources(response),
+    searches: (response as any)?.candidates?.[0]?.groundingMetadata?.webSearchQueries ?? [],
     source: config.models.research,
   };
 }

@@ -225,6 +225,9 @@ export const StudioModule: React.FC = () => {
                       <ul className="list-disc pl-4 space-y-0.5">{ideas.avoidNow.map((a, k) => <li key={k}>{a}</li>)}</ul>
                     </div>
                   )}
+                  {ideas.searches && ideas.searches.length > 0 && (
+                    <p className="text-[10px] text-zinc-500">Searched: {ideas.searches.join(' · ')}</p>
+                  )}
                   {ideas.sources.length > 0 && (
                     <div className="text-[10px] text-zinc-500 flex flex-wrap gap-x-3 gap-y-1">
                       <Globe className="w-3 h-3" />

@@ -59,6 +59,8 @@ export function validateBrand(body: unknown, partial = false): string | null {
       industry: v => isStr(v, 200),
       voice: v => isStr(v, 1000),
       audience: v => isStr(v, 500),
+      region: v => isStr(v, 200),
+      keywords: strArray(30, 80),
       website: v => isStr(v, 300),
       handle: v => isStr(v, 100),
       colors: v => isObj(v) && ['primary', 'accent', 'background', 'text'].every(k => HEX.test(v[k])),
