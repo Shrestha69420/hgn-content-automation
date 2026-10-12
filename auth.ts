@@ -149,3 +149,8 @@ export function rateLimit(opts: { windowMs: number; max: number; key: (req: Requ
     next();
   };
 }
+
+/** Unguessable per-post token for the public image URLs that Instagram fetches. */
+export function publicMediaToken(postId: string): string {
+  return sign(`media:${postId}`).slice(0, 32);
+}

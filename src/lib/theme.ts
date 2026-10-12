@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 export type Theme = 'dark' | 'light';
 
-const STORAGE_KEY = 'hgn_theme';
+const STORAGE_KEY = 'cf_theme';
 
 function readTheme(): Theme {
   try {

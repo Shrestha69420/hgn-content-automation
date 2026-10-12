@@ -14,7 +14,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
   const [mode, setMode] = useState<'login' | 'create-account'>('login');
 
   // Form states
-  const [loginEmail, setLoginEmail] = useState('marketing@himalayanguardian.org.np');
+  const [loginEmail, setLoginEmail] = useState('demo@campaignflow.app');
   const [loginPassword, setLoginPassword] = useState('password123');
 
   const [fullName, setFullName] = useState('');
@@ -88,7 +88,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
               Campaign Flow
             </span>
             <span className="text-[10px] text-zinc-500 font-normal">
-              HGN Operations
+              Campaign Flow
             </span>
           </div>
         </div>
@@ -107,8 +107,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
             </h1>
             <p className="text-xs text-zinc-400">
               {mode === 'login'
-                ? 'High-altitude marketing automation & deterministic compliance'
-                : 'Enter your credentials to access the safety publishing grid'}
+                ? 'Research, design and schedule your social content'
+                : 'Enter your credentials to open your workspace'}
             </p>
           </div>
 
@@ -132,7 +132,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
                     onChange={e => setLoginEmail(e.target.value)}
                     required
                     className="w-full bg-raised border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-zinc-50 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition"
-                    placeholder="name@himalayanguardian.org.np"
+                    placeholder="name@company.com"
                   />
                 </div>
               </div>
@@ -194,7 +194,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
                     onChange={e => setRegisterEmail(e.target.value)}
                     required
                     className="w-full bg-raised border border-zinc-800 rounded-md pl-9 pr-3 py-2 text-xs text-zinc-50 placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
-                    placeholder="tenzing@himalayanguardian.org.np"
+                    placeholder="you@company.com"
                   />
                 </div>
               </div>
@@ -266,7 +266,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
           {/* Preloaded Demo Credentials Hint */}
           <div className="pt-4 border-t border-zinc-850 text-center">
             <p className="text-[11px] text-zinc-500 font-mono">
-              Demo: marketing@himalayanguardian.org.np / password123
+              Demo: demo@campaignflow.app / password123
             </p>
           </div>
         </div>
@@ -274,7 +274,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
 
       {/* Footer */}
       <footer className="w-full px-6 py-4 border-t border-zinc-850 text-center text-[11px] text-zinc-600 font-mono">
-        © 2026 Himalayan Guardian Nepal • Safety Telemetry System
+        © 2026 Campaign Flow
       </footer>
     </div>
   );

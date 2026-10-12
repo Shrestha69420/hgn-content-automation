@@ -2,15 +2,10 @@ import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from './ThemeToggle';
-import {
-  Sparkles,
-  LogOut,
-  Globe,
-  Radio
-} from 'lucide-react';
+import { Sparkles, LogOut, Globe } from 'lucide-react';
 
 export const Header: React.FC = () => {
-  const { setActiveModule, showToast } = useApp();
+  const { setActiveModule, showToast, brands, activeBrand, setActiveBrandId, openInStudio } = useApp();
   const { currentUser, logout } = useAuth();
 
   return (
@@ -20,7 +15,7 @@ export const Header: React.FC = () => {
         {/* Brand & Organization */}
         <div className="flex items-center gap-4">
           <button
-            onClick={() => setActiveModule('dashboard')}
+            onClick={() => setActiveModule('overview')}
             className="flex items-center gap-2.5 text-left cursor-pointer group focus:outline-none"
           >
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-[0_0_14px_rgba(43,181,166,0.35)] transition group-hover:scale-105">
@@ -41,16 +36,19 @@ export const Header: React.FC = () => {
               <span className="font-semibold text-sm tracking-tight text-zinc-50 font-sans">
                 Campaign Flow
               </span>
-              <span className="text-[11px] text-zinc-500 font-normal hidden sm:inline">
-                Himalayan Guardian Nepal
-              </span>
             </div>
           </button>
 
-          <div className="hidden lg:flex items-center gap-1.5 pl-3 border-l border-zinc-850 text-[11px] font-mono text-zinc-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span>SQLite Active</span>
-          </div>
+          {brands.length > 0 && (
+            <select
+              value={activeBrand?.id || ''}
+              onChange={e => setActiveBrandId(e.target.value)}
+              className="bg-deep border border-zinc-800 rounded-md px-2 py-1 text-xs text-zinc-200 focus:outline-none max-w-[160px]"
+              title="Active brand"
+            >
+              {brands.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+            </select>
+          )}
         </div>
 
         {/* Action Controls & User */}
@@ -67,11 +65,11 @@ export const Header: React.FC = () => {
 
           {/* Quick AI Generator Launch with Accent Styling */}
           <button
-            onClick={() => setActiveModule('generator')}
+            onClick={() => openInStudio(null)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(43,181,166,0.25)] border border-indigo-400/30 active:scale-[0.98] cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 text-indigo-200" />
-            <span>New Post Draft</span>
+            <span>New post</span>
           </button>
 
           {/* User Profile / Logout Action */}

@@ -4,8 +4,7 @@
  * cookie. Nothing secret is stored in the browser: `localStorage` only caches
  * the signed-in user's display profile, and the server is asked to confirm the
  * session (`restoreSession`) every time the app loads.
- * Organization: Himalayan Guardian Nepal
- * Platform: HGN Marketing Hub
+ * Campaign Flow
  */
 
 export interface SimpleUser {
@@ -14,8 +13,8 @@ export interface SimpleUser {
   email: string;
 }
 
-const STORAGE_KEY_SESSION = 'hgn_logged_in_user';
-export const UNAUTHORIZED_EVENT = 'hgn:unauthorized';
+const STORAGE_KEY_SESSION = 'cf_logged_in_user';
+export const UNAUTHORIZED_EVENT = 'cf:unauthorized';
 
 type AuthResult = { success: boolean; user?: SimpleUser; error?: string };
 
