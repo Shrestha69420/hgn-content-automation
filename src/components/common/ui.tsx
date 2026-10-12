@@ -118,3 +118,18 @@ export function useElapsed(active: boolean): number {
   }, [active]);
   return n;
 }
+
+/** Range slider with a themed, filled track (works in light and dark). */
+export const Slider: React.FC<{ value: number; min: number; max: number; step?: number; onChange: (v: number) => void; label?: string }> = ({ value, min, max, step = 1, onChange, label }) => (
+  <input
+    type="range"
+    aria-label={label}
+    className="cf-range"
+    min={min}
+    max={max}
+    step={step}
+    value={value}
+    style={{ '--fill': `${((value - min) / (max - min)) * 100}%` } as React.CSSProperties}
+    onChange={e => onChange(Number(e.target.value))}
+  />
+);

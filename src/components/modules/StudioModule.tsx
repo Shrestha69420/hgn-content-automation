@@ -3,7 +3,7 @@ import { Search, Image as ImageIcon, Plus, Trash2, ChevronLeft, ChevronRight, Do
 import { useApp } from '../../context/AppContext';
 import { useAuth } from '../../context/AuthContext';
 import { apiService } from '../../services/apiService';
-import { Btn, Card, ColorField, Label, PageTitle, ResultLoader, StatusPill, inputCls, toLocalInput, useElapsed } from '../common/ui';
+import { Btn, Card, ColorField, Label, PageTitle, ResultLoader, Slider, StatusPill, inputCls, toLocalInput, useElapsed } from '../common/ui';
 import { SlideCanvas, SlideThumb } from '../studio/SlideCanvas';
 import { blankPost, emptySlide, postFromGenerated } from '../../lib/postFactory';
 import { POST_TYPES, hasImages, typeFromIdeaFormat, typeInfo, typesFor } from '../../lib/postTypes';
@@ -285,7 +285,7 @@ export const StudioModule: React.FC = () => {
                   </div>
                 </div>
                 {postType === 'carousel' && (
-                  <div><Label>Slides: {slideCount}</Label><input type="range" min={2} max={10} value={slideCount} onChange={e => setSlideCount(Number(e.target.value))} className="w-full accent-indigo-500" /></div>
+                  <div><Label>Slides: {slideCount}</Label><Slider min={2} max={10} value={slideCount} onChange={setSlideCount} label="Number of slides" /></div>
                 )}
                 {postType === 'link' && (
                   <div><Label>Link to share</Label><input className={inputCls} value={linkUrl} onChange={e => setLinkUrl(e.target.value)} placeholder="https://…" /></div>
@@ -343,7 +343,7 @@ export const StudioModule: React.FC = () => {
                   <div className="space-y-2.5">
                     <textarea rows={3} className={inputCls} value={slide.imagePrompt} onChange={e => patchSlide(idx, { imagePrompt: e.target.value })} placeholder="Describe a text-free background image…" />
                     <div className="grid grid-cols-2 gap-3 items-end">
-                      <div><Label>Darken image: {Math.round(slide.overlay * 100)}%</Label><input type="range" min={0} max={0.85} step={0.05} value={slide.overlay} onChange={e => patchSlide(idx, { overlay: Number(e.target.value) })} className="w-full accent-indigo-500" /></div>
+                      <div><Label>Darken image: {Math.round(slide.overlay * 100)}%</Label><Slider min={0} max={0.85} step={0.05} value={slide.overlay} onChange={v => patchSlide(idx, { overlay: v })} label="Darken image" /></div>
                       <div className="flex items-center gap-2">
                         <div className="flex-1"><Label>Background color</Label><ColorField value={slide.bgColor} colors={brand.colors} onChange={v => patchSlide(idx, { bgColor: v })} /></div>
                         {slide.background && <Btn onClick={() => patchSlide(idx, { background: '' })}>Remove image</Btn>}
