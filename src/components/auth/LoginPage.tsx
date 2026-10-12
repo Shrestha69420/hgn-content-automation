@@ -68,7 +68,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
 
   return (
     <div className="relative overflow-hidden min-h-screen w-full bg-page text-zinc-100 flex flex-col justify-between selection:bg-zinc-800 selection:text-zinc-100 antialiased font-sans">
-      <Watermark className="absolute -right-32 top-1/2 -translate-y-1/2 w-[44rem] text-indigo-400 opacity-[0.06]" />
+      <Watermark className="absolute -right-16 top-1/2 -translate-y-1/2 w-[46rem] text-indigo-400 opacity-[0.14]" />
       {/* Top Subtle Nav */}
       <header className="w-full px-6 py-5 flex items-center justify-between border-b border-zinc-850">
         <Logo size={26} />

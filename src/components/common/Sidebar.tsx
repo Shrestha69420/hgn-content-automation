@@ -10,14 +10,16 @@ export const NAV_ITEMS: { id: ActiveModule; label: string; icon: React.Component
   { id: 'brands', label: 'Brands', icon: Palette },
 ];
 
+/** Pinned under the header (h-14) and exactly one viewport tall, so it never scrolls away with the page. */
 export const Sidebar: React.FC = () => {
-  const { activeModule, setActiveModule, brandPosts } = useApp();
-  const badge = (id: ActiveModule) =>
-    id === 'library' ? brandPosts.length || undefined : undefined;
+  const { activeModule, setActiveModule, brandPosts, info } = useApp();
+  const badge = (id: ActiveModule) => (id === 'library' ? brandPosts.length || undefined : undefined);
 
   return (
-    <aside className="w-52 bg-surface border-r border-zinc-800/80 flex flex-col shrink-0 min-h-[calc(100vh-56px)] select-none">
-      <nav className="px-2 pt-4 space-y-0.5 flex-1">
+    <aside className="sticky top-14 w-52 h-[calc(100vh-3.5rem)] bg-surface border-r border-zinc-800/80 flex flex-col shrink-0 select-none overflow-hidden">
+      <Watermark className="absolute -left-24 -bottom-32 w-[24rem] text-indigo-400 opacity-[0.22]" />
+
+      <nav className="relative z-10 px-2 pt-4 space-y-0.5 flex-1">
         {NAV_ITEMS.map(item => {
           const Icon = item.icon;
           const active = activeModule === item.id;
@@ -30,11 +32,10 @@ export const Sidebar: React.FC = () => {
           );
         })}
       </nav>
-      <div className="flex items-center gap-3 px-4 py-4 border-t border-zinc-800/60">
-        <Watermark className="w-14 h-14 shrink-0 text-indigo-400 opacity-60" />
-        <p className="text-[10px] leading-5 font-mono tracking-wider uppercase text-zinc-600">
-          Research<br />Design<br />Publish
-        </p>
+
+      <div className="relative z-10 px-4 py-3 border-t border-zinc-800/60 text-[11px] text-zinc-500 space-y-1.5">
+        <p className="flex items-center gap-2"><span className={`w-1.5 h-1.5 rounded-full ${info?.aiConfigured ? 'bg-emerald-400' : 'bg-zinc-600'}`} />{info?.aiConfigured ? 'Gemini connected' : 'AI off (no key)'}</p>
+        <p className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />Publish: <span className="font-mono text-zinc-400">{info?.publishMode ?? 'folder'}</span></p>
       </div>
     </aside>
   );

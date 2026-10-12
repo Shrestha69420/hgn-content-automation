@@ -22,7 +22,7 @@ const AppContent: React.FC = () => {
     <ProtectedRoute>
       <div className="relative min-h-screen bg-page text-zinc-100 flex flex-col font-sans antialiased" style={{ backgroundImage: 'radial-gradient(60rem 28rem at 88% -6%, rgba(43,181,166,0.08), transparent 70%)' }}>
         {/* Decorative brand watermark, fixed behind the content */}
-        <Watermark className="fixed -right-24 -bottom-28 w-[34rem] text-indigo-400 opacity-[0.05] z-0" />
+        <Watermark className="fixed -right-10 -bottom-44 w-[44rem] text-indigo-400 opacity-[0.11] z-0" />
         <Header />
         <div className="flex-1 flex w-full overflow-hidden pb-16 md:pb-0">
           <div className="hidden md:block"><Sidebar /></div>

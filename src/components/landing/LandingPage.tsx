@@ -24,7 +24,7 @@ export const LandingPage: React.FC = () => {
 
   return (
     <div className="relative overflow-hidden min-h-screen bg-page text-zinc-100 font-sans">
-      <Watermark className="absolute -right-40 top-10 w-[46rem] text-indigo-400 opacity-[0.07]" />
+      <Watermark className="absolute -right-24 -top-6 w-[52rem] text-indigo-400 opacity-[0.16]" />
       <header className="relative max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
         <Logo size={30} />
         <div className="flex items-center gap-3">
