@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FileText, Search, Image as ImageIcon, CalendarClock, FolderOutput, ArrowRight } from 'lucide-react';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { Logo } from '../common/Logo';
+import { Watermark } from '../common/Watermark';
 import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
 import { LoginPage } from '../auth/LoginPage';
@@ -22,8 +23,9 @@ export const LandingPage: React.FC = () => {
   if (showLogin && !isAuthenticated) return <LoginPage onSuccess={() => setActiveModule('overview')} />;
 
   return (
-    <div className="min-h-screen bg-page text-zinc-100 font-sans">
-      <header className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+    <div className="relative overflow-hidden min-h-screen bg-page text-zinc-100 font-sans">
+      <Watermark className="absolute -right-40 top-10 w-[46rem] text-indigo-400 opacity-[0.07]" />
+      <header className="relative max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
         <Logo size={30} />
         <div className="flex items-center gap-3">
           <ThemeToggle />
@@ -34,7 +36,7 @@ export const LandingPage: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-6 pt-16 pb-20">
+      <main className="relative max-w-5xl mx-auto px-6 pt-16 pb-20">
         <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-50 max-w-3xl leading-tight">
           Social content for any brand, researched, designed and scheduled by AI.
         </h1>

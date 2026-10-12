@@ -83,6 +83,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   );
   const setActiveBrandId = useCallback((id: string) => {
     setActiveBrandIdState(id);
+    // Studio only works on the active brand; autosave has already stored the open post.
+    setStudioPost(cur => (cur && cur.brandId !== id ? null : cur));
     try { localStorage.setItem(BRAND_KEY, id); } catch { /* ignore */ }
   }, []);
 

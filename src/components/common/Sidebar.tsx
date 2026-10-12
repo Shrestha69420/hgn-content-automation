@@ -1,6 +1,7 @@
 import React from 'react';
 import { LayoutDashboard, PenTool, Layers, Palette } from 'lucide-react';
 import { useApp, ActiveModule } from '../../context/AppContext';
+import { Watermark } from './Watermark';
 
 export const NAV_ITEMS: { id: ActiveModule; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -29,6 +30,12 @@ export const Sidebar: React.FC = () => {
           );
         })}
       </nav>
+      <div className="flex items-center gap-3 px-4 py-4 border-t border-zinc-800/60">
+        <Watermark className="w-14 h-14 shrink-0 text-indigo-400 opacity-60" />
+        <p className="text-[10px] leading-5 font-mono tracking-wider uppercase text-zinc-600">
+          Research<br />Design<br />Publish
+        </p>
+      </div>
     </aside>
   );
 };

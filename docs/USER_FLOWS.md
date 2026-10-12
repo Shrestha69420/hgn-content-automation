@@ -8,7 +8,7 @@ Setup: copy `.env.example` to `.env.local`, set `GEMINI_API_KEY`, run `npm run d
 | Overview | Counts by status, upcoming scheduled posts, connection status (AI, folder export, Instagram). |
 | Studio | Research, generate, edit, score, approve, schedule, publish. |
 | Library | All posts of the active brand as a list or month calendar; edit, download PNGs, export, publish now, delete. |
-| Brands | Brand profiles (voice, audience, region, keywords, colors, pillars, avoid list, hashtags, CTA, free-form "More information" facts). The header switcher picks the active brand. |
+| Brands | Brand profiles (voice, audience, region, keywords, colors, pillars, avoid list, hashtags, CTA, free-form "More information" facts). Brands are switched only on this page (a picker at the top); the header shows the active brand read-only. |
 
 ## Post types
 | Type | Output | Platforms |

@@ -10,6 +10,7 @@ import { StudioModule } from './components/modules/StudioModule';
 import { LibraryModule } from './components/modules/LibraryModule';
 import { BrandsModule } from './components/modules/BrandsModule';
 import { LandingPage } from './components/landing/LandingPage';
+import { Watermark } from './components/common/Watermark';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -19,11 +20,13 @@ const AppContent: React.FC = () => {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-page text-zinc-100 flex flex-col font-sans antialiased">
+      <div className="relative min-h-screen bg-page text-zinc-100 flex flex-col font-sans antialiased" style={{ backgroundImage: 'radial-gradient(60rem 28rem at 88% -6%, rgba(43,181,166,0.08), transparent 70%)' }}>
+        {/* Decorative brand watermark, fixed behind the content */}
+        <Watermark className="fixed -right-24 -bottom-28 w-[34rem] text-indigo-400 opacity-[0.05] z-0" />
         <Header />
         <div className="flex-1 flex w-full overflow-hidden pb-16 md:pb-0">
           <div className="hidden md:block"><Sidebar /></div>
-          <main className="flex-1 px-5 py-6 sm:px-8 sm:py-8 lg:px-10 overflow-y-auto w-full">
+          <main className="relative z-10 flex-1 px-5 py-6 sm:px-8 sm:py-8 lg:px-10 overflow-y-auto w-full">
             <div className="max-w-6xl mx-auto">
               {loading && <p className="text-xs text-zinc-500 mb-3">Loading…</p>}
               {activeModule === 'overview' && <OverviewModule />}

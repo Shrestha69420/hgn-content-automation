@@ -6,7 +6,7 @@ import { Plus, LogOut, Globe } from 'lucide-react';
 import { Logo } from './Logo';
 
 export const Header: React.FC = () => {
-  const { setActiveModule, showToast, brands, activeBrand, setActiveBrandId, openInStudio } = useApp();
+  const { setActiveModule, showToast, activeBrand, openInStudio } = useApp();
   const { currentUser, logout } = useAuth();
 
   return (
@@ -22,15 +22,19 @@ export const Header: React.FC = () => {
             <Logo />
           </button>
 
-          {brands.length > 0 && (
-            <select
-              value={activeBrand?.id || ''}
-              onChange={e => setActiveBrandId(e.target.value)}
-              className="bg-deep border border-zinc-800 rounded-md px-2 py-1 text-xs text-zinc-200 focus:outline-none w-56 max-w-[40vw]"
-              title="Active brand"
+          {activeBrand && (
+            <button
+              onClick={() => setActiveModule('brands')}
+              className="hidden sm:flex items-center gap-2 max-w-[18rem] pl-2.5 pr-3 py-1 rounded-md bg-deep border border-zinc-800 hover:border-zinc-700 text-xs text-zinc-200 cursor-pointer"
+              title="Active brand. Switch brands on the Brands page."
             >
-              {brands.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
-            </select>
+              <span className="flex shrink-0">
+                {[activeBrand.colors.primary, activeBrand.colors.accent].map((c, i) => (
+                  <span key={i} className="w-2.5 h-2.5 rounded-full border border-black/20 -ml-0.5 first:ml-0" style={{ background: c }} />
+                ))}
+              </span>
+              <span className="truncate">{activeBrand.name}</span>
+            </button>
           )}
         </div>
 
