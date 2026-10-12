@@ -1,5 +1,5 @@
 /** One canvas renderer shared by the editor preview and the PNG export, so what you see is what ships. */
-import { SLIDE_W, SLIDE_H, type Slide, type TextLayer } from '../types';
+import { SLIDE_W, SLIDE_H, resolveColor, type BrandColors, type Slide, type TextLayer } from '../types';
 
 const imageCache = new Map<string, Promise<HTMLImageElement>>();
 
@@ -51,10 +51,11 @@ export function layerBox(ctx: CanvasRenderingContext2D, l: TextLayer) {
 export async function drawSlide(
   ctx: CanvasRenderingContext2D,
   slide: Slide,
+  colors: BrandColors,
   opts: { selectedId?: string | null } = {}
 ) {
   ctx.clearRect(0, 0, SLIDE_W, SLIDE_H);
-  ctx.fillStyle = slide.bgColor;
+  ctx.fillStyle = resolveColor(slide.bgColor, colors);
   ctx.fillRect(0, 0, SLIDE_W, SLIDE_H);
 
   if (slide.background) {
@@ -78,7 +79,7 @@ export async function drawSlide(
   for (const l of slide.layers) {
     const { lines, lineH } = layoutLayer(ctx, l);
     ctx.font = fontOf(l);
-    ctx.fillStyle = l.color;
+    ctx.fillStyle = resolveColor(l.color, colors);
     ctx.textAlign = l.align;
     if (l.shadow) {
       ctx.shadowColor = 'rgba(0,0,0,0.55)';
@@ -118,29 +119,16 @@ async function ensureFonts() {
   }
 }
 
-export async function renderSlideToBlob(slide: Slide): Promise<Blob> {
+export async function renderSlideToBlob(slide: Slide, colors: BrandColors): Promise<Blob> {
   await ensureFonts();
   const canvas = document.createElement('canvas');
   canvas.width = SLIDE_W;
   canvas.height = SLIDE_H;
   const ctx = canvas.getContext('2d')!;
-  await drawSlide(ctx, slide);
+  await drawSlide(ctx, slide, colors);
   return new Promise((resolve, reject) =>
     canvas.toBlob(b => (b ? resolve(b) : reject(new Error('Could not render slide'))), 'image/png')
   );
-}
-
-export async function renderSlideToDataUrl(slide: Slide, width = 360): Promise<string> {
-  await ensureFonts();
-  const full = document.createElement('canvas');
-  full.width = SLIDE_W;
-  full.height = SLIDE_H;
-  await drawSlide(full.getContext('2d')!, slide);
-  const small = document.createElement('canvas');
-  small.width = width;
-  small.height = Math.round((width * SLIDE_H) / SLIDE_W);
-  small.getContext('2d')!.drawImage(full, 0, 0, small.width, small.height);
-  return small.toDataURL('image/jpeg', 0.8);
 }
 
 export function downloadBlob(blob: Blob, name: string) {

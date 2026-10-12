@@ -42,7 +42,7 @@ export const LibraryModule: React.FC = () => {
   const exportFolder = (p: Post) => act(p.id, async () => showToast(`Saved to ${await apiService.exportPost(p.id)}`));
   const download = (p: Post) => act(p.id, async () => {
     for (let i = 0; i < p.slides.length; i++) {
-      downloadBlob(await renderSlideToBlob(p.slides[i]), `${p.title.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-${String(i + 1).padStart(2, '0')}.png`);
+      downloadBlob(await renderSlideToBlob(p.slides[i], activeBrand!.colors), `${p.title.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-${String(i + 1).padStart(2, '0')}.png`);
       await new Promise(r => setTimeout(r, 250));
     }
   });
@@ -98,7 +98,7 @@ export const LibraryModule: React.FC = () => {
           <div className="space-y-2">
             {posts.map(p => (
               <div key={p.id} className="flex gap-3 bg-surface border border-zinc-800/80 rounded-xl p-3">
-                <SlideThumb slide={p.slides[0]} width={72} />
+                <SlideThumb slide={p.slides[0]} colors={activeBrand!.colors} width={72} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2"><h3 className="text-sm font-medium text-zinc-100 truncate">{p.title}</h3><StatusPill status={p.status} /></div>
                   <p className="text-xs text-zinc-500 line-clamp-2 mt-0.5">{p.caption}</p>

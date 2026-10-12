@@ -25,6 +25,7 @@ export const apiService = {
   getBrands: async (): Promise<Brand[]> => (await call('/api/brands')).data,
   createBrand: async (b: Omit<Brand, 'id'>): Promise<Brand> => (await call('/api/brands', 'POST', b)).data,
   updateBrand: async (id: string, b: Partial<Brand>): Promise<Brand> => (await call(`/api/brands/${id}`, 'PUT', b)).data,
+  extractBrand: async (url: string): Promise<Partial<Brand>> => (await call('/api/brands/extract', 'POST', { url })).data,
   deleteBrand: async (id: string) => void (await call(`/api/brands/${id}`, 'DELETE')),
 
   getPosts: async (): Promise<Post[]> => (await call('/api/posts')).data,

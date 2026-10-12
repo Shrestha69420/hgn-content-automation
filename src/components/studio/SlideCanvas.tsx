@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { SLIDE_W, SLIDE_H, type Slide, type TextLayer } from '../../types';
+import { SLIDE_W, SLIDE_H, type BrandColors, type Slide, type TextLayer } from '../../types';
 import { drawSlide, layerBox } from '../../lib/slideRenderer';
 
 interface Props {
   slide: Slide;
+  colors: BrandColors;
   selectedId: string | null;
   onSelect: (id: string | null) => void;
   onMove: (layerId: string, x: number, y: number) => void;
@@ -11,7 +12,7 @@ interface Props {
 }
 
 /** Editable slide preview: click a text layer to select it, drag to move it. */
-export const SlideCanvas: React.FC<Props> = ({ slide, selectedId, onSelect, onMove, width = 420 }) => {
+export const SlideCanvas: React.FC<Props> = ({ slide, colors, selectedId, onSelect, onMove, width = 420 }) => {
   const ref = useRef<HTMLCanvasElement>(null);
   const drag = useRef<{ id: string; dx: number; dy: number } | null>(null);
 
@@ -19,12 +20,12 @@ export const SlideCanvas: React.FC<Props> = ({ slide, selectedId, onSelect, onMo
     let alive = true;
     const ctx = ref.current?.getContext('2d');
     if (!ctx) return;
-    const paint = () => alive && drawSlide(ctx, slide, { selectedId });
+    const paint = () => alive && drawSlide(ctx, slide, colors, { selectedId });
     paint();
     // Ubuntu may finish loading after the first paint
     document.fonts?.ready.then(() => { paint(); });
     return () => { alive = false; };
-  }, [slide, selectedId]);
+  }, [slide, colors, selectedId]);
 
   const toSlide = (e: React.PointerEvent) => {
     const r = ref.current!.getBoundingClientRect();
@@ -65,12 +66,12 @@ export const SlideCanvas: React.FC<Props> = ({ slide, selectedId, onSelect, onMo
   );
 };
 
-export const SlideThumb: React.FC<{ slide: Slide; width?: number }> = ({ slide, width = 64 }) => {
+export const SlideThumb: React.FC<{ slide: Slide; colors: BrandColors; width?: number }> = ({ slide, colors, width = 64 }) => {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const ctx = ref.current?.getContext('2d');
-    if (ctx) drawSlide(ctx, slide);
-  }, [slide]);
+    if (ctx) drawSlide(ctx, slide, colors);
+  }, [slide, colors]);
   return (
     <canvas
       ref={ref}

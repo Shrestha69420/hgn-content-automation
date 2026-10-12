@@ -21,10 +21,10 @@ export function emptySlide(brand: Brand, headline = '', body = '', imagePrompt =
   return {
     id: `s-${uid()}`,
     background: '',
-    bgColor: brand.colors.background,
+    bgColor: 'brand:background',
     overlay: 0,
     imagePrompt,
-    layers: [mk(headline, 620, 84, 900, brand.colors.text), mk(body, 920, 40, 400, brand.colors.text)],
+    layers: [mk(headline, 620, 84, 900, 'brand:text'), mk(body, 920, 40, 400, 'brand:text')],
   };
 }
 

@@ -68,3 +68,28 @@ export const toLocalInput = (iso?: string) => {
   const p = (n: number) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
 };
+
+import { BRAND_TOKENS, resolveColor, type BrandColors } from '../../types';
+
+/** Color picker whose first choices are the brand palette, so slides keep following the brand. */
+export const ColorField: React.FC<{ value: string; colors: BrandColors; onChange: (v: string) => void }> = ({ value, colors, onChange }) => (
+  <div className="flex items-center gap-1">
+    {BRAND_TOKENS.map(t => (
+      <button
+        key={t}
+        type="button"
+        title={`Brand ${t}`}
+        onClick={() => onChange(`brand:${t}`)}
+        style={{ background: colors[t] }}
+        className={`w-5 h-5 rounded-full border cursor-pointer ${value === `brand:${t}` ? 'ring-2 ring-indigo-400 border-transparent' : 'border-zinc-600'}`}
+      />
+    ))}
+    <input
+      type="color"
+      title="Custom color (does not follow the brand)"
+      value={resolveColor(value, colors)}
+      onChange={e => onChange(e.target.value)}
+      className="h-6 w-7 bg-transparent cursor-pointer"
+    />
+  </div>
+);

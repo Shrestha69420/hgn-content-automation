@@ -1,5 +1,5 @@
 /** Deterministic, brand-aware quality score (no AI call, free and repeatable). */
-import type { Brand, Post, QualityCheck, QualityReport } from '../types';
+import { resolveColor, type Brand, type Post, type QualityCheck, type QualityReport } from '../types';
 
 const words = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
 
@@ -49,7 +49,7 @@ export function scorePost(post: Post, brand: Brand | undefined): QualityReport {
   add('density', 'Slide text is short', 10, dense === 0 ? 1 : dense <= 1 ? 0.5 : 0,
     dense ? `${dense} slide(s) have more than 45 words; trim them.` : 'Text on every slide is short enough to read at a glance.');
 
-  const unreadable = post.slides.filter(s => s.background && s.overlay < 0.2 && s.layers.some(l => l.color.toLowerCase() === '#ffffff')).length;
+  const unreadable = post.slides.filter(s => s.background && s.overlay < 0.2 && s.layers.some(l => brand && resolveColor(l.color, brand.colors).toLowerCase() === '#ffffff')).length;
   add('contrast', 'Text readable on images', 10, unreadable === 0 ? 1 : 0.5,
     unreadable ? `${unreadable} slide(s) have light text on an image with almost no dark overlay.` : 'Overlay keeps text readable.');
 

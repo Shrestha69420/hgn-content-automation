@@ -37,8 +37,9 @@ import {
   validateCopyRequest,
   validateImageRequest,
   validateRegistration,
+  validateExtractRequest,
 } from './validate.js';
-import { aiConfigured, researchIdeas, generatePostCopy, generateImage } from './ai.js';
+import { aiConfigured, researchIdeas, generatePostCopy, generateImage, extractBrandFromWebsite } from './ai.js';
 import { mediaFile, saveMedia, deleteMedia, finalName, publishPost, exportToFolder, startScheduler } from './publish.js';
 import type { Platform, ServerInfo } from './src/types/index.js';
 
@@ -219,6 +220,16 @@ async function startServer() {
       res.json({ success: true, url: `/api/media/${req.body.postId}/${file}` });
     } catch (e) {
       aiFail(res, e, 'image');
+    }
+  });
+
+  app.post('/api/brands/extract', aiLimiter, async (req, res) => {
+    const invalid = validateExtractRequest(req.body);
+    if (invalid) return res.status(400).json({ success: false, error: invalid });
+    try {
+      res.json({ success: true, data: await extractBrandFromWebsite(req.body.url.trim()) });
+    } catch (e) {
+      aiFail(res, e, 'brand extract');
     }
   });
 

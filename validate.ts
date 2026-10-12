@@ -68,6 +68,7 @@ export function validateBrand(body: unknown, partial = false): string | null {
       cta: v => isStr(v, 300),
       avoid: strArray(40, 100),
       topics: strArray(20, 100),
+      extra: v => Array.isArray(v) && v.length <= 30 && v.every((x: any) => isObj(x) && isStr(x.label, 80) && isStr(x.value, 600)),
     },
     partial ? [] : ['name']
   );
@@ -123,6 +124,17 @@ export function validateCopyRequest(body: unknown): string | null {
 
 export function validateImageRequest(body: unknown): string | null {
   return check(body, { brandId: v => isStr(v, 80), postId: v => isStr(v, 80), prompt: v => isStr(v, 1200) }, ['brandId', 'postId', 'prompt']);
+}
+
+export function validateExtractRequest(body: unknown): string | null {
+  const err = check(body, { url: v => isStr(v, 500) }, ['url']);
+  if (err) return err;
+  try {
+    const u = new URL((body as any).url.trim());
+    return u.protocol === 'http:' || u.protocol === 'https:' ? null : 'URL must start with http:// or https://';
+  } catch {
+    return '"url" is not a valid URL';
+  }
 }
 
 export function validateRegistration(body: unknown): string | null {

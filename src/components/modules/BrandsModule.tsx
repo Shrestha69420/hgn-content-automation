@@ -1,33 +1,72 @@
 import React, { useEffect, useState } from 'react';
-import { Plus, Trash2, Save } from 'lucide-react';
+import { Plus, Trash2, Save, Globe, X } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { apiService } from '../../services/apiService';
 import { Btn, Card, Label, PageTitle, inputCls } from '../common/ui';
+import { syncPostWithBrand } from '../../lib/brandSync';
+import { renderSlideToBlob } from '../../lib/slideRenderer';
 import type { Brand } from '../../types';
 
 const list = (s: string, sep: RegExp) => s.split(sep).map(x => x.trim()).filter(Boolean);
+const FIELD_LABELS: Record<string, string> = {
+  name: 'name', tagline: 'tagline', industry: 'industry', voice: 'voice', audience: 'audience', region: 'region', handle: 'handle',
+  cta: 'call to action', keywords: 'keywords', hashtags: 'hashtags', topics: 'pillars', avoid: 'avoid list', extra: 'extra info', colors: 'colors',
+};
 
 export const BrandsModule: React.FC = () => {
-  const { brands, activeBrand, setActiveBrandId, refreshBrands, showToast } = useApp();
+  const { brands, activeBrand, setActiveBrandId, refreshBrands, posts, upsertPost, showToast } = useApp();
   const [form, setForm] = useState<Brand | null>(activeBrand ?? null);
   const [saving, setSaving] = useState(false);
+  const [fetching, setFetching] = useState(false);
 
   useEffect(() => { setForm(activeBrand ?? null); }, [activeBrand]);
-  if (!form) return null;
+  if (!form || !activeBrand) return null;
   const set = (u: Partial<Brand>) => setForm({ ...form, ...u });
+  const extra = form.extra || [];
 
+  const fetchWebsite = async () => {
+    if (!form.website.trim()) return showToast('Enter the website URL first.');
+    const url = /^https?:\/\//i.test(form.website.trim()) ? form.website.trim() : `https://${form.website.trim()}`;
+    setFetching(true);
+    try {
+      const found = await apiService.extractBrand(url);
+      const keys = Object.keys(found);
+      if (!keys.length) return showToast('Gemini could not read anything useful from that page.');
+      setForm({ ...form, ...found, website: url });
+      showToast(`Filled ${keys.map(k => FIELD_LABELS[k] || k).join(', ')} from the website. Review, then Save.`);
+    } catch (e: any) { showToast(e.message); } finally { setFetching(false); }
+  };
+
+  /** Saves the brand, then brings every unpublished post of this brand in line with it. */
   const save = async () => {
     setSaving(true);
     try {
+      const old = activeBrand;
       await apiService.updateBrand(form.id, form);
       await refreshBrands();
-      showToast('Brand saved.');
+      const colorsChanged = JSON.stringify(old.colors) !== JSON.stringify(form.colors);
+      let updated = 0;
+      for (const p of posts.filter(x => x.brandId === form.id && x.status !== 'Published')) {
+        const synced = syncPostWithBrand(p, old, form);
+        if (!synced && !colorsChanged) continue;
+        let current = p;
+        if (synced) {
+          current = await apiService.updatePost(p.id, { caption: synced.caption, callToAction: synced.callToAction, hashtags: synced.hashtags, slides: synced.slides });
+        }
+        // Rendered PNGs are what gets published, so refresh them with the new brand look.
+        for (let i = 0; i < current.slides.length; i++) {
+          await apiService.uploadRendered(current.id, i, await renderSlideToBlob(current.slides[i], form.colors));
+        }
+        upsertPost({ ...current, rendered: true });
+        updated++;
+      }
+      showToast(updated ? `Brand saved. Updated ${updated} unpublished post${updated === 1 ? '' : 's'} to match.` : 'Brand saved.');
     } catch (e: any) { showToast(e.message); } finally { setSaving(false); }
   };
   const create = async () => {
     try {
       const { id: _id, ...rest } = form;
-      const b = await apiService.createBrand({ ...rest, name: 'New brand' });
+      const b = await apiService.createBrand({ ...rest, name: 'New brand', website: '' });
       await refreshBrands();
       setActiveBrandId(b.id);
     } catch (e: any) { showToast(e.message); }
@@ -43,23 +82,28 @@ export const BrandsModule: React.FC = () => {
 
   return (
     <div>
-      <PageTitle title="Brands" sub="The brand profile steers every AI result: voice, audience, colors, and what to avoid."
+      <PageTitle title="Brands" sub="Everything the AI knows about the brand. Saving also updates its unpublished posts (colors, call to action, hashtags, name)."
         actions={<><Btn onClick={create}><Plus className="w-3.5 h-3.5" />New brand</Btn><Btn variant="danger" onClick={remove} disabled={brands.length <= 1}><Trash2 className="w-3.5 h-3.5" />Delete</Btn><Btn variant="primary" busy={saving} onClick={save}><Save className="w-3.5 h-3.5" />Save</Btn></>} />
+
+      <Card title="Start from the website" className="mb-4"
+        actions={<Btn variant="primary" busy={fetching} onClick={fetchWebsite}><Globe className="w-3.5 h-3.5" />Fetch brand details</Btn>}>
+        <input className={inputCls} value={form.website} onChange={e => set({ website: e.target.value })} placeholder="https://yourcompany.com" />
+        <p className="text-[11px] text-zinc-600 mt-2">Gemini reads the page and fills the fields below (voice, audience, colors, topics, facts). Nothing is saved until you press Save, so you can review and edit first.</p>
+      </Card>
+
       <div className="grid lg:grid-cols-2 gap-4">
         <Card title="Identity">
           <div className="space-y-3">
             <div><Label>Name</Label><input className={inputCls} value={form.name} onChange={e => set({ name: e.target.value })} /></div>
             <div><Label>Tagline</Label><input className={inputCls} value={form.tagline} onChange={e => set({ tagline: e.target.value })} /></div>
             <div><Label>Industry / what you do</Label><input className={inputCls} value={form.industry} onChange={e => set({ industry: e.target.value })} /></div>
-            <div className="grid grid-cols-2 gap-3">
-              <div><Label>Website</Label><input className={inputCls} value={form.website} onChange={e => set({ website: e.target.value })} /></div>
-              <div><Label>Handle</Label><input className={inputCls} value={form.handle} onChange={e => set({ handle: e.target.value })} placeholder="@yourbrand" /></div>
-            </div>
+            <div><Label>Handle</Label><input className={inputCls} value={form.handle} onChange={e => set({ handle: e.target.value })} placeholder="@yourbrand" /></div>
             <div className="grid grid-cols-4 gap-2">
               {(['primary', 'accent', 'background', 'text'] as const).map(k => (
                 <div key={k}><Label>{k}</Label><input type="color" className="w-full h-8 bg-transparent" value={form.colors[k]} onChange={e => set({ colors: { ...form.colors, [k]: e.target.value } })} /></div>
               ))}
             </div>
+            <p className="text-[10px] text-zinc-600">Slides use these colors by reference, so changing them restyles existing posts.</p>
           </div>
         </Card>
         <Card title="Voice and rules">
@@ -77,6 +121,20 @@ export const BrandsModule: React.FC = () => {
           </div>
         </Card>
       </div>
+
+      <Card title="More information" className="mt-4" actions={<Btn onClick={() => set({ extra: [...extra, { label: '', value: '' }] })}><Plus className="w-3.5 h-3.5" />Add</Btn>}>
+        <p className="text-[11px] text-zinc-500 mb-3">Facts the AI can use in posts and research: phone numbers, offers, locations, product names, opening hours, certifications. Add as many as you need.</p>
+        {extra.length === 0 && <p className="text-xs text-zinc-600">Nothing added yet.</p>}
+        <div className="space-y-2">
+          {extra.map((e, i) => (
+            <div key={i} className="grid grid-cols-[180px_1fr_auto] gap-2">
+              <input className={inputCls} placeholder="Label (e.g. Phone)" value={e.label} onChange={ev => set({ extra: extra.map((x, k) => (k === i ? { ...x, label: ev.target.value } : x)) })} />
+              <input className={inputCls} placeholder="Value" value={e.value} onChange={ev => set({ extra: extra.map((x, k) => (k === i ? { ...x, value: ev.target.value } : x)) })} />
+              <Btn variant="danger" onClick={() => set({ extra: extra.filter((_, k) => k !== i) })}><X className="w-3.5 h-3.5" /></Btn>
+            </div>
+          ))}
+        </div>
+      </Card>
     </div>
   );
 };

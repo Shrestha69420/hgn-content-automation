@@ -28,7 +28,14 @@ export interface Brand {
   cta: string; // default call to action
   avoid: string[]; // words / topics the AI must not use
   topics: string[]; // content pillars
+  extra?: { label: string; value: string }[]; // free-form facts the AI may use (offers, contacts, locations...)
 }
+
+/** Colors on slides can follow the brand: 'brand:primary' | 'brand:accent' | 'brand:background' | 'brand:text'. */
+export type BrandColors = Brand['colors'];
+export const BRAND_TOKENS = ['primary', 'accent', 'background', 'text'] as const;
+export const resolveColor = (c: string, colors: BrandColors): string =>
+  c.startsWith('brand:') ? colors[c.slice(6) as keyof BrandColors] || '#ffffff' : c;
 
 /** A text layer on a slide. Coordinates are in slide units (1080 x 1350). */
 export interface TextLayer {

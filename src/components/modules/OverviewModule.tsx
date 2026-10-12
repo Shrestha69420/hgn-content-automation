@@ -37,7 +37,7 @@ export const OverviewModule: React.FC = () => {
             <ul className="space-y-2.5">
               {upcoming.map(p => (
                 <li key={p.id} className="flex items-center gap-3">
-                  <SlideThumb slide={p.slides[0]} width={40} />
+                  <SlideThumb slide={p.slides[0]} colors={activeBrand!.colors} width={40} />
                   <button onClick={() => openInStudio(p)} className="flex-1 text-left text-xs text-zinc-200 hover:underline truncate cursor-pointer">{p.title}</button>
                   <span className="text-[11px] font-mono text-zinc-500">{new Date(p.scheduledFor!).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</span>
                 </li>

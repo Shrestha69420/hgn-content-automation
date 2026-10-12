@@ -3,7 +3,7 @@ import { Sparkles, Search, Image as ImageIcon, Plus, Trash2, ChevronLeft, Chevro
 import { useApp } from '../../context/AppContext';
 import { useAuth } from '../../context/AuthContext';
 import { apiService } from '../../services/apiService';
-import { Btn, Card, Label, PageTitle, StatusPill, inputCls, toLocalInput } from '../common/ui';
+import { Btn, Card, ColorField, Label, PageTitle, StatusPill, inputCls, toLocalInput } from '../common/ui';
 import { SlideCanvas, SlideThumb } from '../studio/SlideCanvas';
 import { blankPost, emptySlide, postFromGenerated } from '../../lib/postFactory';
 import { scorePost } from '../../lib/quality';
@@ -14,7 +14,7 @@ const PLATFORMS: Platform[] = ['Instagram', 'Facebook', 'LinkedIn', 'Twitter'];
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 50) || 'post';
 
 export const StudioModule: React.FC = () => {
-  const { activeBrand: brand, draft, posts, upsertPost, showToast, info, setActiveModule } = useApp();
+  const { activeBrand, brands, draft, posts, upsertPost, showToast, info, setActiveModule } = useApp();
   const { currentUser } = useAuth();
 
   const [platform, setPlatform] = useState<Platform>('Instagram');
@@ -41,6 +41,8 @@ export const StudioModule: React.FC = () => {
     }
   }, [draft]);
 
+  // A post keeps following the brand it belongs to, even if another brand is selected in the header.
+  const brand = (post && brands.find(b => b.id === post.brandId)) || activeBrand;
   const score = useMemo(() => (post ? scorePost(post, brand) : null), [post, brand]);
   if (!brand) return <p className="text-xs text-zinc-500">Create a brand first.</p>;
 
@@ -96,7 +98,7 @@ export const StudioModule: React.FC = () => {
   };
   const addLayer = () => {
     if (!slide) return;
-    const l: TextLayer = { id: `l-${Math.random().toString(36).slice(2, 8)}`, text: 'New text', x: 90, y: 200, width: 900, size: 48, weight: 700, color: brand.colors.text, align: 'left', font: 'sans' };
+    const l: TextLayer = { id: `l-${Math.random().toString(36).slice(2, 8)}`, text: 'New text', x: 90, y: 200, width: 900, size: 48, weight: 700, color: 'brand:text', align: 'left', font: 'sans' };
     patchSlide(idx, { layers: [...slide.layers, l] });
     setLayerId(l.id);
   };
@@ -131,7 +133,7 @@ export const StudioModule: React.FC = () => {
     const { rendered: _r, publishLog: _l, exportPath: _e, ...body } = { ...post, ...extra, author: post.author || currentUser?.name || '' };
     const exists = posts.some(p => p.id === post.id);
     const saved = exists ? await apiService.updatePost(post.id, body) : await apiService.createPost(body as Post);
-    for (let i = 0; i < saved.slides.length; i++) await apiService.uploadRendered(saved.id, i, await renderSlideToBlob(saved.slides[i]));
+    for (let i = 0; i < saved.slides.length; i++) await apiService.uploadRendered(saved.id, i, await renderSlideToBlob(saved.slides[i], brand.colors));
     const final = { ...saved, rendered: true };
     upsertPost(final);
     setPost(final);
@@ -168,7 +170,7 @@ export const StudioModule: React.FC = () => {
   });
   const downloadPngs = () => post && run('download', async () => {
     for (let i = 0; i < post.slides.length; i++) {
-      downloadBlob(await renderSlideToBlob(post.slides[i]), `${slug(post.title)}-${String(i + 1).padStart(2, '0')}.png`);
+      downloadBlob(await renderSlideToBlob(post.slides[i], brand.colors), `${slug(post.title)}-${String(i + 1).padStart(2, '0')}.png`);
       await new Promise(r => setTimeout(r, 250));
     }
   });
@@ -274,11 +276,11 @@ export const StudioModule: React.FC = () => {
                 <Btn onClick={addSlide} disabled={post.slides.length >= 10}><Plus className="w-3.5 h-3.5" />Slide</Btn>
                 <Btn variant="danger" onClick={removeSlide} disabled={post.slides.length <= 1} title="Delete slide"><Trash2 className="w-3.5 h-3.5" /></Btn>
               </>}>
-              <SlideCanvas slide={slide} selectedId={layerId} onSelect={setLayerId} onMove={(id, x, y) => patchLayer(idx, id, { x, y })} />
+              <SlideCanvas slide={slide} colors={brand.colors} selectedId={layerId} onSelect={setLayerId} onMove={(id, x, y) => patchLayer(idx, id, { x, y })} />
               <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
                 {post.slides.map((s, k) => (
                   <button key={s.id} onClick={() => { setIdx(k); setLayerId(null); }} className={`rounded p-0.5 border cursor-pointer ${k === idx ? 'border-indigo-500' : 'border-transparent opacity-70 hover:opacity-100'}`}>
-                    <SlideThumb slide={s} width={56} />
+                    <SlideThumb slide={s} colors={brand.colors} width={56} />
                   </button>
                 ))}
               </div>
@@ -296,7 +298,7 @@ export const StudioModule: React.FC = () => {
                   <div className="grid grid-cols-2 gap-3 items-end">
                     <div><Label>Darken image: {Math.round(slide.overlay * 100)}%</Label><input type="range" min={0} max={0.85} step={0.05} value={slide.overlay} onChange={e => patchSlide(idx, { overlay: Number(e.target.value) })} className="w-full accent-indigo-500" /></div>
                     <div className="flex items-center gap-2">
-                      <div className="flex-1"><Label>Solid color</Label><input type="color" value={slide.bgColor} onChange={e => patchSlide(idx, { bgColor: e.target.value })} className="w-full h-7 bg-transparent" /></div>
+                      <div className="flex-1"><Label>Background color</Label><ColorField value={slide.bgColor} colors={brand.colors} onChange={v => patchSlide(idx, { bgColor: v })} /></div>
                       {slide.background && <Btn onClick={() => patchSlide(idx, { background: '' })}>Remove image</Btn>}
                     </div>
                   </div>
@@ -317,7 +319,7 @@ export const StudioModule: React.FC = () => {
                       <div><Label>Weight</Label><select className={inputCls} value={layer.weight} onChange={e => patchLayer(idx, layer.id, { weight: Number(e.target.value) as TextLayer['weight'] })}><option value={400}>Regular</option><option value={700}>Bold</option><option value={900}>Black</option></select></div>
                       <div><Label>Font</Label><select className={inputCls} value={layer.font} onChange={e => patchLayer(idx, layer.id, { font: e.target.value as TextLayer['font'] })}><option value="sans">Sans</option><option value="serif">Serif</option></select></div>
                       <div><Label>Align</Label><select className={inputCls} value={layer.align} onChange={e => patchLayer(idx, layer.id, { align: e.target.value as TextLayer['align'] })}><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></div>
-                      <div className="flex items-center gap-2"><input type="color" value={layer.color} onChange={e => patchLayer(idx, layer.id, { color: e.target.value })} className="h-7 w-10 bg-transparent" /><label className="text-[11px] text-zinc-400 flex items-center gap-1"><input type="checkbox" checked={!!layer.shadow} onChange={e => patchLayer(idx, layer.id, { shadow: e.target.checked })} />Shadow</label></div>
+                      <div className="flex items-center gap-2"><ColorField value={layer.color} colors={brand.colors} onChange={v => patchLayer(idx, layer.id, { color: v })} /><label className="text-[11px] text-zinc-400 flex items-center gap-1"><input type="checkbox" checked={!!layer.shadow} onChange={e => patchLayer(idx, layer.id, { shadow: e.target.checked })} />Shadow</label></div>
                     </div>
                   </div>
                 )}
