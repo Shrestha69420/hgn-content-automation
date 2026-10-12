@@ -14,7 +14,7 @@ const FIELD_LABELS: Record<string, string> = {
 };
 
 export const BrandsModule: React.FC = () => {
-  const { brands, activeBrand, setActiveBrandId, refreshBrands, posts, upsertPost, showToast } = useApp();
+  const { brands, activeBrand, setActiveBrandId, refreshBrands, posts, upsertPost, replaceStudioPost, studioPost, showToast } = useApp();
   const [form, setForm] = useState<Brand | null>(activeBrand ?? null);
   const [saving, setSaving] = useState(false);
   const [fetching, setFetching] = useState(false);
@@ -75,6 +75,7 @@ export const BrandsModule: React.FC = () => {
           await apiService.uploadRendered(current.id, i, await renderSlideToBlob(current.slides[i], form.colors));
         }
         upsertPost({ ...current, rendered: true });
+        if (studioPost?.id === current.id) replaceStudioPost({ ...studioPost, ...current, rendered: true }); // keep an open Studio post in sync
         updated++;
       }
       showToast(updated ? `Brand saved. Updated ${updated} unpublished post${updated === 1 ? '' : 's'} to match.` : 'Brand saved.');

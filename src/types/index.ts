@@ -1,6 +1,7 @@
 /** Shared types (used by both the Express server and the React client). */
 
 export type Platform = 'Instagram' | 'Facebook' | 'LinkedIn' | 'Twitter';
+export type PostType = 'carousel' | 'single' | 'quote' | 'announcement' | 'text' | 'link';
 export type ContentStatus = 'Draft' | 'Approved' | 'Scheduled' | 'Published';
 
 export interface UserProfile {
@@ -94,6 +95,8 @@ export interface Post {
   hashtags: string[];
   callToAction: string;
   platform: Platform;
+  postType?: PostType; // default 'carousel'
+  linkUrl?: string; // for 'link' posts, appended to the caption
   status: ContentStatus;
   topic: string;
   designConcept: string;
@@ -132,7 +135,7 @@ export interface GeneratedPost {
   callToAction: string;
   designConcept: string;
   bestTime: string;
-  slides: { headline: string; body: string; imagePrompt: string }[];
+  slides: { headline: string; body: string; imagePrompt: string }[]; // empty for text / link posts
 }
 
 export interface ServerInfo {

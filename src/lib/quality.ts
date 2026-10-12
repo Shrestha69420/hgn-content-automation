@@ -41,19 +41,28 @@ export function scorePost(post: Post, brand: Brand | undefined): QualityReport {
     avg ? `Average sentence is ${avg.toFixed(1)} words (aim for 18 or fewer).` : 'No sentences found.');
 
   const n = post.slides.length;
-  const wantsCarousel = ig;
-  add('slides', 'Slide count', 5, !wantsCarousel || (n >= 3 && n <= 10) ? 1 : n > 0 ? 0.6 : 0,
-    `${n} slide${n === 1 ? '' : 's'}${wantsCarousel ? ' (carousels of 3-10 perform best on Instagram)' : ''}.`);
+  const textOnly = post.postType === 'text' || post.postType === 'link';
+  const carousel = (post.postType || 'carousel') === 'carousel';
+  if (post.postType === 'link') {
+    const ok = /^https?:\/\//i.test(post.linkUrl || '');
+    add('link', 'Link added', 5, ok ? 1 : 0, ok ? 'Link will be appended to the post.' : 'Add the link to share.');
+  } else {
+    if (!textOnly) add('slides', 'Slide count', 5, !carousel || (n >= 3 && n <= 10) ? 1 : n > 0 ? 0.6 : 0,
+      `${n} slide${n === 1 ? '' : 's'}${carousel ? ' (carousels of 3-10 perform best)' : ''}.`);
+  }
 
-  const dense = post.slides.filter(s => words(s.layers.map(l => l.text).join(' ')) > 45).length;
-  add('density', 'Slide text is short', 10, dense === 0 ? 1 : dense <= 1 ? 0.5 : 0,
-    dense ? `${dense} slide(s) have more than 45 words; trim them.` : 'Text on every slide is short enough to read at a glance.');
+  if (!textOnly) {
+    const dense = post.slides.filter(s => words(s.layers.map(l => l.text).join(' ')) > 45).length;
+    add('density', 'Slide text is short', 10, dense === 0 ? 1 : dense <= 1 ? 0.5 : 0,
+      dense ? `${dense} slide(s) have more than 45 words; trim them.` : 'Text on every slide is short enough to read at a glance.');
 
-  const unreadable = post.slides.filter(s => s.background && s.overlay < 0.2 && s.layers.some(l => brand && resolveColor(l.color, brand.colors).toLowerCase() === '#ffffff')).length;
-  add('contrast', 'Text readable on images', 10, unreadable === 0 ? 1 : 0.5,
-    unreadable ? `${unreadable} slide(s) have light text on an image with almost no dark overlay.` : 'Overlay keeps text readable.');
+    const unreadable = post.slides.filter(s => s.background && s.overlay < 0.2 && s.layers.some(l => brand && resolveColor(l.color, brand.colors).toLowerCase() === '#ffffff')).length;
+    add('contrast', 'Text readable on images', 10, unreadable === 0 ? 1 : 0.5,
+      unreadable ? `${unreadable} slide(s) have light text on an image with almost no dark overlay.` : 'Overlay keeps text readable.');
+  }
 
-  const score = checks.reduce((a, c) => a + c.points, 0);
+  const maxTotal = checks.reduce((a, c) => a + c.max, 0) || 1;
+  const score = Math.round((checks.reduce((a, c) => a + c.points, 0) / maxTotal) * 100);
   const grade = score >= 90 ? 'A' : score >= 80 ? 'B' : score >= 70 ? 'C' : score >= 60 ? 'D' : 'F';
   return { score, grade, checks };
 }

@@ -3,9 +3,9 @@ import React from 'react';
 export const inputCls =
   'w-full bg-deep border border-zinc-800 rounded-md px-2.5 py-1.5 text-xs text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/60';
 
-type BtnProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'ghost' | 'danger'; busy?: boolean };
+type BtnProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'ghost' | 'danger'; busy?: boolean; spinner?: boolean };
 
-export const Btn: React.FC<BtnProps> = ({ variant = 'ghost', busy, className = '', children, disabled, ...rest }) => {
+export const Btn: React.FC<BtnProps> = ({ variant = 'ghost', busy, spinner = true, className = '', children, disabled, ...rest }) => {
   const styles = {
     primary: 'bg-indigo-600 hover:bg-indigo-500 text-white border-indigo-400/30',
     ghost: 'bg-raised hover:bg-zinc-850 text-zinc-200 border-zinc-800',
@@ -17,7 +17,7 @@ export const Btn: React.FC<BtnProps> = ({ variant = 'ghost', busy, className = '
       disabled={disabled || busy}
       className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md border text-xs font-medium transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${styles} ${className}`}
     >
-      {busy && <span className="w-3 h-3 rounded-full border-2 border-current border-t-transparent animate-spin" />}
+      {busy && spinner && <span className="w-3 h-3 rounded-full border-2 border-current border-t-transparent animate-spin" />}
       {children}
     </button>
   );
@@ -93,3 +93,28 @@ export const ColorField: React.FC<{ value: string; colors: BrandColors; onChange
     />
   </div>
 );
+
+/** Loader that lives in the results area while an AI request runs. */
+export const ResultLoader: React.FC<{ title: string; steps: string[]; elapsed: number }> = ({ title, steps, elapsed }) => {
+  const step = steps[Math.min(steps.length - 1, Math.floor(elapsed / 5))];
+  return (
+    <div className="flex flex-col items-center justify-center text-center py-10 px-4" role="status" aria-live="polite">
+      <span className="w-7 h-7 rounded-full border-[3px] border-indigo-400/70 border-t-transparent animate-spin" />
+      <p className="mt-4 text-sm font-medium text-zinc-100">{title}</p>
+      <p className="mt-1 text-xs text-zinc-500">{step}</p>
+      <p className="mt-2 text-[11px] font-mono text-zinc-600">{elapsed}s</p>
+    </div>
+  );
+};
+
+/** Seconds elapsed while `active` is true (for ResultLoader). */
+export function useElapsed(active: boolean): number {
+  const [n, setN] = React.useState(0);
+  React.useEffect(() => {
+    if (!active) return;
+    setN(0);
+    const t = setInterval(() => setN(x => x + 1), 1000);
+    return () => clearInterval(t);
+  }, [active]);
+  return n;
+}

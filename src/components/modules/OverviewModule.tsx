@@ -2,7 +2,7 @@ import React from 'react';
 import { Plus, CheckCircle2, XCircle } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { Btn, Card, PageTitle, StatusPill } from '../common/ui';
-import { SlideThumb } from '../studio/SlideCanvas';
+import { PostThumb } from '../studio/SlideCanvas';
 
 export const OverviewModule: React.FC = () => {
   const { activeBrand, brandPosts, info, openInStudio, setActiveModule } = useApp();
@@ -37,7 +37,7 @@ export const OverviewModule: React.FC = () => {
             <ul className="space-y-2.5">
               {upcoming.map(p => (
                 <li key={p.id} className="flex items-center gap-3">
-                  <SlideThumb slide={p.slides[0]} colors={activeBrand!.colors} width={40} />
+                  <PostThumb post={p} colors={activeBrand!.colors} width={40} />
                   <button onClick={() => openInStudio(p)} className="flex-1 text-left text-xs text-zinc-200 hover:underline truncate cursor-pointer">{p.title}</button>
                   <span className="text-[11px] font-mono text-zinc-500">{new Date(p.scheduledFor!).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</span>
                 </li>

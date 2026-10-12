@@ -10,6 +10,20 @@ Setup: copy `.env.example` to `.env.local`, set `GEMINI_API_KEY`, run `npm run d
 | Library | All posts of the active brand as a list or month calendar; edit, download PNGs, export, publish now, delete. |
 | Brands | Brand profiles (voice, audience, region, keywords, colors, pillars, avoid list, hashtags, CTA, free-form "More information" facts). The header switcher picks the active brand. |
 
+## Post types
+| Type | Output | Platforms |
+|---|---|---|
+| Carousel | 2-10 swipeable slides | Instagram, Facebook, LinkedIn |
+| Single image | 1 slide, headline + line | all |
+| Quote card | 1 slide, large serif quote + attribution | all |
+| Announcement | 1 slide, big accent headline + details | all |
+| Text post | Caption only, no image | Facebook, LinkedIn, X |
+| Link share | Caption + link, no image | Facebook, LinkedIn, X |
+Instagram needs an image, so text and link posts are not offered there. Reels, Stories and video are not supported yet.
+
+## Autosave
+Edits (text, color, position, captions, hashtags) are mirrored to the browser's local storage within ~300 ms and synced to the server 2.5 s after the last change, sending only the fields that changed. Approved or scheduled posts also re-upload their final PNGs on slide edits so what publishes always matches the editor. If the server is unreachable the edits stay in the browser and are restored the next time the post is opened. The Studio header shows the save state.
+
 ## Studio flow
 1. **Search the web**: Gemini (`GEMINI_MODEL_RESEARCH`, Google Search grounding) returns ideas with "why now", things to avoid right now, and source links.
 2. Pick an idea (or type a topic) and **Generate post**: design concept, caption, hashtags, slide copy, suggested time (`GEMINI_MODEL_TEXT`).

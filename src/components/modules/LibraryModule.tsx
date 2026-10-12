@@ -3,7 +3,9 @@ import { Download, FolderOutput, Pencil, Send, Trash2, List, CalendarDays, Chevr
 import { useApp } from '../../context/AppContext';
 import { apiService } from '../../services/apiService';
 import { Btn, PageTitle, StatusPill, inputCls } from '../common/ui';
-import { SlideThumb } from '../studio/SlideCanvas';
+import { PostThumb } from '../studio/SlideCanvas';
+import { ensureFinals } from '../../lib/finals';
+import { typeInfo } from '../../lib/postTypes';
 import { downloadBlob, renderSlideToBlob } from '../../lib/slideRenderer';
 import type { ContentStatus, Post } from '../../types';
 
@@ -31,6 +33,7 @@ export const LibraryModule: React.FC = () => {
 
   const publish = (p: Post) => act(p.id, async () => {
     try {
+      if (await ensureFinals(p, activeBrand!.colors)) upsertPost({ ...p, rendered: true });
       const out = await apiService.publishPost(p.id);
       upsertPost(out);
       showToast(out.exportPath ? `Published. Files: ${out.exportPath}` : 'Published.');
@@ -39,7 +42,10 @@ export const LibraryModule: React.FC = () => {
       if (fresh) upsertPost(fresh);
     }
   });
-  const exportFolder = (p: Post) => act(p.id, async () => showToast(`Saved to ${await apiService.exportPost(p.id)}`));
+  const exportFolder = (p: Post) => act(p.id, async () => {
+    if (await ensureFinals(p, activeBrand!.colors)) upsertPost({ ...p, rendered: true });
+    showToast(`Saved to ${await apiService.exportPost(p.id)}`);
+  });
   const download = (p: Post) => act(p.id, async () => {
     for (let i = 0; i < p.slides.length; i++) {
       downloadBlob(await renderSlideToBlob(p.slides[i], activeBrand!.colors), `${p.title.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-${String(i + 1).padStart(2, '0')}.png`);
@@ -98,12 +104,12 @@ export const LibraryModule: React.FC = () => {
           <div className="space-y-2">
             {posts.map(p => (
               <div key={p.id} className="flex gap-3 bg-surface border border-zinc-800/80 rounded-xl p-3">
-                <SlideThumb slide={p.slides[0]} colors={activeBrand!.colors} width={72} />
+                <PostThumb post={p} colors={activeBrand!.colors} width={72} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2"><h3 className="text-sm font-medium text-zinc-100 truncate">{p.title}</h3><StatusPill status={p.status} /></div>
                   <p className="text-xs text-zinc-500 line-clamp-2 mt-0.5">{p.caption}</p>
                   <p className="text-[11px] text-zinc-600 mt-1 font-mono">
-                    {p.platform} · {p.slides.length} slide{p.slides.length === 1 ? '' : 's'}
+                    {p.platform} · {typeInfo(p.postType).label}{p.slides.length > 1 && ` · ${p.slides.length} slides`}
                     {p.scheduledFor && p.status === 'Scheduled' && ` · scheduled ${fmt(p.scheduledFor)}`}
                     {p.publishedAt && ` · published ${fmt(p.publishedAt)}`}
                   </p>
@@ -112,7 +118,7 @@ export const LibraryModule: React.FC = () => {
                 </div>
                 <div className="flex flex-wrap items-start gap-1.5 justify-end content-start max-w-[260px]">
                   <Btn onClick={() => openInStudio(p)} title="Edit"><Pencil className="w-3.5 h-3.5" /></Btn>
-                  <Btn busy={busy === p.id} onClick={() => download(p)} title="Download PNGs"><Download className="w-3.5 h-3.5" /></Btn>
+                  {p.slides.length > 0 && <Btn busy={busy === p.id} onClick={() => download(p)} title="Download PNGs"><Download className="w-3.5 h-3.5" /></Btn>}
                   <Btn busy={busy === p.id} onClick={() => exportFolder(p)} title="Save to export folder"><FolderOutput className="w-3.5 h-3.5" /></Btn>
                   {p.status !== 'Published' && <Btn busy={busy === p.id} onClick={() => publish(p)} title="Publish now"><Send className="w-3.5 h-3.5" /></Btn>}
                   <Btn variant="danger" onClick={() => remove(p)} title="Delete"><Trash2 className="w-3.5 h-3.5" /></Btn>

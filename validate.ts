@@ -4,6 +4,7 @@
  */
 
 const STATUSES = ['Draft', 'Approved', 'Scheduled', 'Published'];
+const POST_TYPES = ['carousel', 'single', 'quote', 'announcement', 'text', 'link'];
 const PLATFORMS = ['Instagram', 'Facebook', 'LinkedIn', 'Twitter'];
 const HEX = /^#[0-9a-fA-F]{6}$/;
 
@@ -85,6 +86,8 @@ export function validatePost(body: unknown, partial = false): string | null {
       hashtags: strArray(40, 100),
       callToAction: v => isStr(v, 500),
       platform: v => PLATFORMS.includes(v),
+      postType: v => POST_TYPES.includes(v),
+      linkUrl: v => v === '' || (isStr(v, 500) && /^https?:\/\//i.test(v)),
       status: v => STATUSES.includes(v),
       topic: v => isStr(v, 400),
       designConcept: v => isStr(v, 3000),
@@ -116,7 +119,9 @@ export function validateCopyRequest(body: unknown): string | null {
       angle: v => isStr(v, 400),
       notes: v => isStr(v, 800),
       platform: v => PLATFORMS.includes(v),
-      slides: num(1, 10),
+      postType: v => POST_TYPES.includes(v),
+      linkUrl: v => v === '' || (isStr(v, 500) && /^https?:\/\//i.test(v)),
+      slides: num(0, 10),
     },
     ['brandId', 'topic']
   );

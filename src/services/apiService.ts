@@ -1,4 +1,4 @@
-import type { Brand, GeneratedPost, IdeasResult, Platform, Post, ServerInfo } from '../types';
+import type { Brand, GeneratedPost, IdeasResult, Platform, Post, PostType, ServerInfo } from '../types';
 import { UNAUTHORIZED_EVENT } from './authService';
 
 /** fetch wrapper: a 401 anywhere signs the user out (see AuthContext). */
@@ -71,7 +71,7 @@ export const apiService = {
   ideas: async (brandId: string, platform: Platform, focus: string): Promise<IdeasResult> =>
     (await call('/api/ai/ideas', 'POST', { brandId, platform, focus })).data,
   generatePost: async (req: {
-    brandId: string; topic: string; angle: string; platform: Platform; slides: number; notes: string;
+    brandId: string; topic: string; angle: string; platform: Platform; postType: PostType; linkUrl: string; slides: number; notes: string;
   }): Promise<{ data: GeneratedPost; source: string }> => {
     const j = await call('/api/ai/post', 'POST', req);
     return { data: j.data, source: j.source };

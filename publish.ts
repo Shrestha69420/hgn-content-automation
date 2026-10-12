@@ -49,14 +49,14 @@ const slug = (s: string) =>
     .slice(0, 60) || 'post';
 
 export function captionText(post: Post): string {
-  return [post.caption.trim(), post.callToAction.trim() && !post.caption.includes(post.callToAction.trim()) ? post.callToAction.trim() : '', post.hashtags.join(' ')]
+  return [post.caption.trim(), post.callToAction.trim() && !post.caption.includes(post.callToAction.trim()) ? post.callToAction.trim() : '', post.linkUrl?.trim() || '', post.hashtags.join(' ')]
     .filter(Boolean)
     .join('\n\n');
 }
 
 export function exportToFolder(post: Post): string {
   const files = finalFiles(post);
-  if (files.length !== post.slides.length || files.length === 0) {
+  if (files.length !== post.slides.length) {
     throw new Error('Final images have not been rendered yet. Open the post in Studio and save it first.');
   }
   const date = (post.scheduledFor || new Date().toISOString()).slice(0, 10);
@@ -98,8 +98,9 @@ async function waitReady(containerId: string): Promise<void> {
 
 export async function publishToInstagram(post: Post): Promise<string> {
   if (!instagramConfigured()) throw new Error('Instagram is not configured (IG_USER_ID, IG_ACCESS_TOKEN and APP_URL are required).');
+  if (!post.slides.length) throw new Error('Instagram posts need at least one image. Text and link posts cannot be published there.');
   const files = finalFiles(post);
-  if (files.length !== post.slides.length || !files.length) throw new Error('Final images have not been rendered yet.');
+  if (files.length !== post.slides.length) throw new Error('Final images have not been rendered yet.');
   const token = publicMediaToken(post.id);
   const urls = files.map(f => `${config.appUrl}/public-media/${post.id}/${token}/${path.basename(f)}`);
   const uid = config.instagram.userId;

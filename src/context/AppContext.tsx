@@ -19,9 +19,13 @@ interface AppState {
   refreshPosts: () => Promise<void>;
   info: ServerInfo | null;
   loading: boolean;
-  /** Post currently open in Studio (null = start fresh). */
-  draft: Post | null;
+  /** Post open in Studio (null = start fresh). Owned here so edits survive switching screens. */
+  studioPost: Post | null;
+  setStudioPost: React.Dispatch<React.SetStateAction<Post | null>>;
+  /** Bumps whenever Studio must reload its save baseline (a different post was opened or replaced from outside). */
+  studioKey: number;
   openInStudio: (p: Post | null) => void;
+  replaceStudioPost: (p: Post) => void;
   toastMessage: string | null;
   showToast: (m: string) => void;
 }
@@ -39,7 +43,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [posts, setPosts] = useState<Post[]>([]);
   const [info, setInfo] = useState<ServerInfo | null>(null);
   const [loading, setLoading] = useState(false);
-  const [draft, setDraft] = useState<Post | null>(null);
+  const [studioPost, setStudioPost] = useState<Post | null>(null);
+  const [studioKey, setStudioKey] = useState(0);
+  const postsRef = useRef<Post[]>([]);
+  postsRef.current = posts;
   const [toastMessage, setToast] = useState<string | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -87,13 +94,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const removePost = useCallback((id: string) => setPosts(prev => prev.filter(p => p.id !== id)), []);
 
   const openInStudio = useCallback((p: Post | null) => {
-    setDraft(p);
+    // always open the freshest copy from the list (autosave may have updated it since the card was rendered)
+    setStudioPost(p ? postsRef.current.find(x => x.id === p.id) ?? p : null);
+    setStudioKey(k => k + 1);
     setActiveModule('studio');
+  }, []);
+  const replaceStudioPost = useCallback((p: Post) => {
+    setStudioPost(cur => (cur && cur.id === p.id ? p : cur));
+    setStudioKey(k => k + 1);
   }, []);
 
   const value: AppState = {
     activeModule, setActiveModule, brands, activeBrand, setActiveBrandId, refreshBrands,
-    posts, brandPosts, upsertPost, removePost, refreshPosts, info, loading, draft, openInStudio, toastMessage, showToast,
+    posts, brandPosts, upsertPost, removePost, refreshPosts, info, loading, studioPost, setStudioPost, studioKey, openInStudio, replaceStudioPost, toastMessage, showToast,
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 };

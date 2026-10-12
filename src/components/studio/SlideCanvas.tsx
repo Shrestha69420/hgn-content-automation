@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { SLIDE_W, SLIDE_H, type BrandColors, type Slide, type TextLayer } from '../../types';
+import { SLIDE_W, SLIDE_H, type BrandColors, type Post, type Slide, type TextLayer } from '../../types';
 import { drawSlide, layerBox } from '../../lib/slideRenderer';
 
 interface Props {
@@ -8,11 +8,12 @@ interface Props {
   selectedId: string | null;
   onSelect: (id: string | null) => void;
   onMove: (layerId: string, x: number, y: number) => void;
+  onKey?: (e: React.KeyboardEvent) => void;
   width?: number;
 }
 
 /** Editable slide preview: click a text layer to select it, drag to move it. */
-export const SlideCanvas: React.FC<Props> = ({ slide, colors, selectedId, onSelect, onMove, width = 420 }) => {
+export const SlideCanvas: React.FC<Props> = ({ slide, colors, selectedId, onSelect, onMove, onKey, width = 420 }) => {
   const ref = useRef<HTMLCanvasElement>(null);
   const drag = useRef<{ id: string; dx: number; dy: number } | null>(null);
 
@@ -46,7 +47,10 @@ export const SlideCanvas: React.FC<Props> = ({ slide, colors, selectedId, onSele
       width={SLIDE_W}
       height={SLIDE_H}
       style={{ width, height: (width * SLIDE_H) / SLIDE_W, touchAction: 'none' }}
-      className="rounded-lg border border-zinc-800 cursor-move bg-deep max-w-full"
+      tabIndex={0}
+      aria-label="Slide editor. Select text, then use arrow keys to move it."
+      onKeyDown={onKey}
+      className="rounded-lg border border-zinc-800 cursor-move bg-deep max-w-full outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/60"
       onPointerDown={e => {
         const p = toSlide(e);
         const l = hit(p.x, p.y);
@@ -82,3 +86,20 @@ export const SlideThumb: React.FC<{ slide: Slide; colors: BrandColors; width?: n
     />
   );
 };
+
+/** First slide, or a text tile for posts without images. */
+export const PostThumb: React.FC<{ post: Post; colors: BrandColors; width?: number }> = ({ post, colors, width = 64 }) =>
+  post.slides.length ? (
+    <SlideThumb slide={post.slides[0]} colors={colors} width={width} />
+  ) : (
+    <div
+      style={{ width, height: (width * SLIDE_H) / SLIDE_W, background: colors.background, color: colors.text }}
+      className="rounded border border-zinc-800 flex flex-col justify-center gap-1 p-1.5 overflow-hidden"
+      title="Text post"
+    >
+      <span className="block h-0.5 w-3/4 rounded" style={{ background: colors.accent }} />
+      <span className="block h-0.5 w-full rounded opacity-50" style={{ background: colors.text }} />
+      <span className="block h-0.5 w-5/6 rounded opacity-50" style={{ background: colors.text }} />
+      <span className="block h-0.5 w-2/3 rounded opacity-50" style={{ background: colors.text }} />
+    </div>
+  );

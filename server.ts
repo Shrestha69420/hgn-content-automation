@@ -197,7 +197,9 @@ async function startServer() {
         topic: req.body.topic,
         angle: req.body.angle || '',
         platform: req.body.platform || 'Instagram',
-        slides: req.body.slides || 5,
+        slides: typeof req.body.slides === 'number' ? req.body.slides : 5,
+        postType: req.body.postType || 'carousel',
+        linkUrl: req.body.linkUrl || '',
         notes: req.body.notes || '',
       });
       res.json({ success: true, data, source });
@@ -377,7 +379,7 @@ async function startServer() {
       if (invalid) return res.status(400).json({ success: false, error: invalid });
       const post = getPostById(req.params.id);
       if (!post) return res.status(404).json({ success: false, error: 'Post not found' });
-      if (!post.rendered) return res.status(409).json({ success: false, error: 'Render the slides first (save the post from Studio).' });
+      if (!post.rendered && post.slides.length > 0) return res.status(409).json({ success: false, error: 'Render the slides first (save the post from Studio).' });
       const when = new Date(req.body.scheduledFor).toISOString();
       res.json({ success: true, data: updatePost(post.id, { status: 'Scheduled', scheduledFor: when }) });
     } catch (e) {

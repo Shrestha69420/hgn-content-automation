@@ -105,13 +105,28 @@ function fallbackIdeas(brand: Brand): IdeasResult {
 // ---------------------------------------------------------------------------
 export async function generatePostCopy(
   brand: Brand,
-  input: { topic: string; angle: string; platform: string; slides: number; notes: string }
+  input: { topic: string; angle: string; platform: string; slides: number; notes: string; postType: string; linkUrl: string }
 ): Promise<{ data: GeneratedPost; source: string }> {
-  const slides = Math.min(Math.max(input.slides || 5, 1), 10);
+  const type = input.postType;
+  const textOnly = type === 'text' || type === 'link';
+  const slides = textOnly ? 0 : type === 'carousel' ? Math.min(Math.max(input.slides || 5, 2), 10) : 1;
   if (!ai) return { data: fallbackCopy(brand, input.topic, slides), source: 'offline' };
+  const shape: Record<string, string> = {
+    carousel: `${slides}-slide carousel (slide 1 is a scroll-stopping hook, the last slide is the call to action)`,
+    single: 'single-image post (one slide: headline plus one short supporting line)',
+    quote: 'quote card (one slide: headline is the quote or bold statement, max 18 words; body is the attribution or context, e.g. "— Name, role")',
+    announcement: 'announcement / promo graphic (one slide: headline is the offer or news in max 6 words; body is the key details such as date, place, price or deadline)',
+    text: 'text-only post with no image',
+    link: `text-only post that introduces a link (${clean(input.linkUrl, 300) || 'the link will be added automatically'}); do NOT put the URL in the caption, it is appended automatically`,
+  };
+  const limit =
+    input.platform === 'Twitter' ? 'Caption MUST be 240 characters or fewer and use at most 3 hashtags.'
+    : input.platform === 'LinkedIn' ? 'Professional but human tone; 600-1200 characters; short paragraphs; hashtags at most 5.'
+    : input.platform === 'Facebook' ? 'Conversational; 150-500 characters; hashtags at most 3.'
+    : '';
   const response = await ai.models.generateContent({
     model: config.models.text,
-    contents: `Create a ${input.platform} ${slides > 1 ? `${slides}-slide carousel` : 'single-image post'} for this brand.
+    contents: `Create a ${input.platform} ${shape[type] || shape.carousel} for this brand.
 
 ${brandBrief(brand)}
 <brief>
@@ -121,8 +136,8 @@ Extra notes: ${clean(input.notes, 800) || 'none'}
 </brief>
 
 Rules:
-- Slide 1 is a scroll-stopping hook; the last slide is a call to action (${brand.cta || 'follow for more'}).
-- Slide text is SHORT: headline max 8 words, body max 22 words. The caption carries the detail.
+${limit ? `- ${limit}\n` : ''}- Call to action to use or adapt: ${brand.cta || 'follow for more'}.
+${slides === 0 ? '- slides must be an empty array [].' : `- Produce exactly ${slides} slide(s). Slide text is SHORT: headline max 8 words (the quote type may use up to 18), body max 22 words. The caption carries the detail.`}
 - imagePrompt describes a text-free background image only (no letters, logos or watermarks), consistent across slides, using the brand palette. Keep the center-left area uncluttered so text stays readable.
 - designConcept: 2-3 sentences covering mood, palette, typography and layout for the whole set.
 - caption: ready to post, in the brand voice, with line breaks. No hashtags inside it.
@@ -133,13 +148,16 @@ Return ONLY JSON:
     config: { systemInstruction: UNTRUSTED, responseMimeType: 'application/json' },
   });
   const data = parseJson<GeneratedPost>(response.text || '');
-  data.slides = (data.slides || []).slice(0, slides);
+  data.slides = textOnly ? [] : (data.slides || []).slice(0, slides);
   data.hashtags = (data.hashtags || []).map(h => (h.startsWith('#') ? h : `#${h}`));
   return { data, source: config.models.text };
 }
 
 function fallbackCopy(brand: Brand, topic: string, slides: number): GeneratedPost {
   const t = topic || 'Your topic';
+  if (slides === 0) {
+    return { title: t, caption: `${t}\n\n${brand.tagline}`, hashtags: brand.hashtags, callToAction: brand.cta, designConcept: '', bestTime: 'Weekdays 9-11 AM local time', slides: [] };
+  }
   const body = Array.from({ length: slides }, (_, i) => ({
     headline: i === 0 ? t : i === slides - 1 ? brand.cta || 'Follow for more' : `Point ${i}`,
     body: i === 0 ? brand.tagline : 'Replace this text with your own.',
