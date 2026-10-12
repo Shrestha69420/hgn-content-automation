@@ -226,11 +226,20 @@ async function startServer() {
   app.post('/api/brands/extract', aiLimiter, async (req, res) => {
     const invalid = validateExtractRequest(req.body);
     if (invalid) return res.status(400).json({ success: false, error: invalid });
+    // Newline-delimited JSON stream: status, chunk (raw model text as it arrives), done | error.
+    res.setHeader('Content-Type', 'application/x-ndjson; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('X-Accel-Buffering', 'no');
+    const send = (o: object) => res.write(JSON.stringify(o) + '\n');
     try {
-      res.json({ success: true, data: await extractBrandFromWebsite(req.body.url.trim()) });
-    } catch (e) {
-      aiFail(res, e, 'brand extract');
+      send({ type: 'status', text: 'Gemini is reading the website…' });
+      const data = await extractBrandFromWebsite(req.body.url.trim(), text => send({ type: 'chunk', text }));
+      send({ type: 'done', data });
+    } catch (e: any) {
+      console.error('[ai] brand extract:', e?.message || e);
+      send({ type: 'error', error: String(e?.message || 'AI request failed').replace(/key=[^&\s]+/gi, 'key=***').slice(0, 300) });
     }
+    res.end();
   });
 
   // ---- Media (session-protected) ---------------------------------------------

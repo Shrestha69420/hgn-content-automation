@@ -29,7 +29,12 @@ export const config = {
     | 'both',
   exportDir: path.resolve(root, env('EXPORT_DIR', './exports')),
   mediaDir: path.join(root, 'data', 'media'),
-  instagram: { userId: env('IG_USER_ID'), token: env('IG_ACCESS_TOKEN') },
+  instagram: {
+    userId: env('IG_USER_ID'),
+    token: env('IG_ACCESS_TOKEN'),
+    // Token from "Instagram API with Instagram Login" -> graph.instagram.com (default). Facebook Login tokens -> https://graph.facebook.com
+    host: env('IG_API_HOST', 'https://graph.instagram.com').replace(/\/$/, ''),
+  },
 };
 
 export const instagramConfigured = () => !!(config.instagram.userId && config.instagram.token && config.appUrl);

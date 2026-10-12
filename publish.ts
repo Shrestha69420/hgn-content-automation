@@ -70,7 +70,7 @@ export function exportToFolder(post: Post): string {
 // ---------------------------------------------------------------------------
 // Instagram Graph API (carousel). Own Business/Creator account, Meta app in development mode.
 // ---------------------------------------------------------------------------
-const GRAPH = 'https://graph.facebook.com/v21.0';
+const GRAPH = `${config.instagram.host}/v21.0`;
 
 async function graph(pathName: string, params: Record<string, string>): Promise<any> {
   const res = await fetch(`${GRAPH}/${pathName}`, {

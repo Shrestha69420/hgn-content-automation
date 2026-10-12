@@ -2,7 +2,8 @@ import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from './ThemeToggle';
-import { Sparkles, LogOut, Globe } from 'lucide-react';
+import { Plus, LogOut, Globe } from 'lucide-react';
+import { Logo } from './Logo';
 
 export const Header: React.FC = () => {
   const { setActiveModule, showToast, brands, activeBrand, setActiveBrandId, openInStudio } = useApp();
@@ -18,32 +19,14 @@ export const Header: React.FC = () => {
             onClick={() => setActiveModule('overview')}
             className="flex items-center gap-2.5 text-left cursor-pointer group focus:outline-none"
           >
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-[0_0_14px_rgba(43,181,166,0.35)] transition group-hover:scale-105">
-              <svg
-                className="w-4 h-4 text-white"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M4 15c2.5-4 5.5-4 8 0s5.5 4 8 0" />
-                <path d="M4 9c2.5-4 5.5-4 8 0s5.5 4 8 0" />
-              </svg>
-            </div>
-            <div className="flex items-baseline gap-2">
-              <span className="font-semibold text-sm tracking-tight text-zinc-50 font-sans">
-                Campaign Flow
-              </span>
-            </div>
+            <Logo />
           </button>
 
           {brands.length > 0 && (
             <select
               value={activeBrand?.id || ''}
               onChange={e => setActiveBrandId(e.target.value)}
-              className="bg-deep border border-zinc-800 rounded-md px-2 py-1 text-xs text-zinc-200 focus:outline-none max-w-[160px]"
+              className="bg-deep border border-zinc-800 rounded-md px-2 py-1 text-xs text-zinc-200 focus:outline-none w-56 max-w-[40vw]"
               title="Active brand"
             >
               {brands.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
@@ -68,7 +51,7 @@ export const Header: React.FC = () => {
             onClick={() => openInStudio(null)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-[0_1px_12px_rgba(43,181,166,0.25)] border border-indigo-400/30 active:scale-[0.98] cursor-pointer"
           >
-            <Sparkles className="w-3.5 h-3.5 text-indigo-200" />
+            <Plus className="w-3.5 h-3.5 text-indigo-100" />
             <span>New post</span>
           </button>
 

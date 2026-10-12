@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Sparkles, Search, Image as ImageIcon, CalendarClock, FolderOutput, ArrowRight } from 'lucide-react';
+import { FileText, Search, Image as ImageIcon, CalendarClock, FolderOutput, ArrowRight } from 'lucide-react';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { Logo } from '../common/Logo';
 import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
 import { LoginPage } from '../auth/LoginPage';
 
 const STEPS = [
   { icon: Search, title: 'Know what to post', text: 'Gemini searches the live web for current news and trends, and tells you what to avoid right now.' },
-  { icon: Sparkles, title: 'Concept and caption', text: 'A design concept, caption, hashtags and slide copy written in your brand voice.' },
+  { icon: FileText, title: 'Concept and caption', text: 'A design concept, caption, hashtags and slide copy written in your brand voice.' },
   { icon: ImageIcon, title: 'Editable carousels', text: 'AI backgrounds with real, editable text layers. Move, restyle and export every slide as PNG.' },
   { icon: CalendarClock, title: 'Approve and schedule', text: 'Pick a time. Approved posts publish themselves.' },
   { icon: FolderOutput, title: 'Always a fallback', text: 'Each post is saved to a dated folder with its images and caption, ready to upload by hand.' },
@@ -23,7 +24,7 @@ export const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-page text-zinc-100 font-sans">
       <header className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-        <span className="font-semibold tracking-tight">Campaign Flow</span>
+        <Logo size={30} />
         <div className="flex items-center gap-3">
           <ThemeToggle />
           <button onClick={() => (isAuthenticated ? setActiveModule('overview') : setShowLogin(true))}

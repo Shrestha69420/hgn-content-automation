@@ -27,3 +27,12 @@ Setup: copy `.env.example` to `.env.local`, set `GEMINI_API_KEY`, run `npm run d
 - **Fetch brand details**: enter the website and Gemini reads the page itself (URL context tool, no scraping on our server) and fills voice, audience, region, keywords, colors, hashtags, pillars and facts. Nothing is saved until you press Save.
 - **Changes flow to assets**: slide colors reference the brand palette (`brand:primary|accent|background|text`), so a palette change restyles every post. On Save, unpublished posts also get the new default CTA, brand hashtags, name and handle swapped in, and their final PNGs are re-rendered so scheduled posts publish the updated look. Published posts are never touched.
 - Colors picked with the custom swatch in Studio are fixed and do not follow the brand.
+
+## Getting an Instagram token (your own account, no business verification)
+You only need Meta's verification when *other people's* accounts connect to your app. Posting to your own account works in development mode:
+1. Convert the Instagram account to **Business** or **Creator** (Instagram settings > Account type).
+2. At developers.facebook.com create an app (type Business) and add the product **Instagram > API setup with Instagram login**.
+3. Under that setup add your Instagram account as a **tester** (and accept the invite in Instagram: Settings > Apps and websites > Tester invites) if the dashboard asks for it.
+4. Click **Generate token** next to the account. It needs the `instagram_business_basic` and `instagram_business_content_publish` permissions. The token is valid 60 days; refresh it before it expires (`GET https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=<token>`).
+5. Put `IG_USER_ID` (shown next to the token), `IG_ACCESS_TOKEN` and your public HTTPS `APP_URL` in `.env.local`, then set `PUBLISH_MODE=both` (or `instagram`).
+If you use a Facebook-Login token instead, set `IG_API_HOST=https://graph.facebook.com`.

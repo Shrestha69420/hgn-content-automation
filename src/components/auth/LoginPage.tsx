@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Lock, Mail, User, ArrowRight } from 'lucide-react';
+import { Logo } from '../common/Logo';
 
 interface LoginPageProps {
   onLoginSuccess?: () => void;
@@ -68,30 +69,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSuccess 
     <div className="min-h-screen w-full bg-page text-zinc-100 flex flex-col justify-between selection:bg-zinc-800 selection:text-zinc-100 antialiased font-sans">
       {/* Top Subtle Nav */}
       <header className="w-full px-6 py-5 flex items-center justify-between border-b border-zinc-850">
-        <div className="flex items-center gap-2.5">
-          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-[0_0_12px_rgba(43,181,166,0.4)]">
-            <svg
-              className="w-3.5 h-3.5 text-white"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M4 15c2.5-4 5.5-4 8 0s5.5 4 8 0" />
-              <path d="M4 9c2.5-4 5.5-4 8 0s5.5 4 8 0" />
-            </svg>
-          </div>
-          <div className="flex items-baseline gap-1.5">
-            <span className="font-semibold text-xs tracking-tight text-zinc-50">
-              Campaign Flow
-            </span>
-            <span className="text-[10px] text-zinc-500 font-normal">
-              Campaign Flow
-            </span>
-          </div>
-        </div>
+        <Logo size={26} />
 
         <span className="text-[11px] font-mono text-zinc-500">
           Internal Workspace

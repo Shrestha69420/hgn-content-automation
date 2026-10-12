@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, CheckCircle2, XCircle } from 'lucide-react';
+import { Plus, CheckCircle2, XCircle } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { Btn, Card, PageTitle, StatusPill } from '../common/ui';
 import { SlideThumb } from '../studio/SlideCanvas';
@@ -20,7 +20,7 @@ export const OverviewModule: React.FC = () => {
   return (
     <div>
       <PageTitle title="Overview" sub={`${activeBrand?.name} · what is queued and what is connected`}
-        actions={<Btn variant="primary" onClick={() => openInStudio(null)}><Sparkles className="w-3.5 h-3.5" />New post</Btn>} />
+        actions={<Btn variant="primary" onClick={() => openInStudio(null)}><Plus className="w-3.5 h-3.5" />New post</Btn>} />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
         {['Draft', 'Approved', 'Scheduled', 'Published'].map(s => (

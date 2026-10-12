@@ -1,10 +1,10 @@
 import React from 'react';
-import { LayoutDashboard, Sparkles, Layers, Palette } from 'lucide-react';
+import { LayoutDashboard, PenTool, Layers, Palette } from 'lucide-react';
 import { useApp, ActiveModule } from '../../context/AppContext';
 
 export const NAV_ITEMS: { id: ActiveModule; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-  { id: 'studio', label: 'Studio', icon: Sparkles },
+  { id: 'studio', label: 'Studio', icon: PenTool },
   { id: 'library', label: 'Library', icon: Layers },
   { id: 'brands', label: 'Brands', icon: Palette },
 ];

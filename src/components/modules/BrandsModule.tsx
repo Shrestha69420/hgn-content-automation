@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Plus, Trash2, Save, Globe, X } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { apiService } from '../../services/apiService';
@@ -18,6 +18,17 @@ export const BrandsModule: React.FC = () => {
   const [form, setForm] = useState<Brand | null>(activeBrand ?? null);
   const [saving, setSaving] = useState(false);
   const [fetching, setFetching] = useState(false);
+  const [stream, setStream] = useState<{ status: string; text: string } | null>(null);
+  const [elapsed, setElapsed] = useState(0);
+  useEffect(() => {
+    if (!fetching) return;
+    setElapsed(0);
+    const t = setInterval(() => setElapsed(n => n + 1), 1000);
+    return () => clearInterval(t);
+  }, [fetching]);
+  const waiting = elapsed < 4 ? 'Opening the page…' : elapsed < 14 ? 'Reading the site and pulling out its voice, colors and key facts…' : 'Still working. Bigger sites take a little longer…';
+  const streamRef = useRef<HTMLPreElement>(null);
+  useEffect(() => { streamRef.current?.scrollTo({ top: streamRef.current.scrollHeight }); }, [stream?.text]);
 
   useEffect(() => { setForm(activeBrand ?? null); }, [activeBrand]);
   if (!form || !activeBrand) return null;
@@ -28,13 +39,19 @@ export const BrandsModule: React.FC = () => {
     if (!form.website.trim()) return showToast('Enter the website URL first.');
     const url = /^https?:\/\//i.test(form.website.trim()) ? form.website.trim() : `https://${form.website.trim()}`;
     setFetching(true);
+    setStream({ status: 'Connecting…', text: '' });
     try {
-      const found = await apiService.extractBrand(url);
+      const found = await apiService.extractBrand(url, e =>
+        setStream(s => ({ status: e.type === 'status' ? e.text : 'Reading and analyzing the site…', text: (s?.text || '') + (e.type === 'chunk' ? e.text : '') }))
+      );
       const keys = Object.keys(found);
       if (!keys.length) return showToast('Gemini could not read anything useful from that page.');
       setForm({ ...form, ...found, website: url });
-      showToast(`Filled ${keys.map(k => FIELD_LABELS[k] || k).join(', ')} from the website. Review, then Save.`);
-    } catch (e: any) { showToast(e.message); } finally { setFetching(false); }
+      setStream(s => ({ status: `Done. Filled: ${keys.map(k => FIELD_LABELS[k] || k).join(', ')}. Review the fields below, then Save.`, text: s?.text || '' }));
+    } catch (e: any) {
+      setStream(null);
+      showToast(e.message);
+    } finally { setFetching(false); }
   };
 
   /** Saves the brand, then brings every unpublished post of this brand in line with it. */
@@ -88,6 +105,17 @@ export const BrandsModule: React.FC = () => {
       <Card title="Start from the website" className="mb-4"
         actions={<Btn variant="primary" busy={fetching} onClick={fetchWebsite}><Globe className="w-3.5 h-3.5" />Fetch brand details</Btn>}>
         <input className={inputCls} value={form.website} onChange={e => set({ website: e.target.value })} placeholder="https://yourcompany.com" />
+        {stream && (
+          <div className="mt-3 rounded-lg border border-zinc-800 bg-deep">
+            <div className="flex items-center gap-2 px-3 py-2 border-b border-zinc-800 text-[11px] text-zinc-300">
+              {fetching ? <span className="w-3 h-3 rounded-full border-2 border-indigo-400 border-t-transparent animate-spin" /> : <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />}
+              <span>{stream.status}</span>
+              {fetching && <span className="ml-auto font-mono text-zinc-500">{elapsed}s</span>}
+              {!fetching && <button onClick={() => setStream(null)} className="ml-auto text-zinc-500 hover:text-zinc-300 cursor-pointer"><X className="w-3 h-3" /></button>}
+            </div>
+            <pre ref={streamRef} className="max-h-44 overflow-auto px-3 py-2 text-[11px] leading-relaxed text-zinc-400 font-mono whitespace-pre-wrap break-words">{stream.text || waiting}{fetching && <span className="inline-block w-1.5 h-3 bg-indigo-400 align-middle ml-0.5 animate-pulse" />}</pre>
+          </div>
+        )}
         <p className="text-[11px] text-zinc-600 mt-2">Gemini reads the page and fills the fields below (voice, audience, colors, topics, facts). Nothing is saved until you press Save, so you can review and edit first.</p>
       </Card>
 

@@ -25,7 +25,33 @@ export const apiService = {
   getBrands: async (): Promise<Brand[]> => (await call('/api/brands')).data,
   createBrand: async (b: Omit<Brand, 'id'>): Promise<Brand> => (await call('/api/brands', 'POST', b)).data,
   updateBrand: async (id: string, b: Partial<Brand>): Promise<Brand> => (await call(`/api/brands/${id}`, 'PUT', b)).data,
-  extractBrand: async (url: string): Promise<Partial<Brand>> => (await call('/api/brands/extract', 'POST', { url })).data,
+  /** Streams Gemini's reading of a website; resolves with the extracted brand fields. */
+  extractBrand: async (url: string, onEvent: (e: { type: 'status' | 'chunk'; text: string }) => void): Promise<Partial<Brand>> => {
+    const res = await api('/api/brands/extract', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url }) });
+    if (!res.ok || !res.body) throw new Error((await res.json().catch(() => ({}))).error || `Request failed (${res.status})`);
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = '';
+    let result: Partial<Brand> | null = null;
+    const handle = (line: string) => {
+      if (!line.trim()) return;
+      const ev = JSON.parse(line);
+      if (ev.type === 'error') throw new Error(ev.error);
+      if (ev.type === 'done') result = ev.data;
+      else onEvent(ev);
+    };
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      buf = lines.pop() || '';
+      lines.forEach(handle);
+    }
+    handle(buf);
+    if (!result) throw new Error('The connection closed before Gemini finished.');
+    return result;
+  },
   deleteBrand: async (id: string) => void (await call(`/api/brands/${id}`, 'DELETE')),
 
   getPosts: async (): Promise<Post[]> => (await call('/api/posts')).data,

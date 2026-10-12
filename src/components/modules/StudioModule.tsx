@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Sparkles, Search, Image as ImageIcon, Plus, Trash2, ChevronLeft, ChevronRight, Download, FolderOutput, Send, CalendarClock, CheckCircle2, Save, Globe, AlertTriangle } from 'lucide-react';
+import { Search, Image as ImageIcon, Plus, Trash2, ChevronLeft, ChevronRight, Download, FolderOutput, Send, CalendarClock, CheckCircle2, Save, Globe, AlertTriangle } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { useAuth } from '../../context/AuthContext';
 import { apiService } from '../../services/apiService';
@@ -241,7 +241,7 @@ export const StudioModule: React.FC = () => {
             </div>
           </Card>
 
-          <Card title="2. Brief and generate" actions={<Btn variant="primary" busy={busy === 'generate'} onClick={generate}><Sparkles className="w-3.5 h-3.5" />Generate post</Btn>}>
+          <Card title="2. Brief and generate" actions={<Btn variant="primary" busy={busy === 'generate'} onClick={generate}>Generate post</Btn>}>
             <div className="space-y-3">
               <div><Label>Topic</Label><input className={inputCls} value={topic} onChange={e => setTopic(e.target.value)} placeholder="What is the post about?" /></div>
               <div><Label>Angle / hook</Label><textarea rows={2} className={inputCls} value={angle} onChange={e => setAngle(e.target.value)} /></div>
